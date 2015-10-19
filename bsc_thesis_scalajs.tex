@@ -1,0 +1,1379 @@
+% BESCHREIBUNG DER DOCUMENTCLASS
+% a4paper 	-	weil wir ein Din-A4-Dokument benutzen.
+% 12pt		-	Schriftgröße von 12 Punkt.
+% listof=totoc 	-	heisst, dass das Tabellenverzeichnis (\listoftables) & das Abbildungsverzeichnis (\listoffigures) im Inhaltsverzeichnis aufgenommen werden.
+% bibtotoc		-	Das Literaturverzeichnis wird ins Inhaltsverzeichnis aufgenommen.
+% scrreprt		-	Das Template für diese Dokument ist ein KOMA-Script Report
+
+\documentclass[a4paper, 12pt, listof=totoc, bibliography=totoc]{scrreprt}
+
+\usepackage{lmodern}									% Modernes Lateinisches Schriftbild benutzen
+\usepackage[T1]{fontenc}								% Schriftbild glätten
+\usepackage[utf8]{inputenc}								% UTF-8 als input encoding nutzen
+\usepackage[ngerman]{babel}								% Deutsche Silbentrennung
+\usepackage[babel, german=quotes]{csquotes}
+\usepackage{xcolor}										% Damit man Farben benutzen kann
+\usepackage{setspace}									%
+\usepackage[a4paper]{geometry}							%
+\geometry{left=25mm, right=25mm, top=25mm, bottom=25mm}	% Seitenränder setzen
+\usepackage{titlesec}									%
+\usepackage{graphicx}									%
+\usepackage{graphics}									%
+\usepackage{listings}
+\usepackage{alltt}
+\usepackage{nameref}\lstset{
+  literate={ö}{{\"o}}1
+           {ä}{{\"a}}1
+           {ü}{{\"u}}1
+           {Ö}{{\"O}}1
+           {Ä}{{\"A}}1
+           {Ü}{{\"U}}1
+           {ß}{{\ss}}1
+}
+\usepackage{hyperref}									% für Hyperlinks
+\usepackage{url}										% um lange URLs darzustellen
+%\usepackage{amsmath}									% für mathematische Formeln
+%\usepackage{subfigure}									% um Bilder nebeneinander zu plazieren
+
+
+% Bibliographie mit biblatex/biber
+\usepackage[backend=biber, style=alphabetic]{biblatex}
+\addbibresource{biblio_scalajs.bib}
+
+
+\graphicspath{{images/}}
+
+
+\definecolor{mid-red}{RGB}{224,0,0}
+\definecolor{mid-green}{RGB}{0,160,0}
+\definecolor{dark-blue}{RGB}{0,0,160}
+\definecolor{mid-gray}{RGB}{127,127,127}
+\definecolor{light-gray}{RGB}{244,244,244}
+\colorlet{keyword}{dark-blue}
+\colorlet{string}{mid-red}
+\colorlet{comment}{mid-green}
+\colorlet{linennumber}{mid-gray}
+\colorlet{background}{light-gray}
+
+
+% Sprachdefinitionen für Listings
+\lstdefinelanguage{Scala}{
+  morekeywords={
+    abstract,case,catch,class,def,do,else,extends,false,final,finally,for,%
+    forsome,if,implicit,import,lazy,match,mixin,new,null,object,override,%
+    package,private,protected,requires,return,sealed,super,this,throw,trait,%
+    true,try,type,val,var,while,with,yield%
+  },
+  otherkeywords={=>,<-,<\%,<:,>:,\#,@},
+  sensitive=true,
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]",
+  morestring=[b]',
+  morestring=[b]"""
+}
+\lstdefinelanguage{JavaScript}{
+  morekeywords={
+    break,case,class,catch,const,continue,debugger,default,delete,do,else,%
+    export,extends,finally,for,function,if,import,in,instanceof,let,new,%
+    return,super,switch,this,throw,try,typeof,var,void,while,with,yield%
+    null,true,false,undefined,NaN%
+  },
+  sensitive=true,
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]",
+  morestring=[b]'
+}
+\lstdefinelanguage{HTML5}{
+  language=html,
+  tagstyle=\bfseries\color{keyword},
+  morecomment=[s]{<!--}{-->},
+  morestring=[b]",
+  morestring=[b]'
+}
+
+% Styles für Listings
+\lstdefinestyle{colored}{
+  keywordstyle=\bfseries\color{keyword},
+  commentstyle=\itshape\color{comment},
+  stringstyle=\color{string}
+}
+\lstdefinestyle{uncolored}{
+  keywordstyle=\bfseries,
+  commentstyle=\itshape,
+  stringstyle=\ttfamily
+}
+\lstdefinestyle{numbered}{
+  numbers=left,
+  numberstyle=\tiny\color{linennumber}
+}
+\lstdefinestyle{unnumbered}{
+  numbers=none
+}
+\lstdefinestyle{framed}{
+  backgroundcolor=\color{background}
+}
+\lstdefinestyle{unframed}{
+  backgroundcolor=
+}
+\lstdefinestyle{basic}{
+  basicstyle={\ttfamily\singlespacing\small},
+  showstringspaces=false,
+  breaklines=true,
+  breakatwhitespace=true,
+  style=unnumbered,
+  captionpos=b,
+  %belowcaptionskip=4pt,
+  literate={`}{{\`{}}}1			% for proper backticks
+}
+\lstdefinestyle{standard}{
+  style=basic,
+  style=colored,
+  style=framed
+}
+\lstdefinestyle{standardnocol}{
+  style=basic,
+  style=uncolored,
+  style=unframed
+}
+\lstdefinestyle{htmlnocol}{
+  tagstyle=\bfseries
+}
+\lstdefinestyle{inline}{
+  basicstyle={\ttfamily\small},
+  breakatwhitespace=false
+}
+
+% Default-Style für Listings. Kann überall im Text analog geändert werden.
+\lstset{ style=standard }
+
+
+%Arial nutzen wer will...
+%\renewcommand{\rmdefault}{phv} % Arial
+%\renewcommand{\sfdefault}{phv} % Arial
+
+% FORMATIERUNG DER ÜBERSCHRIFTEN ANFANG
+	% Überschriftenformatierung
+	% Erklärung: \titleformat{Überschriftenklasse}[Absatzformatierung]{Textformatierung}{Numerierung}{Abstand zwischen Numerierung und Überschrift}{Code davor}[Code danach]
+	% 1. Ebene chapter
+	\titleformat{\chapter}[hang]{\Large\bfseries}{\thechapter\quad}{0pt}{}
+	% 2. Ebene -- section
+	\titleformat{\section}[hang]{\large\bfseries}{\thesection\quad}{0pt}{}
+	% 3. Ebene -- subsection
+	\titleformat{\subsection}[hang]{\bfseries}{\thesubsection\quad}{0pt}{}
+	% 4. Ebene -- subsubsection
+	\titleformat{\subsubsection}[hang]{\bfseries}{\thesubsubsection\quad}{0pt}{}
+
+	% Platz um die Überschriften
+	% Erklärung: \titlespacing{Überschriftenklasse}{Linker Einzug}{Platz oberhalb}{Platz unterhalb}[rechter Einzug]
+	\titlespacing{\chapter}{0pt}{0pt}{10pt}
+	\titlespacing{\section}{0pt}{20pt}{10pt}
+	\titlespacing{\subsection}{0pt}{20pt}{10pt}
+% FORMATIERUNG DER ÜBERSCHRIFTEN ENDE
+
+% FORMATIERUNG FLIESSTEXT ANFANG
+	% Absatzeinrueckung unterdruecken
+	\setlength{\parindent}{0pt}
+	% Abstand zwischen zwei Absaetzen setzen
+	\setlength{\parskip}{6pt}
+	% Zeilenabstand
+	% Optionen: \singlespacing , \onehalfspacing , \doublespacing
+	\onehalfspacing
+% FORMATIERUNG FLIESSTEXT ENDE
+
+% EIGENE KOPFZEILE ANFANG
+	\usepackage{scrpage2}
+	\clearscrheadfoot
+	\ihead[\footnotesize{\textnormal{\headmark}}]{\footnotesize{\textnormal{\headmark}}}
+	\ohead[\footnotesize{\pagemark}]{\footnotesize{\pagemark}}
+	\automark{chapter}
+	% Numerierung nur bis subsection
+	\setcounter{secnumdepth}{2}
+% EIGENE KOPFZEILE ENDE
+
+
+% Wird gebraucht für die Titelseite...
+\newcommand{\RM}[1]{\MakeUppercase{\romannumeral #1{}}}
+
+% Erstellung eines Index
+\makeindex
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BEGIN DOCUMENT // HIER FÄNGT DER INHALT AN
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+% Import der Titelseite aus dem Ordner "title".
+\input{./title/titlepage.tex}
+
+% Keine Kopfzeile im Inhaltsverzeichnis
+\pagenumbering{gobble}
+
+% Inhaltsverzeichnis erstellen
+\tableofcontents
+
+% Neue Seite.
+\newpage
+
+% Kopfzeile an
+\pagestyle{scrheadings}
+
+%Seitennummern anfangen
+\pagenumbering{arabic}
+
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+\chapter{Einleitung}
+
+% evtl. hilfreich:  D:\UNI\2014-SoSe\GWAGWA_Themenfindung_Gliederung_Schreibstil.pdf
+
+\section{Motivation}
+
+% siehe jeweils Einleitung von Doeraene 2013 und Haoyi 2015
+
+(- Weboberflächen basieren auf HTML und CSS)
+- von modernen Webseiten wird in zunehmendem Maße viel Interaktionsmöglichkeiten/Interaktivität erwartet, im Vergleich zu älteren/klassischen statischen Webseiten eher Desktopanwendungen ähnlich ... (man spricht deshalb auch von Rich Internet Applications) (also: für Interaktivität auf Clientseite) existiert als De-facto-Standard JavaScript (von allen Browsern ohne Plugins unterstützt (alle Browser haben einen JavaScript-Interpreter); mögliche Alternativen mit Plugins: Flash, Java Applets, MS Silverlight; aber beide Techniken immer weniger gebräuchlich, weil: Flash Video-Player seit HTML5 video Bedeutungsverlust, Flash-Format für animierte Inhalte ersetzt durch JS-Bibliotheken wie etwa jQuery und HTML5-Techniken wie <canvas>, SVG und WebGL, Silverlight deprecated, Applets lange Ladezeiten), verlieren aber zunehmend an Bedeutung  -->  Diagramm:   \url{https://www.google.com/trends/explore#q=adobe+flex,microsoft+silverlight,java+applet,HTML5,gwt}
+- JavaScript aus verschiedenen Gründen problematisch
+  - nicht typsicher (-> Fehler zur Laufzeit)
+  - unerwartetes Verhalten (schwer zu findende Fehler)
+  - relativ "`verbose"'/geschwätzig
+  - schlechte Wartbarkeit
+  - aufwendiges Refactoring
+- eine Sprache für beide Seiten, Client und Server, wünschenswert
+  - auf Serverseite in der Regel andere Sprache wie Java, PHP, ... ???
+  - Vorteile wären: Wiederverwendbarkeit von Code, Definition gemeinsamer Schnittstellen (in der Form bisher nicht möglich)
+
+- Scala.js bringt Scala (bisher auf Basis der JVM) auf die Client-Seite:
+  - es kann in Scala entwickelt werden
+  - Scala-Code wird nach JavaScript als Zielsprache übersetzt
+  - Compiler, Ökosystem aus Bibliotheken und Tools/Entwicklungswerkzeugen
+
+
+
+\section{Zielstellung / Aufgabenstellung}
+
+Ziel: untersuchen, wie gut Scala.js zur Entwicklung von Weboberflächen geeignet ist
+Fragen:
+  - entwickelt man robuster?
+  - steigert es die Code-Qualität?
+  - entwickelt man schneller?
+  - ist es angenehm, mit Scala.js zu entwickeln?
+  - kann das Resultat mit herkömmliche Weise mit JavaScript entwickelten Anwendungen mithalten oder übertrifft es sie sogar?
+  - entsprechend: ist das Ergebnis performant genug?
+  - aus Benutzersicht: wie schnell lädt die Seite?
+
+Anhand verschiedener kleinerer Anwendungen / anhand der Anwendung ... soll untersucht werden, wie gut Scala.js den heutigen Anforderungen an die Frontend-Entwicklung gerecht wird.
+
+
+NICHT IM FOKUS: Browser-Kompatibilität
+NICHT IM FOKUS: Server mit Datenbank
+NICHT IM FOKUS:  ist es gut/schlecht viel clientseitigen JS-Code zu haben - möglicherweise besser, mehr statisches HTML zu serven, und nur Teile dynamisch durch JS erzeugen zu lassen?
+
+
+\section{Aufbau der Arbeit}
+
+TODO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+\chapter{Technikvorstellung/fachliches Umfeld/Grundbegriffe (3)}
+
+\section{Scala (1.5)}
+
+%-->  \cite{fiedler2011.ELS} S. 5-8
+
+Scala ist eine moderne Multiparadigmen-Programmiersprache, die objektorientierte und funktionalen Programmierkonzepte mit einer statischen Typisierung verbindet. Sie wird seit 2001 federführend von Martin Odersky an der École polytechnique fédérale de Lausanne entwickelt und wurde erstmals 2004 öffentlich vorgestellt.
+%"`Scala smoothly integrates object-oriented and functional programming. It is designed to express common programming patterns in a concise, elegant, and type-safe way."'  --> \url{http://article.gmane.org/gmane.comp.lang.scala/17}
+Seit der Gründung der Firma Typesafe 2011 durch Odersky und Jonas Bonér\footnote{
+	Bonér ist der Autor von \textit{Akka}, einem Toolkit und einer Laufzeitumgebung zur Entwicklung fehlertoleranter nebenläufiger und verteilter Anwendungen. Es basiert auf einem Modell, bei dem \textit{Aktoren} genannte nebenläufige Einheiten durch Nachrichtenaustausch miteinander kommunizieren. Akka ist Teil der Typesafe-Plattform.\url{http://akka.io/}}
+erfährt die Entwicklung von Scala als Teil der \textit{Typesafe Reactive Platform} nun auch kommerzielle Unterstützung.
+Hier wird unter anderem die IDE-Integration für Scala vorangetrieben und das Buildtool \textit{sbt} entwickelt.\cite{scala-lang2011.CSS} 
+
+Scala verwendet eine prägnante, schlanke Syntax. So lässt sich etwa eine einfache Klasse als Einzeiler schreiben: \texttt{class Foo(val bar: Int)}. Damit sind sowohl ein Konstruktor als auch die Instanzvariable (\texttt{bar}) definiert. Dadurch sind Scala-Programme eher kurz. Ein Java-Programm lässt sich mit etwa der halben Anzahl an \textit{Lines of Code} in Scala formulieren. Das reduziert den Schreib- und Leseaufwand und die Gelegenheit Fehler zu machen.
+
+Scala erlaubt es, auf einem relativ hohen Abstraktionslevel zu programmieren und macht es so erleichtert den Umgang mit komplexen Systemen.
+
+Scala-Programme kompilieren zu Java-Bytecode und laufen auf der JVM\footnote{
+	\textit{Java Virtual Machine}}. 
+Ihre Performance ist mit der von Java-Programmen vergleichbar. Scala-Code kann Java-Code aufrufen. Dadurch hat der Scala-Programmierer\footnote{
+	GENDERKLAUSEL: der Einfachheit halber wird im Text die männliche Form verwendet; natürlich ist auch die Programmiererin gemeint.} 
+automatisch auch alle Libraries zur Verfügung. Scala-Code kann auch von Java-Code aufgerufen werden, aber hier sind manchmal einige Feinheiten zu beachten.\cite[S. 13 ff.]{odersky2008.PIS}
+
+Der Einstieg in die Sprache Scala ist relativ einfach. Durch die Mächtigkeit der Sprachmittel und die Vielzahl der sich daraus ergebenden Möglichkeiten ist für eine tieferes Verständnis allerdings ein hoher Lernaufwand nötig.
+
+%(>>Wurzeln: Syntax ähnlich Java, ML)
+
+
+\subsection{Objektorientierung}
+
+Scala ist eine rein objektorientierte Sprache: Jeder Wert ist ein Objekt. Das schließt auch numerische Werte und Funktionen ein, primitive Typen wie in Java existieren nicht. Doch die Objektorientierung geht sogar noch weiter: In Scala ist jede Operation ein Methodenaufruf. So ist \texttt{1 + 2} der Aufruf der Methode \texttt{+} an einer Instanz der Klasse \texttt{Int} und könnte auch als \texttt{1.+(2)} ausgedrückt werden. Konsequenterweise sind auch statische Methoden unbekannt. Stattdessen werden mit dem Schlüsselwort \texttt{object} Singleton-Objekte definiert, die Methoden und Werte aufnehmen können, welche nicht Attribute der Instanz einer Klasse sind. Diese können entweder alleinstehend sein oder als sogenanntes Begleitobjekt (\textit{companion object}) einer gleichnamigen Klasse auftreten.
+
+Benutzerdefinierte Typen lassen sich mithilfe von Klassen und \textit{Traits} definieren. Traits sind den Interfaces in Java ähnlich, sie können allerdings Implementierungen von Methoden und sogar Felder enthalten. Außerdem können Traits mehrfach beerbt werden (man spricht hierbei auch von \textit{mixin class composition}).
+
+Die Modularisierung von Programmen funktioniert grundsätzlich ähnlich wie in Java, allerdings stellt Scala flexiblere und generischere Mittel zur Verfügung. Importe können grundstäzlich überall platziert werden. Dabei können neben Paketen und Paket-Membern auch Objekte importiert werden. Member können auch unter anderem Namen importiert werden, sei es um Namenskonflikte zu vermeiden oder um häufig verwendete Namen abzukürzen.
+Pakete können, anders als in Java, beliebig verschachtelt werden. Die Zugriffsmodifizierer werden konsistenter und granularer als in Java gehandhabt. Beginnt etwa die Deklaration einer Methode mit \texttt{private[this]}, so darf nur durch das Objekt selbst auf diese Methode zugegriffen werden.\cite[S. 9 f., S. 233 ff.]{odersky2008.PIS}\cite{scala-lang.ATS}
+
+\subsection{Funktionale Programmierung}
+
+%funktional (aber auch imperativ)
+
+%Scala unterstützt funktionale Programmierung.
+Scala ist eine vollständig funktionale Sprache.\footnote{
+	Funktionale Programmierung basiert auf dem in den 1930er Jahren von Alonzo Church entwickelten Lambda-Kalkül. Dessen zentrale Idee besteht darin, dass Funktionen anonym definiert werden. Das Lambda-Kalkül ist Turing-vollständig, und somit gleich mächtig wie imperative Sprachen. Jedes imperative Programmierkonstrukt lässt sich demnach auch funktional ausdrücken.}
+Funktionen sind in Scala \textit{first-class values}, das heißt sie haben denselben Status wie alle anderen Daten. Sie können einer anderen Funktion als Parameter übergeben werden oder von einer anderen Funktion zurückgegeben werden. Diese "`andere"' Funktion bezeichnet man als Funktion höherer Ordnung. Funktionen können ineinander verschachtelt werden und anonym als \textit{Funktionsliterale} (oft auch Lambda-Funktionen genannt) verwendet werden.
+
+Funktionen bilden Eingabewerte auf Ausgabewerte ab, ohne dabei den Zustand der Eingabewerte zu verändern. Man sagt: Sie sind frei von Nebenwirkungen (\textit{side effects}). Zusätzlich sind Funktionen referentiell transparent, das heißt sie liefern für gleiche Argumente immer das gleiche Ergebnis. Für jeden Eingabewert kann der Funktionsaufruf durch sein Resultat ersetzt werden, ohne dass sich dadurch die Semantik ändert. Durch diese Eigenschaften wird die funktionale Programmierung zunehmend attraktiv für den Einsatz in nebenläufigen Programmen. Einfach ausgedrückt: Werte die sich nie ändern müssen auch nicht synchronisiert werden.
+
+Darüberhinaus kennt Scala \textit{Closures}, \textit{Currying} und \textit{List comprehensions}\footnote{
+	in Scala: \textit{Sequence comprehensions}
+}.
+
+Scala unterstützt zwar die nebenwirkungsfreie funktionale Programmierung mit unveränderlichen (\texttt{immutable}) Daten, lässt einem aber die Wahl, gegebenenfalls im imperativen Stil zu programmieren.\cite[S. 6 ff.]{piepmeyer2010.GFP}\cite[S. 10 ff.]{odersky2008.PIS}
+
+\subsection{Einheitliches statisches Typsystem}
+
+Scala verfügt über ein ausdrucksstarkes einheitlich Typsystem mit einer gemeinsamen Superklasse \texttt{Any} von der jede Klasse erbt. \texttt{Any} hat exakt zwei direkte Subklassen: \texttt{AnyVal} und \texttt{AnyRef}. 
+
+Von \texttt{AnyVal} erben die neun Scala-eigene Werteklassen: \texttt{Byte}, \texttt{Short}, \texttt{Char}, \texttt{Int}, \texttt{Long}, \texttt{Float}, \texttt{Double} und \texttt{Boolean}, die den primitiven Typen in Java entsprechen\footnote{
+	sie werden sogar zur Laufzeit durch primitive Java-Typen ersetzt}
+und \texttt{Unit}, das etwa \texttt{void} in Java entspricht. \texttt{AnyRef}, die andere Subklasse von \texttt{Any}, ist die Basisklasse für alle Referenzklassen. Auf der Java-Plattform ist \texttt{AnyRef} nur ein Alias für die Klasse \texttt{java.lang.Object}. 
+
+Außerdem existieren noch zwei spezielle Klassen: \texttt{Null} und \texttt{Nothing}. \texttt{Nothing} ist eine gemeinsame Subklasse jeder anderen Klasse. Dieser Typ kann keine Werte enthalten, wird aber benötigt um zum Beispiel den Typ der leeren Liste zu definieren: \texttt{List[Nothing]}. Die Klasse \texttt{Null} enthält \texttt{null} als einzigen Wert und ist der Subtyp aller Rerenzklassen, also aller Klassen, die von \texttt{AnyRef} erben.
+
+Scala ist statisch typisiert, das bedeutet es findet eine Typprüfung zur Compile-Zeit statt. Daraus leiten sich sich verschiedene entscheidende vorteilhafte Eigenschaften ab. Ein Typ ist nichts anderes als die Festlegung des Wertebereichs und der möglichen Operationen für ein Objekt. Ist der Typ eines Objekts bekannt, so werden an ihm beispielsweise nie Methoden aufgerufen oder auf Attribute zugegriffen werden können, die er nicht besitzt. Solche Programmierfehler würde der Compiler melden und das Programm einfach nicht übersetzen. Mit der statischen Typprüfung sind demnach echte Garantien verbunden, die bestimmte Laufzeitfehler sicher ausschliessen, und zwar sicherer als jeder Unit-Test.
+
+Diese Typsicherheit bedeutet auch eine größere Sicherheit beim Refactoring und eine deutlich stärkere Unterstützung durch IDEs: beim Refactoring, bei der komfortablen Quellcodenavigation (wie etwa das Springen zur Definition eines Werts) und durch typbasierte automatische Code-Vervollständigung. Nicht zuletzt ist Code automatisch besser dokumentiert, wenn die Typen der Attribute, Parameter und Funktionsrückgabewerte bekannt sind.
+
+Trotz strenger Typisierung erlaubt Scala einen flexiblen Umgang mit seinen Typen. Durch ein System der automatischen Typableitung (\textit{Typinferenz}) werden redundante Typangaben vermieden und häufig kommen Deklarationen sogar ganz ohne explizite Typangaben aus. Der eingebaute Mechanismus des \textit{Pattern Matching}\footnote{
+	raffinierte Form Version einer switch-Anweisung anhand der Struktur oder dem Typ eines Objekts}
+erlaubt einen sehr flexiblen Umgang mit streng getypten Werten.
+
+Außerdem erlaubt Scala generische Klassen, innere Klassen, abstrakte Typen als Member, zusammengesetzte Typen (\textit{compound types}) und implizite Parameter.\cite[S. 16 ff., S. 205 ff.]{odersky2008.PIS}\cite[S. 113 ff.]{piepmeyer2010.GFP}\cite{scala-lang2011.CSS}
+
+\subsection{Erweiterbarkeit}
+
+Scala trägt die Erweiterbarkeit im Namen ("`scalable language"').
+%"eine Sprache die mitwächst" ("a language that grows on you")
+Die Sprache hat einen relativ kompakten Kern und liefert einen großen Umfang an Funktionalität in Form einer Standardbibliothek. Diese enthält unter anderem ein äußerst unfangreiches Collections-Framework, eine Mathematik-Bibliothek, Bibliotheken für reguläre Ausdrücke, zur XML-Manipulation, zur nebenläufigen Programmierung mit Futures und Promises und eine Aktoren-Bibliothek, welche Nebenläufigkeit durch Nachrichtenaustausch realisiert.\footnote{Einen guten Überblick über die Standardbibliothek bietet die API-Dokumentation: \url{http://www.scala-lang.org/api/current/\#package}}
+
+Die Sprache stellt aber auch mächtige Mittel zur Verfügung, um flexible Libraries und DSL\footnote{\textit{domain-specific languages}}s zu entwickeln. Zum Beispiel kann die Vererbung durch die Kombination beliebig vieler Traits sehr flexibel gehandhabt werden. Es ist ferner möglich, implizite Konvertierungen zu definieren. Die Infix- und Postfix-Notation in Verbindung mit der erlaubten Verwendung von Sonderzeichen für Methodennamen erlaubt es, eigene Operatoren zu schreiben (\texttt{1 + 2} ist die Infix-Notation für \texttt{1.+(2)} ). Es ist sogar möglich eigene Kontrollstrukturen zu erzeugen, indem man Methoden mit Operationen parametrisiert\footnote{
+	durch \textit{by-name evaluation}}.\cite[S. 4 ff.]{odersky2008.PIS}
+
+\subsection{Tools und Ökosystem}
+
+Scala wird mit einem sehr nützlichen interaktiven Kommandozeilen-Interpreter ausgeliefert (auch REPL genannt, kurz für \textit{read-eval-print loop}).
+
+Zur IDE-Integration existieren Plugins für Eclipse\footnote{
+	es existiert auch eine komplette Eclipse-basierte Scala IDE}, 
+IntelliJ IDEA und NetBeans.
+
+Für Tests eignet sich ScalaTest, das viele unterschiedliche Teststile unterstützt. Auch die in der Java-Welt etablierten Frameworks JUnit und TestNG können verwendet werden.
+
+Mit \textit{sbt} existiert ein Buildtool, das Scala-Projekte der De-facto-Standard ist. Aber auch mit Ant und Maven sind Builds möglich.
+
+Auf der Scala-Website finden sich neben der API-Dokumentation auch offizielle Tutorials und ein Style Guide.\footnote{\url{http://docs.scala-lang.org/}}
+
+
+
+\section{JavaScript (1.5)}
+
+1995 von Brendan Eich für Netscape entwickelt (innerhalb von 10 Tagen)
+Sprachstandard ECMAScript spezifiziert von der Ecma International in ECMA-262, üblicherweise seit 1996 entwickelt, erste Version 1997
+
+primärer Zweck: aus statischen Webseiten interaktive Webanwendungen machen \cite[S. 361]{flanagan2011.JDG}
+
+aktuell von allen wichtigen Browsern unterstützter Standard: \url{http://www.ecma-international.org/ecma-262/5.1/}
+
+Wurzeln
+warum JS?
+
+
+\subsection{Objektorientierung}
+
+... aber mit Prototypen
+var foo = {}
+Objekte haben properties; diese können primitive Werte, Referenzen auf andere Objekte, oder Methoden sein können
+seit ES5 getter und setter möglich, aber keine echt privaten Member, kann nur umständlich mithilfe von Closures emuliert werden (siehe \cite[S. 226]{flanagan2011.JDG})
+
+- Syntax: in großen Teilen ähnlich wie Java
+	"`JavaScript borrows most of its syntax from Java, but also inherits from Awk and Perl, with some indirect influence from Self in its object prototype system."'    Brendan Eich, C. Rand Mckinney: JavaScript Language Specification
+	Preliminary Draft, 1996, Kapitel 1  -->  \url{http://hepunx.rl.ac.uk/~adye/jsspec11/titlepg2.htm}
+- Semantik unterscheidet sich stark von Java
+
+- Datentypen
+	- primitive Datentypen:
+		- Boolean
+		- Number - keine Unterscheidung zwischen integer und float, alle als float repräsentiert
+		- String - Strings, immutable
+		- Erzeugung als Literal
+		- es existieren Wrapper, Literale werden bei Bedarf automatisch konvertiert
+		- spezielle Werte:
+			- undefined: undefined - Variable ohne Wert
+			- null: object - nichts
+	- Array - Arrays (geordnete Sammlungen); [] // new Array()
+	- Date - Datenrepräsentation, new Date()
+	- Error - Fehler
+	- Math - "statische" Konstanten und Funktionen
+	- Regexp - Regex
+	- function - Instanzen des Function-Konstruktors, first-class citizen
+	- Object
+		- Collection/Container von benannten Werten
+		- intern Hashtabellen
+		- können referenziert werden mit o.foo oder o.["foo"]
+		- erzeugt mit
+			- Literalen: {}
+			- new mit Aufruf der Konstruktor-function
+			- Object.create() (ES5)
+
+
+\subsection{Funktionale Programmierung}
+
+%Scala ist auch eine funktionale Sprache, in dem Sinne, dass funktionale Programmierung wird.
+
+Funktionen sind \textit{first-class citizens}:
+	- können als Parameter übergeben oder der Rückgabewert einer Funktion sein -> Funktionen höherer Ordnung möglich
+
+Closures
+
+
+\subsection{dynamisch, schwach, implizit typisiert}
+
+Objekte können zur Laufzeit grundlegend verändert werden (Methoden hinzugefügt, Methoden zu Attributen gemacht oder durch andere Methoden ersetzt werden usw.)
+
+viele implizite Konvertierungen beim Vergleich mit == (daher zusätzlich strikterer Vergleichsoperator ===)
+
+
+>>unstrukturiert
+
+JavaScript gibt keine Struktur vor
+
+
+
+
+\subsection{Besonderheiten / Probleme - TODO mit Problemen zusammenfassen}
+
+>>function scope, trotz blockbasierter Syntax
+Bsp.
+var i = 123
+for (var i = 0; i < 10; i++) { /**/ }
+console.log(i) // --> 123
+
+>>Prototyp-basiert
+- statt Klassen
+-> ein bereits existierendes Objekt wird geklont
+- Programmierern die von anderen Sprachen kommen nicht vertraut
+- Klassen möglich, mit Pattern; künftig mit ES6 mit Sprachmitteln
+
+>>Arrays (Collections)
+Objekt als assoziatives Array / Hashmap / Hashtabelle / Dictionary
+- können als foo["mykey"] oder foo.mykey adressiert werden
+Array einzige "Collection"
+
+Set, Map, auch WeakSet und WeakMap (mit weak references die von der Garbage Collection aufgeräumt werden, gegen Memory Leaks) -> ES6, noch nicht von allen Browsern unterstützt, aber es existieren sog. Polyfills (https://en.wikipedia.org/wiki/Polyfill)
+
+>> keine Konstanten (aber mit ES6)
+
+>>Probleme mit uneindeutigem/unintuitivem this
+- this referenziert das aufrufenden Objekt, bei Closures problematisch; behelfsweise kann this in der Closure in einer Variablen (häufig self genannt) gemerkt und diese übergeben werden
+
+>>Kapselung, Modularisierung
+- kein Zugriffsmodifizierer/Schlüsselwort private
+-> behelfsweise kann Privatheit emuliert werden, aber sperrig
+	- mithilfe von Closures private Instanzvariablen (innerhalb der Konstruktorfunktion definieren)
+	- mithilfe anonymer Funktionen (function-Scope)
+- keine Pakete oder Namespaces als Teil der Sprache
+-> kann durch Patterns geschaffen werden
+-> Libraries wie RequireJS oder verschiedene Frameworks bieten Mechanismen zu Modularisierung
+
+- Traits und Mixins möglich, aber nicht als Teil der Sprache (\url{https://en.wikipedia.org/wiki/JavaScript#Implicit_and_explicit_delegation}
+
+
+
+
+>> Standard
+- neuer Standard ECMAScript 6 im Juni 2015 veröffentlicht
+	- Konstanten mit const
+	- block-scoped variablen (mit let statt var) und functions
+	- sog. arrow functions (dann möglich: [1, 2, 3].map(x => x * x) statt bisher [1, 2, 3].map(function(x) { return x * x; }) )
+	- lexikalisches this - intuitivere Behandlung des Objektkontextes
+	- Defaultwerte für Parameter
+	- variadische Funktionen mit Parameter
+	- String Interpolation (\texttt{var person = \{ name: "Foo" \}; var message = `Hello \$\{person.name\}!`})
+	- Destructuring Assignment, mit dem Arrays oder Objekte bei der Zuweisung in ihre Bestandteile zerlegt werden können
+	- Klassen mit class, constructor, getter und setter, Vererbung mit extends, Zugriff auf Superklassen mit super
+	- Iterator, der mit einem For-Of-Operator verwendet werden kann
+	- komfortable Methoden für den Umgang mit Strings und Zahlen (Number.isNan(42), Number.isFinite(42) )
+	- Promises zum Umgang mit Asynchronität
+	-->  \url{es6-features.org}
+	-->  \url{http://www.ecma-international.org/publications/standards/Ecma-262.htm}
+- Firefox und Chrome unterstützen schon viele Features, aber meistens noch als experimentell gekennzeichnet, noch nur teilweise schon in
+in allen aktuell Browsern voll unterstützt: ECMAScript 5 (von 2009)
+
+
+
+Eigenschaften (nach Schirmacher-Folie, S. 5: %D:\UNI\2014-SoSe\CG2\VL)
+	funktional
+	objektorientiert
+	dynamisch
+	unstrukturiert
+	Typisierung (vgl. %http://de.wikipedia.org/wiki/Typisierung_(Informatik))
+	Arrays
+	Probleme mit uneindeutigem this
+	Kapselung - mithilfe anonymer Funktionen
+	
+                             
+>>Probleme von JavaScript
+- häufig unerwartetes Verhalten / nicht erwartungskonform  -->  Bsp.e
+- fehlende Typsicherheit  -->  Bsp.e
+- function scope, nicht block scope
+- Vererbung mit Prototypen; kein Standard zur Modellierung von Klassen, viele verschiedene Möglichkeiten  ->  Chaos, Hürde für Programmierer die von anderen Sprachen wie Java oder C++ kommen
+-->  Doeraene
+- ...
+-->  BA Wiederhold
+- funktionale Methoden: map, filter reduce, forEach -- Support, Performance
+- im Browser: kann deaktiviert sein, aber verschwindender Prozentsatz der Nutzer tut dies  -->  \url{https://developer.yahoo.com/blogs/ydn/many-users-javascript-disabled-14121.html}
+	- hier ist es sinnvoll, zu unterscheiden zwischen Web-Dokumenten, die auch ohne JavaScript zugänglich sein sollten, und Web-Anwendungen, von denen man das nicht erwarten kann, schließlich handelt es sich bei diesen um JavaScript-Programme (mit dem Browser als Plattform/OS)
+	\cite[S.311]{flanagan2011.JDG}
+
+
+\subsection{Tools und Ökosystem}
+
+Plattform:
+- Browser - JS-Engine, meist mit JIT-Compiler:
+	- Apple (Safari) - Nitro
+	- Google (Chrome) - V8
+	- Mozilla (Firefox) - SpiderMonkey
+	- Opera (Opera) - V8
+	- PhantomJS; sog. headless browser (zum Testen)
+- serverseitige Laufzeitumgebung
+	- Node.js - V8
+- Problem: Inkompatibilitäten
+
+IDEs: ???
+
+
+
+
+-->  \cite{flanagan2011.JDG}
+-->  \cite{crockford2008.JSG}
+Brendan Eich: Zitat  -->  \url{https://www.jwz.org/blog/2010/10/every-day-i-learn-something-new-and-stupid/#comment-1021}
+-->  \url{https://en.wikipedia.org/wiki/ECMAScript}
+
+
+\section{HTML(0.5)}
+
+%-->  https://de.wikipedia.org/wiki/Hypertext_Markup_Language
+%-->  https://en.wikipedia.org/wiki/HTML
+%-->  https://de.wikipedia.org/wiki/HTML5
+%-->  https://en.wikipedia.org/wiki/HTML5
+%-->  http://www.w3.org/2014/10/html5-rec.html.en
+
+>>Was ist HTML?
+	- Kernsprache des Webs (bei erster Nennung: World Wide Web)
+	- HTML (Hypertext Markup Language)
+	- Auszeichnungssprache zur Erstellung von Webseiten
+	- Browser können sie lesen und darstellen
+	- strukturiert durch verschachtelte HTML-Elemente, repräsentiert durch Tags, geschrieben mit spitzen Klammern
+		- können Attribute enthalten, Key-Value-Paare (= Schlüssel-Wert-Paare)
+		- z.B. <p color="blue">ein Absatz</p>
+		- wichtig:
+			- id - eindeutige ID
+			- class - zur Klassifizierung von Elementes; aus semantischen Gründen oder zu Präsentationszwecken (gleiche Klasse -> gleiche Darstellungsregeln); ein Element kann mehreren Klassen zugeordnet werden
+			- style - Präsentationseigenschaften (-> CSS)
+			(- title - wird von den meisten Browsern als sog. Tooltip angezeigt)
+	- Grundstruktur
+		- Deklaration des Dokumententyps (DTD)
+		- head = Kopf - nicht angezeigte Infos
+		- body = Körper - Infos zur Anzeige; in der Praxis aber auch unsichtbare Infos
+	
+>>seit wann?
+	- seit 1993
+>>von wem?
+	- entwickelt vom W3C und WHATWG
+(>>Eigenschaften)
+
+(>>einfaches Beispiel-HTML)
+
+>>aktuell HTML5
+	- aktuelle 5. Fassung von HTML  -->  \url{http://www.w3.org/TR/html5/}
+	- Oktober 2014 vom W3C unter dem Namen "`W3C Recommendation"'  -->  \url{https://www.w3.org/blog/news/archives/4167}
+	- "`HTML \& friends"' - zusätzliche JavaScript-APIs, meistens mitgemeint, wenn von HTML5 die Rede ist
+		- semantische Tags (section, article, nav, head, footer, aside)
+		- Connectivity: WebSockets
+		- Storage: File API, Web Storage API, IndexedDB, 
+		- Multimedia: audio, video (leider kein Standard für verlässlich unterstützte Multimediaformate), Camera API
+		- Grafik: Canvas, WebGL, SVG
+		- Performance und Integration: XMLHttpRequest, Drag and drop, Web Workers
+	-->  \url{https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5}
+	- leider keine offizielle, leicht navigierbare HTML5-API-Docs, guter Überblick: \url{http://html5index.org/}
+
+- JS und HTML
+	- Einbindung:
+		- inline, innerhalb der Tags <script> </script>
+		- (normalerweise am besten:) in einer separaten/externen Datei, z.B.: <script src="../js/greeting.js"></script>
+		- in einem HTML-Eventhandler-Attribut eines HTML-Eements, z.B.: <button onclick="alert('hello');">
+		- in einer URL, mithilfe des javascript:-Protokolls, z.B.: <a href="javascript:alert('hello');">greeting</a>
+
+- DOM  --> \url{https://en.wikipedia.org/wiki/Document_Object_Model}
+	- durch W3C standardisierte Schnittstellenspezifikation ...
+	- Standard seit 1998
+	- aktuelle Version: DOM Level 3 (von 2004) von allen gängigen Browsern unterstützt
+	- Baumstruktur für Dokumente, mit Knoten für die einzelnen HTML-ELemente; der Wurzelknoten ist das document-Objekt
+	- wenn ein Browser eine Website rendert:
+		- HTML-Dokument wird in lokalen Speicher geladen
+		- geparset
+		- auf dem Bildschirm angezeigt
+		- dabei wird intern ein Modell ähnlich dem DOM verwendet
+		- ein DOM wird erzeugt
+	- JavaScript kann:
+		- den DOM manipulieren
+		- durch den DOM navigieren
+		- alle Elemente und deren Attribute ändern
+		- Elemente erzeugen, hizufügen oder entfernen und auf Ereignisse der im DOM repräsentierten Website reagieren
+
+
+
+\section{CSS (0.5)}
+
+>>seit wann?
+>>von wem?
+  seit 1996 vom W3C standardisiert
+  mit CSS3 nicht eine Spezifikation, sondern aufgebrochen in verschiedene Module mit unterschiedlicher Stabilität und Reifegrad (vier davon haben den höchsten Status "`W3C recommendation"')
+>>Was ist CSS?
+>>Eigenschaften
+	- (Cascading Style Sheets)
+	- Standard zur visuellen Darstellung von HTML-Dokumenten / von Webseiten
+	- Designer können präzise Schriftarten, Farben, Ränder, Einrückungen, Rahmen und Positionen von Elementen spezifizieren
+	- kann gescripted werden
+	- CSS definiert style properties für Fonts, Farben, Anstände usw.; diese properties können festgelegt werden um die Darstellung zur verändern
+	- zwei Möglichkeiten, CSS-Eigenschaften festzulegen:
+		- inline: style-Attribut eines HTML-Elements (<p style="color: red">foo</p>
+		- prinzipiell besser: in einem separaten Stylesheet
+			- Mengen von style properties können Mengen von HTML-Elementen zugeordnet werden ("`A stylesheet associates set sof style properties with sets of HTML elements that are described using selectors."')
+			- Selektoren
+				\#foo // ein Element mit id="foo"
+				div  // alle <div>-Elemente
+				.bar // alle Elemente, deren class-Attribut "bar" enthält
+				div.bar, \#foo>span // alle <div>-Elemente deren class-Attribut "bar" enthält und alle Kind-<span>-Elemente des Elements mit id="foo"
+				* // alle Elemente
+			- Stylesheets können in einem <style>-Element im <head> eines HTML-Dokuments eingebunden werden
+			- besser ist es aber (warum?) ein Stylesheet in einem eigenen Dokument zu speichern und es durch ein <link> im <head> einzubinden (Bsp.?)
+	- Anwendung der Stilregeln in der Rangfolge (steigender Priorität):
+		- Standard des Browsers
+		- die Stylesheets die im Dokument referenziert/verwendet werden
+		- die style-Attribute individueller HTML-Elemente
+		- generell "`gewinnt"' der spezifischere Selektor und überschreibt Stildefinitionen für gleichlautende Eigenschaften, z.B. Stylesheet: div { color: red; background: green; }, HTML: <div style="color: blue;">foo</div>
+	-->  vgl. \cite[S. 413 ff.]{flanagan2011.JDG}
+	\url{https://en.wikipedia.org/wiki/Cascading_Style_Sheets}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+\chapter{Vorstellung von Scala.js}
+
+>> Was ist Scala.js?
+-->  Doeraene: SJS. What has it become, Slide 17
+-->  \url{https://jaxenter.com/interview-compiling-scala-to-javascript-with-scala-js-107247.html}
+
+- Scala-Dialekt der nach JavaScript kompiliert ("`a dialect of Scala compiling to JavaScript"' \cite[S. 1]{doeraene2013.TDI})
+
+
+
+>> andere Sprachen die nach JavaScript kompilieren, davon statisch getypt  -->  \url{https://github.com/jashkenas/coffeescript/wiki/list-of-languages-that-compile-to-JS}
+-> Doeraene-Paper
+-> \url{https://en.wikipedia.org/wiki/JavaScript#Use_as_an_intermediate_language}
+
+JavaScript wird schon bezeichnet als Assembler für das Internet ("`assembly language for the web"') bzw. Virtual Machine des Internets ("`VM of the web"', Douglas Crockford)
+  -->  \url{http://www.hanselman.com/blog/JavaScriptIsAssemblyLanguageForTheWebSematicMarkupIsDeadCleanVsMachinecodedHTML.aspx}
+  --> \url{http://www.hanselman.com/blog/JavaScriptIsAssemblyLanguageForTheWebPart2MadnessOrJustInsanity.aspx}
+
+
+
+\url{https://en.wikipedia.org/wiki/List_of_JavaScript_libraries}
+
+\url{https://en.wikipedia.org/wiki/Comparison_of_JavaScript_frameworks}
+
+
+- Geschichte
+-->  Doeraene: SJS. What has it become, Slide 6 ff.
+
+
+-------
+- JavaScript-Interoperabilität  -->  http://www.scala-js.org/doc/js-interoperability.html
+
+Interop
+- abstrakte Fassaden für JS-Code
+- undefined behoviour
+
+Type correspondences/non-correspondences
+...
+siehe auch -->  http://www.sebnozzi.com/229/pass-simple-values-js-functions/
+
+getypte Fassade vs. js.Dynamic
+- Vergleich
+- asInstanceOf[T]
+  - Typsicherheit
+  - Performance: Compiler-Optimizer kann optimieren
+
+Export nach JS mit Annotationen
+- @JSExport
+- toString standardmäßig exportiert
+-------
+
+\section{Tools, IDE-Support, Öko-System}
+
+\subsection{Tools}
+
+\subsection{IDE-Support}
+
+\subsection{Debugging}
+
+\subsection{Dokumentation}
+
+\subsection{verwendete/ausprobierte/untersuchte Libraries}
+
+\subsubsection{Scala-js-dom}
+
+http://scala-js.github.io/scala-js-dom/
+scalajs.dom.ext.Color
+
+
+
+- Unterschiede zu Scala  -->  http://www.scala-js.org/doc/semantics.html
+
+
+- verwendete Scala.js-Libraries
+
+ScalaTags
+=========
+
+Motivation
+%  -->  http://lihaoyi.github.io/scalatags/#WhyScalatags
+%  -->  http://lihaoyi.github.io/scalatags/#PriorWork
+
+
+
+mit \texttt{\`{}TypedTag[html.Element].render\`} wird eine DOM-Tree-Node erzeugt
+  val foo = div("`foo"').render
+  assert(foo.textContent == "foo")
+  foo.text
+  assert(foo.textContent == "foo")
+%  --> http://lihaoyi.github.io/scalatags/#UsingtheDOM
+
+erlaubt direkten Zugriff auf referenzierte Elemente ohne Suche im DOM mit DOM-Selektoren (mit document.getElementById(...) bzw. jQuery)
+%  -->  http://lihaoyi.github.io/scalatags/#UseCases
+
+ScalaTags: importe / Bundles - schwer zu verstehen, am einfachsten JsDom.all\_, aber dann clutter im Namespace
+
+CSS/Style - wenn nötig können Attribute und Styles in Variablen gemerkt werden; auf diese Weise können auch eigene Attribute festgelegt werden, die Scalatags nicht kennt:
+%  val dataAppKey = "data-app-key".attr
+%  val customBackgroundStyle = "background-color".style
+%  div(
+%    dataAppKey:="YOUR_APP_KEY",
+%    customBackgroundStyle:="red"
+%  )
+
+(CSS mit Vererbung
+%  -->  http://lihaoyi.github.io/scalatags/#CSSStylesheets)
+
+Vertiefung
+%  -->  http://lihaoyi.github.io/scalatags/#Internals
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+\chapter{Methodik}
+
+\section{Kriterien der Evaluierung}
+
+%\subsection{anwenderbezogen}
+%
+%Anforderungen an interaktive Webseiten
+%- schnell laden
+%- Interaktionen sollen sich schnell anfühlen
+%- sollen regelmäßig weiterentwickelt werden
+%
+%\subsubsection{Korrektheit}
+%\subsubsection{Performance}
+%\paragraph{Seitenladezeit}
+%\paragraph{Speicherbedarf/"`Page weight"'}
+%\paragraph{Ausführungszeit von Funktionen}
+%\paragraph{(Speicherbelastung)}
+%\paragraph{(CPU-Belastung)}
+%
+%\subsection{entwicklerbezogen}
+%
+%TODO Antworten ins Kapitel "`Auswertung ..."'
+%
+%Anforderungen an Entwicklungswerkzeuge
+%- siehe \url{http://www.scala-js.org/doc/cookbook/}
+%- ...
+%- Kompatibilität:
+%  - siehe Doeraene: SJS. What has it become, 19:00  -->  \url{https://www.parleys.com/tutorial/scala-js-what-has-become-how-used-wild}
+%Dokumentation:
+%	- offizielle Referenzseite
+%	  - API-Doku - vollständig (?) aber knapp
+%	  - Tutorial
+%	- Hands-on Scala
+%???:
+%	- Scala-Js-Fiddle  -->  http://www.scala-js-fiddle.com/
+%Tests:
+%	- utest - für JVM und JS
+%
+%\subsection{Code-Qualität}
+%\paragraph{Typsicherheit}
+%\paragraph{LOC (Lines of Code)}
+%\paragraph{Komplexität}
+%\paragraph{Lesbarkeit/Verständlichkeit}
+%\paragraph{"`Debugbarkeit"'/Wartbarkeit, Erweiterbarkeit, Wiederverwendbarkeit}
+%
+%\subsection{JavaScript-Interoperabilität}
+%
+%\subsection{Konfiguarationsaufwand}
+%
+%\subsection{alles umsetzbar? Grenzen? alle Anwendungsfälle abgedeckt?}
+%
+%\subsection{Dokumentation}
+%
+%\subsection{Unterstützung durch Tools, Entwicklungsgeschwindigkeit}
+%
+%\subsection{Support/Fachforen etc.}
+%
+%
+%\section{Gewählte Testverfahren und -techniken}
+%
+%\subsection{m01 - Vergleichs-Implementierung in reinem JavaScript/HTML}
+%\subsection{m02 - HTML-Validierung}
+%\subsection{m03 - Unit-Tests mit Jasmine (für Vergleich Scala.js/JavaScript)}
+%\subsection{m04 - Unit-Tests mit utest}
+%\subsection{m05 - Seitenladezeit messen mit Webpagetest und YSlow}
+%\subsection{m06 - Profiling mit Chrome Developer Tools}
+%\subsection{m07 - Benchmarks mit JSLitmus und Benchmark.js}
+%\subsection{m08 - Halstead-Metrik}
+%\subsection{m09 - Anzahl zusätzlicher Library-Dependencies}
+%\subsection{m10 - empirische/experimentell}
+
+\section{Vorgehensweise bei der Untersuchung}
+
+%Matrix - welche Methode für welche Kriterien
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+\chapter{Projekt-Setup}
+
+TODO (Abweichungen ggf. separat bei der jeweiligen Anwendung)
+
+- Beschreibung geht von Windows 8.1 aus, sollte aber für Linux oder Mac analog funktionieren
+- Konsole: git bash bzw. cygwin verwendet (als bash-Ersatz für Win), cmd-Shell sollte auch gehen; oder IntelliJ-Terminal
+- Scala und Java als Voraussetzung (Umgebungsvariablen für Windows richtig gesetzt? scala -version, bzw. java -version zum prüfen)
+- ebenso ein aktueller Browser und Internetverbindung
+- Scala.js holen
+- npm für sourcemaps
+- Sourcen von Datenträger oder github(?) (-> git client)
+- Kommandos zum kompilieren
+- Readme für jedes Projekt
+
+\section{sbt}
+
+Build-Werkzeug für Scala-Projekte
+noch relativ neu
+
+- Konvention über Konfiguration wie Maven, d. h. nur Abweichungen von der Konvention müssen definiert werden
+- Verzeichnisstruktur entspricht standardmäßig der von Maven (nämlich), muss aber selbst erstellt werden
+
+- einige wichtige Kommandos
+	compile
+	test
+	run
+	package
+	clean
+
+- unterstützt die Kompilierung von Scala-Code
+- kann als Testrunner für Scala-Test-Werkzeuge verwendet werden
+- Build-Definition
+	- in einer scalabasierten DSL (statt XML-basiert wie bei Maven)
+	- größere Konfigurationen können bei Bedarf in Form von eines Scala-Programms geschrieben werden (sbt wird dabie als Library verwendet)
+- Dependency-Management mit Apache Ivy, so dass Libraries aus öffentlichen Artefakt-Repositories verwendet werden können (löst Abhängigkeiten auf und lädt die benötigten Ressourcen aus dem Internet herunter), Default von Maven Central, zusätzliche Repositories können per Konfiguration zugänglich gemacht werden
+	- Ivy legt ein lokales Repository im Verzeichnis .ivy2 unter dem HOME-Verzeichnis des Benutzers an (bei Windows: C:\\Users\\Bob); hier werden Dateien aus Remote Repositories zwischengespeichert; lokal publizierte Artefakte landen ebenfalls hier
+- kontinuierliche Builds und Tests (mit \texttt{\~{}} als Präfix) - unmittelbares Feedback auf Änderungen, sehr nützlich
+- unterstützt gemischte Java/Scala-Projekte
+- interaktive Shell/Kommandozeile, unterstütz Tab-completing args to commands
+- inkrementelle Kompilation
+
+- sbt kann durch Plugins erweitert werden (z.B. Plugins, die automatisch Projekte für IDEs wie Eclipse oder IntelliJ erzeugen), dazu müssen Plugins in der Build-Definition angegeben werden
+
+- Problematisch:
+	- leichter Einstieg, aber für umfangreichere Konfigurationen ist ein tiefes Verständnis nötig -> gute Doku
+	- Syntax
+	- relativ neu im Verlgeich zu (Ant oder Maven) -> kleines aber wachsendes Ökosystem von Plugins
+
+-->  \url{http://www.scala-sbt.org/}
+-->  \url{https://en.wikipedia.org/wiki/SBT_%28software%29}
+-->  \url{https://codeascraft.com/2014/09/30/building-a-better-build-our-transition-from-ant-to-sbt/}
+
+Bsp. für Dependencies (-->  Website Knabe)
+	libraryDependencies ++= Seq(
+       //vendor % artifact % version % scope
+       "junit" % "junit" % "4.8.1" % "test",
+       //vendor %% scalaVersionDependentArtifact % ownVersion % scope
+%       "org.scalatest" %% "scalatest" % "2.2.1" % "test"
+    )
+    "Dazu ist noch eine Erläuterung nötig. Da Scala agressiv weiterentwickelt wird, gibt es häufig inkompatible Versionsunterschiede zwischen einer Version x.y und x.(y+1), nicht aber zwischen x.y und x.y.z. Daher werden Scala-Libraries üblicherweise gegen eine bestimmte Scala-Version x.y kompiliert und es wird deren Nummer in den Artefaktnamen aufgenommen. All dies leistet der Operator \%\%. Der Operator \% nimmt hingegen den Artefaktnamen, so wie er im Buildfile angegeben ist. Er ist daher für die Benutzung von Java-Libraries meist der richtige."
+
+
+
+\section{Projekt anlegen}
+
+%-->  \url{http://www.scala-js.org/doc/tutorial.html}
+
+Ordnerstruktur anlegen wie folgt
+
+TODO: Ordner-Struktur
+
+leider nicht automatisch, es gibt (angeblich?) Plugins (???), eigenes Skript schreiben (-> Datenträger)
+
+
+Scala.js-sbt-Plugin hinzufügen
+
+Im Ordner \texttt{project} eine Datei \texttt{plugins.sbt} erzeugen:
+\lstinputlisting[language=Scala, caption={Eine minimale plugins.sbt.}]{listings/setup/minimal_plugins.sbt}
+
+Im Basisordner des Projekts eine Datei \texttt{build.sbt} zur Build-Definition erzeugen:
+\lstinputlisting[language=Scala, caption={Eine minimale build.sbt.}]{listings/setup/minimal_build.sbt}
+
+Hier wird das Plugin aktiviert
+Name und Versionsnummer für das Projekt festgelegt
+Scala-Version festlegen, muss mindestens 2.10.2 sein
+
+mit scalaJSStage in Global := FastOptStage
+
+\lstinputlisting[language=Scala, caption={Eine minimale build.properties.}]{listings/setup/minimal_build.properties}
+sbt-Version festlegen, muss mindestens 0.13.7 sein
+
+
+
+
+-- build.sbt - Dependencies --
+
+für JS-Libraries:
+SalaJSKeys.jsDependencies += "org.webjars" % "jquery" % "2.1.4" / "jquery.js"
+
+wenn es ein getyptes Interface gibt (wie für jQuery der Fall), dann genügt (webjars werden transitiv referenziert):
+libraryDependencies += "be.doeraene" %%% "scalajs-jquery" % "0.8.0"
+
+Einbindung in HTML mit einem script-Tag möglich durch:
+skip in packageJSDependencies := false
+FRAGE: ist das noch nötig, oder geschieht das schon automatisch?
+
+dann in der HTML:
+<script src="projectname-jsdeps.js"></script>
+
+
+\section{sbt-Konfiguration und "`Compilation und Optimization Pipeline"'}
+
+-- sbt-Kommandos --
+
+set scalaJSStage in Global := FastOptStage
+set scalaJSStage in Global := FullOptStage
+
+run
+test
+
+fastOptJS // = dev
+fullOptJS // = prod
+
+
+~run
+~test
+
+~fastOptJS
+~fullOptJS
+
+
+
+-- in der IDE --
+
+== in IntelliJ importieren (momentan komfortabler, sowohl Import als auch IDE-Support) ==
+
+- 1. IntelliJ > File > New > Project from Existing Sources...
+- 2. Ordner auswählen
+- 3. OK
+- 4. Import project from external model > SBT
+- 5. Next
+- 6. check: Download sources and docs - wenn versucht werden soll, die Quellen der Library-Dependencies herunterzuladen
+- 7. Finish
+
+== in Scala IDE importieren ==
+
+Plugin: sbteclipse\footnote{\url{https://github.com/typesafehub/sbteclipse}}
+
+in project/plugins.sbt hinzufügen:
+\begin{lstlisting}[language=Scala]
+addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "4.0.0")
+\end{lstlisting}
+
+wenn sbteclipse versuchen soll, die Quellen der Library-Dependencies herunterzuladen - in build.sbt hinzufügen:
+
+\begin{lstlisting}[language=Scala]
+EclipseKeys.withSource := true
+\end{lstlisting}
+
+
+
+- 1. run:
+  sbt eclipse
+- 2. Scala IDE > File > Import > Existing Projects into Workspace
+- 3. Ordner auswählen
+- 4. Finish
+
+Eclipse erzeugt standardmäßig einen Verzeichnis bin im Projektwurzelverzeichnis,
+
+
+
+
+
+\section{Konfiguration von Node.js und Karma}
+
+\section{Installation und Start von Anwendung und Tests}
+
+
+
+\chapter{Fallstudien (20)}
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+\section{hello-scalajs -- Minimalbeispiel (3)}
+s
+%TODO jeweils die folgenden \\sections:
+%
+%\section{Beschreibung und Anforderungen}
+%
+%\section{Implementierung}
+%
+%\section{angewendete Testmethoden und Testergebnisse}
+%
+%\section{Beurteilung hinsichtlich der Evaluierungskriterien}
+
+\subsection{was sollte untersucht werden?}
+\subsection{Beschreibung / Anforderungen an Beispielprogramm}
+\subsection{welche Kriterien lassen sich anwenden?}
+\subsection{welches Ergebnis?}
+\subsection{Schwierigkeiten}
+\subsection{Erfolge}
+\subsection{Bewertung: differenziert oder boolsch mit Begründung; Fazit aus Schwierigkeiten und Erfolgen}
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+\section{hello-scalajs2, hello-scalatags -- leicht erweiterte Minimalbeispiel (3)}
+
+\subsection{was sollte untersucht werden?}
+\subsection{Beschreibung / Anforderungen an Beispielprogramm}
+\subsection{welche Kriterien lassen sich anwenden?}
+\subsection{welches Ergebnis?}
+\subsection{Schwierigkeiten}
+\subsection{Erfolge}
+\subsection{Bewertung: differenziert oder boolsch mit Begründung; Fazit aus Schwierigkeiten und Erfolgen}
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+\section{scalajs-showcase - Canvas, umfangreichere Templates, Events (3)}
+
+\subsection{was sollte untersucht werden?}
+\subsection{Beschreibung / Anforderungen an Beispielprogramm}
+\subsection{welche Kriterien lassen sich anwenden?}
+\subsection{welches Ergebnis?}
+\subsection{Schwierigkeiten}
+\subsection{Erfolge}
+\subsection{Bewertung: differenziert oder boolsch mit Begründung; Fazit aus Schwierigkeiten und Erfolgen}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+\section{textanalyzer - ein umfangreicheres Beispiel (3)}
+
+\subsection{was sollte untersucht werden?}
+\subsection{Beschreibung / Anforderungen an Beispielprogramm}
+\subsection{welche Kriterien lassen sich anwenden?}
+\subsection{welches Ergebnis?}
+\subsection{Schwierigkeiten}
+\subsection{Erfolge}
+\subsection{Bewertung: differenziert oder boolsch mit Begründung; Fazit aus Schwierigkeiten und Erfolgen}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+\section{currency-converter - Ajax (3)}
+
+\subsection{was sollte untersucht werden?}
+\subsection{Beschreibung / Anforderungen an Beispielprogramm}
+\subsection{welche Kriterien lassen sich anwenden?}
+\subsection{welches Ergebnis?}
+\subsection{Schwierigkeiten}
+\subsection{Erfolge}
+\subsection{Bewertung: differenziert oder boolsch mit Begründung; Fazit aus Schwierigkeiten und Erfolgen}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+\section{js-interop -> playground(?) (3)}
+
+\subsection{was sollte untersucht werden?}
+\subsection{Beschreibung / Anforderungen an Beispielprogramm}
+\subsection{welche Kriterien lassen sich anwenden?}
+\subsection{welches Ergebnis?}
+\subsection{Schwierigkeiten}
+\subsection{Erfolge}
+\subsection{Bewertung: differenziert oder boolsch mit Begründung; Fazit aus Schwierigkeiten und Erfolgen}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+\section{crosscompiling-statistics-lib, js-port-of-statistics-lib, benchmarks (TODO) (3)}
+
+\subsection{was sollte untersucht werden?}
+\subsection{Beschreibung / Anforderungen an Beispielprogramm}
+\subsection{welche Kriterien lassen sich anwenden?}
+\subsection{welches Ergebnis?}
+\subsection{Schwierigkeiten}
+\subsection{Erfolge}
+\subsection{Bewertung: differenziert oder boolsch mit Begründung; Fazit aus Schwierigkeiten und Erfolgen}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+\section{clientserver - minimales Client/Server-Setup mit Routing (3)}
+
+\subsection{was sollte untersucht werden?}
+\subsection{Beschreibung / Anforderungen an Beispielprogramm}
+\subsection{welche Kriterien lassen sich anwenden?}
+\subsection{welches Ergebnis?}
+\subsection{Schwierigkeiten}
+\subsection{Erfolge}
+\subsection{Bewertung: differenziert oder boolsch mit Begründung; Fazit aus Schwierigkeiten und Erfolgen}
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+\chapter{Auswertung (speziell der "`weichen"' Kriterien)}
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+\chapter{Fazit}
+
+\section{Zusammenfassung der Ergebnisse}
+
+TODO - NACH FERTIGSTELLUNG DER ÜBRIGEN KAPITEL NEU SCHREIBEN!
+
+Die vorliegende Arbeit ...
+- Überblick über Entwicklung von Weboberflächen mit Scala.js
+- Eignung aus Anwendersicht ...
+- Eignung aus Entwicklersicht ...
+- Vorteile ...
+- Nachteile ...
+
+
+\section{Ausblick}
+
+TODO - NACH FERTIGSTELLUNG DER ÜBRIGEN KAPITEL NEU SCHREIBEN!
+
+Weiterentwicklung
+
+	SJS-Klassen von JS-Klassen erben lassen  -->  \url{https://github.com/scala-js/scala-js/issues/1795}
+
+
+professionelle Anwendungen mit Scala.js
+
+	...
+	(https://jaxenter.de/scala-nach-javascript-kompilieren-scala-js-0-1-erschienen-1992)
+	https://jaxenter.com/happy-tenth-birthday-scala-whats-next-107440.html
+	https://jaxenter.de/scala-javascript-compiler-scalajs-0-6-0-produktionseinsatz-13633
+	- die Frage ist, ob Frontend/Client-side-Entwickler bereit sind, auf Scala umzusteigen, aber es könnte ein großer Gewinn sein -->  \url{https://jaxenter.com/interview-compiling-scala-to-javascript-with-scala-js-107247.html}
+
+anderer vielversprechender Ansatz: Elm
+	-->  \url{http://elm-lang.org/}
+	- FRP (Functional Reactive Programming) Sprache um deklarativ UIs für den Browser zu schreiben, statisch typisiert
+	- kompiliert nach HTML, CSS und JavaScript
+	- hat REPL, package manager, debugger
+	- libraries
+	- Alternative zu Scala.js? - kein Scala, nur Client...
+
+
+
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\appendix
+\chapter{Quellcodeauszüge usw.}
+
+\section{Beispielabbildung}
+
+blabla (siehe Abb. \ref{fig:a_picture_of_tux}) blabla
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[
+    width=0.25\linewidth
+%   scale=0.5
+    ]{tux}
+    \caption{Eine Beispielabbildung.
+    (Quelle: \cite{aab.FBB})
+    }
+    \label{fig:a_picture_of_tux}
+\end{figure}
+
+blabla
+
+
+\section{Beispielcode}
+
+blabla \verb|println(this)| blabla
+
+blablba \verb|var sqr = function(x) { return x * x; }| blabla
+
+\verb|var sqr = function(x) { return x * x; }|
+
+\begin{verbatim}
+var sqr = function(x) { return x * x; }
+for (var i = 0; i < 10; i++) {
+  console.log(i, sqr(i));
+}
+\end{verbatim}
+
+% possible to emph and textbf, but curly braces have to be escaped:
+\begin{alltt}
+var \emph{sqr} = function(x) \{ \textbf{return} x * x; \}
+for (var i = 0; i < 10; i++) \{
+  console.log(i, \emph{sqr}(i));
+\}
+\end{alltt}
+
+
+Ein kleines JavaScript-Codeschnipsel könnte man \lstinline[language=JavaScript, style=inline]!function(x) { return 2 + x; }! inline schreiben. Und ein kleines Scala-Codeschnipsel könnte man \lstinline[language=Scala, style=inline]|def foo(): Unit = println("bar")| inline schreiben.
+
+
+\begin{lstlisting}
+var sqr = function(x) { return x * x; }
+for (var i = 0; i < 10; i++) {
+  console.log(i, sqr(i));
+}
+\end{lstlisting}
+
+Some Python code:
+\lstinputlisting[language=Python, xleftmargin=10pt, caption={This is just a Python example}]{listings/example.py}
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+Some Scala code:
+\lstinputlisting[language=Scala, caption={And this is a very stupid Scala example}]{listings/example.scala}
+
+And again some Scala code:
+\lstinputlisting[language=Scala, linerange={3-6,16-31}, style=uncolored, style=numbered, caption={An excerpt from the very same example}]{listings/example.scala}
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+Some JavaScript code:
+\lstinputlisting[language=JavaScript, caption={A JavaScript example}, firstline=3, lastline=39, style=unframed, style=numbered, frame=single, rulecolor=\color{blue}]{listings/example.js}
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+Some HTML code with line numbers:
+\lstinputlisting[language=HTML5, style=numbered, caption={And finally a HTML example}]{listings/example.html}
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+
+
+% ABBILDUNGSVERZEICHNIS ERSTELLEN
+\listoffigures
+
+% TABELLENVERZEICHNIS ERSTELLEN
+%\listoftables
+
+% LITERATURVERZEICHNIS ERSTELLEN
+%\begin{thebibliography}{xxxxxxxxxxxxxxxxxxx}
+%   \bibitem[BECK, ????]{BECK} Beck, Kent: Extreme Programming : Das Manifest, Addison-Wesley, ORT, JAHR. % TODO
+%   \bibitem[ARIS, ????]{ARIS} Arisholm, Erik; Gallis, Hans; Dyb\aa , Tore; Sj\o berg, Dag I.K.: TITEL. In: IEEE Transcactions on Software
+%    Engineering, Vol. 33, No. 2, Februar 2007.
+%
+%
+%
+%   \bibitem[GoF, 1994]{GoF1} Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides: Design Patterns: Elements of reusable object oriented software Addison Wesley Publishing Company 1994, ISBN 0-201-63361-2
+%   \bibitem[BMBF, 2003]{bmbf}"'IT-Ausstattung der allgemein bildenden und berufsbildenden Schulen in Deutschland"', http://www.schulen-ans-netz.de/neuemedien/fakten/dokus/it-ausstattung-2003.pdf, 10.03.2005
+%\end{thebibliography}
+
+
+% TODO: nocite entfernen, damit nur zitierte Literatur ins Verzeichnis kommt
+\nocite{*}
+
+
+% Bibliographie mit bibtex
+%\bibliographystyle{alphadin}
+%\bibliography{biblio_scalajs}
+
+
+% Bibliographie mit biblatex/biber
+\printbibliography
+
+
+\lstlistoflistings
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% END DOCUMENT // HIER HÖRT DER INHALT AUF
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
+
+
+
+
+
+
+
+
