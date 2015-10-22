@@ -580,7 +580,12 @@ Brendan Eich: Zitat  -->  \url{https://www.jwz.org/blog/2010/10/every-day-i-lear
 -->  \url{https://en.wikipedia.org/wiki/ECMAScript}
 
 - Problem: Browser-Inkompatibilitäten
-- Problem: vieles in der Sprache unspefiziert, Lösungen dafür existieren, aber sehr viele Arten, etwas zu tun (viele verschiedene Patterns, viele verschiedene Frameworks)
+- Problem: vieles in der Sprache unspezifiziert, Lösungen dafür existieren, aber sehr viele Arten, etwas zu tun (viele verschiedene Patterns, viele verschiedene Frameworks)
+
+- notorisch schwer zu debuggen - Fehlermeldungen wie: foo is not a function, durch die sich häufig nicht die eigentliche Fehlerursache zurückverfolgen lässt
+
+
+- häufig benutzte clientseitige / Frontend- Frameworks geben (ihre) Struktur, müssen aber jedesmal erst neu gelernt werden
 
 
 \section{HTML(0.5)}
@@ -810,6 +815,10 @@ aber nicht unterstützt:
 - nur kleiner Teil der Java-Standardbibliothek unterstützt (Stand Juni 2014)\cite{doeraene2014.WHB}
 
 
+>> garantierte Typsicherheit durch Compiler-Prüfungen:
+- Fehler wie: foo is not a function können nicht mehr auftreten, wenn einer Variablen, die etwa eine function erwartet auch nur eine solche zugewiesen werden kann
+
+
 >> Typbestimmte JavaScript-Interoperabilität
 -->  \url{http://www.scala-js.org/doc/js-interoperability.html}
 -->  \cite{doeraene2013.TDI}
@@ -1020,7 +1029,7 @@ def main(pre: html.Pre): Unit = {
   xhr.send()
 }
 
-// **************
+// TODO: dynamische Variante -> Doeraene-Folie ******
 \end{lstlisting}
 - Typen wie Int oder String können normal mit Scala-Sematik verwerdet werden, obwohl hinter der Kulissen JavaScript sind (durch implizite Konvertierung durch Scala.js)
 
@@ -1581,7 +1590,7 @@ Künftig kann der \texttt{node\_modules}-Ordner bedenkenlos gelöscht werden. Ei
 
 \section{Installation und Start von Anwendung und Tests}
 
-- Sourcen von Datenträger oder github(?) (-> git client)
+- Sourcen von Datenträger oder github(?) (-> git client), hierzu genügt der Aufruf git clone <repo> vom Terminal im gewünschten Verzeichnis
 - Kommandos zum kompilieren --> sbt-Abschnitt - hierher???
 - Readme für jedes Projekt mit ggf. abweichenden spezifischen Anweisungen zum Start der jeweiligen Anwendung
 
@@ -1794,16 +1803,60 @@ Bibliotheken einbinden und verwenden einfach, wenn Fassade vorhanden
 \subsection{Bewertung: differenziert oder boolsch mit Begründung; Fazit aus Schwierigkeiten und Erfolgen}
 
 
+
+
+
+
+
+
+
+
+
+
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-\section{scalajs-showcase - Canvas, umfangreichere Templates, Events (3)}
+\section{scalajs-showcase - Canvas, Timer, Events (3)}
 
 \subsection{Untersuchungsziele}
+
+****** HIER
+
+
 \subsection{Untersuchungskriterien}
 \subsection{Kurzbeschreibung des Beispielprogramms}
 \subsection{Untersuchungsergebnisse}
 \subsection{Schwierigkeiten}
 \subsection{Erfolge}
 \subsection{Bewertung: differenziert oder boolsch mit Begründung; Fazit aus Schwierigkeiten und Erfolgen}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+%\section{scalajs-showcase - der Rest:  umfangreichere Templates, Events (3)}
+%
+%\subsection{Untersuchungsziele}
+%\subsection{Untersuchungskriterien}
+%\subsection{Kurzbeschreibung des Beispielprogramms}
+%\subsection{Untersuchungsergebnisse}
+%\subsection{Schwierigkeiten}
+%\subsection{Erfolge}
+%\subsection{Bewertung: differenziert oder boolsch mit Begründung; Fazit aus Schwierigkeiten und Erfolgen}
+
+
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 \section{textanalyzer - ein umfangreicheres Beispiel (3)}
@@ -1925,6 +1978,23 @@ Schwächen
   (- Debugging schwieriger???)
   - Support für einige Libraries
   - Performance
+
+
+
+großes Potential
+	besonders weil: eine Sprache für Client und Server
+		Wiederverwendbarkeit von Code
+		nur in einer Sprache denken, nicht eine weitere lernen
+	typbedingte Laufzeitfehler auch für Client-Seite (JavaScript) ausgeschlossen sind
+	mit Templating-Library auch HTML-Tags typsicher macht
+	
+Doku noch im Wandel, stellenweise ("`tiefer drin"') noch etwas sparsam erklärt, zeitweise und sporadisch nicht mit den neuesten Änderungen synchron, aber im Großen und Ganzen ziemlich gut
+
+vor allem für Entwickler und Projekte die schon mit Scala arbeiten sehr interessant
+
+Erfolg hängt sicher auch am Erfolg der Sprache Scala
+dafür, dass noch sehr jung, schon sehr gut entwickelt und anscheinend stabil
+
 
 
 
