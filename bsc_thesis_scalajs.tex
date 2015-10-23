@@ -699,7 +699,51 @@ Brendan Eich: Zitat  -->  \url{https://www.jwz.org/blog/2010/10/every-day-i-lear
 	\url{https://en.wikipedia.org/wiki/Cascading_Style_Sheets}
 
 
+\section{sbt}
 
+sbt\footnote{\url{http://www.scala-sbt.org/}} ist das Build-Werkzeug für Scala-Projekte aus dem Hause Typesafe. Es ist noch relativ neu, ist aber 
+
+- Konvention über Konfiguration wie Maven, d. h. nur Abweichungen von der Konvention müssen definiert werden
+- Verzeichnisstruktur entspricht standardmäßig der von Maven (nämlich), muss aber selbst erstellt werden
+
+- einige wichtige Kommandos
+	compile
+	test
+	run
+	package
+	clean
+
+- unterstützt die Kompilierung von Scala-Code
+- kann als Testrunner für Scala-Test-Werkzeuge verwendet werden
+- Build-Definition
+	- in einer scalabasierten DSL (statt XML-basiert wie bei Maven)
+	- größere Konfigurationen können bei Bedarf in Form von eines Scala-Programms geschrieben werden (sbt wird dabie als Library verwendet)
+- Dependency-Management mit Apache Ivy, so dass Libraries aus öffentlichen Artefakt-Repositories verwendet werden können (löst Abhängigkeiten auf und lädt die benötigten Ressourcen aus dem Internet herunter), Default von Maven Central, zusätzliche Repositories können per Konfiguration zugänglich gemacht werden
+	- Ivy legt ein lokales Repository im Verzeichnis .ivy2 unter dem HOME-Verzeichnis des Benutzers an (bei Windows: C:\\Users\\Bob); hier werden Dateien aus Remote Repositories zwischengespeichert; lokal publizierte Artefakte landen ebenfalls hier
+- kontinuierliche Builds und Tests (mit \texttt{\textasciitilde} als Präfix) - unmittelbares Feedback auf Änderungen, sehr nützlich
+- unterstützt gemischte Java/Scala-Projekte
+- interaktive Shell/Kommandozeile, unterstütz Tab-completing args to commands
+- inkrementelle Kompilation
+
+- sbt kann durch Plugins erweitert werden (z.B. Plugins, die automatisch Projekte für IDEs wie Eclipse oder IntelliJ erzeugen), dazu müssen Plugins in der Build-Definition angegeben werden
+
+- Problematisch:
+	- leichter Einstieg, aber für umfangreichere Konfigurationen ist ein tiefes Verständnis nötig -> gute Doku
+	- Syntax
+	- relativ neu im Verlgeich zu (Ant oder Maven) -> kleines aber wachsendes Ökosystem von Plugins
+
+-->  \url{http://www.scala-sbt.org/}
+-->  \url{https://en.wikipedia.org/wiki/SBT_%28software%29}
+-->  \url{https://codeascraft.com/2014/09/30/building-a-better-build-our-transition-from-ant-to-sbt/}
+
+Bsp. für Dependencies (-->  Website Knabe)
+	libraryDependencies ++= Seq(
+       //vendor % artifact % version % scope
+       "junit" % "junit" % "4.8.1" % "test",
+       //vendor %% scalaVersionDependentArtifact % ownVersion % scope
+%       "org.scalatest" %% "scalatest" % "2.2.1" % "test"
+    )
+    "Dazu ist noch eine Erläuterung nötig. Da Scala agressiv weiterentwickelt wird, gibt es häufig inkompatible Versionsunterschiede zwischen einer Version x.y und x.(y+1), nicht aber zwischen x.y und x.y.z. Daher werden Scala-Libraries üblicherweise gegen eine bestimmte Scala-Version x.y kompiliert und es wird deren Nummer in den Artefaktnamen aufgenommen. All dies leistet der Operator \%\%. Der Operator \% nimmt hingegen den Artefaktnamen, so wie er im Buildfile angegeben ist. Er ist daher für die Benutzung von Java-Libraries meist der richtige."
 
 
 
@@ -1105,13 +1149,6 @@ object MyApp extends scala.scalajs.js.JSApp {
 
 \section{sbt-Integration}
 
-...
-
-
-
-
-
-\section{IDE-Support}
 (http://www.scala-lang.org/news/2015/02/05/scala-js-no-longer-experimental.html)
 
 sbt-Plugin
@@ -1120,6 +1157,129 @@ sbt-Plugin
 
 command line interface (CLI)
   - Scala.js ohne sbt  -->  http://www.scala-js.org/downloads.html
+
+
+
+in
+\begin{lstlisting}
+enablePlugins(ScalaJSPlugin)
+\end{lstlisting}
+
+\begin{lstlisting}
+libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.8.0"
+\end{lstlisting}
+
+\begin{lstlisting}
+libraryDependencies ++= Seq(
+  "org.scala-js" %%% "scalajs-dom" % "0.8.0",
+  "com.lihaoyi" %%% "scalatags" % "0.5.2"
+)
+\end{lstlisting}
+
+
+
+
+
+
+
+
+
+
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+
+
+
+
+
+>>Projekt anlegen
+
+%-->  \url{http://www.scala-js.org/doc/tutorial.html}
+
+Ordnerstruktur anlegen wie folgt
+
+TODO: Ordner-Struktur
+
+leider nicht automatisch, es gibt (angeblich?) Plugins (???), eigenes Skript schreiben (-> Datenträger)
+	- ein Weg mit IntelliJ (zu spät entdeckt): sbt-Projekt erzeugen, generiert Standard-Ordnerstruktur (inkl. leerer Java Verzeichnisse), erzeugt build.sbt, plugins.sbt und build.properties, die angepasst werden können
+
+
+Scala.js-sbt-Plugin hinzufügen
+
+Im Ordner \texttt{project} eine Datei \texttt{plugins.sbt} erzeugen:
+\lstinputlisting[language=Scala, caption={Eine minimale plugins.sbt.}]{listings/setup/minimal_plugins.sbt}
+
+Im Basisordner des Projekts eine Datei \texttt{build.sbt} zur Build-Definition erzeugen:
+\lstinputlisting[language=Scala, caption={Eine minimale build.sbt.}]{listings/setup/minimal_build.sbt}
+
+Hier wird das Plugin aktiviert
+Name und Versionsnummer für das Projekt festgelegt
+Scala-Version festlegen, muss mindestens 2.10.2 sein
+
+mit scalaJSStage in Global := FastOptStage wird Node.js als JavaScript Runtime / Interpreter (für JS von der Kommandozeile run und test) aktiviert (statt dem langsameren Default: Rhino); Node.js muss installiert sein;
+
+\lstinputlisting[language=Scala, caption={Eine minimale build.properties.}]{listings/setup/minimal_build.properties}
+sbt-Version festlegen, muss mindestens 0.13.7 sein
+
+
+strengere Compilerprüfungen durch: ...
+
+
+-- build.sbt - Dependencies --
+
+für JS-Libraries:
+SalaJSKeys.jsDependencies += "org.webjars" % "jquery" % "2.1.4" / "jquery.js"
+
+wenn es ein getyptes Interface gibt (wie für jQuery der Fall), dann genügt (webjars werden transitiv referenziert):
+libraryDependencies += "be.doeraene" %%% "scalajs-jquery" % "0.8.0"
+
+Einbindung in HTML mit einem script-Tag möglich durch:
+skip in packageJSDependencies := false
+FRAGE: ist das noch nötig, oder geschieht das schon automatisch?
+
+dann in der HTML:
+<script src="projectname-jsdeps.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{IDE-Support}
+(http://www.scala-lang.org/news/2015/02/05/scala-js-no-longer-experimental.html)
 
 IDE-Supports
   "With Scala.js tooling, you get syntax highlighting, code completion (even for JavaScript libraries and the DOM!), jump-to-definition, and most other features you come to expect in a Scala tooling environment" (http://www.scala-lang.org/news/2015/02/05/scala-js-no-longer-experimental.html)
@@ -1153,10 +1313,62 @@ Dokumentation
     - E-Book: Hands-on Scala.js
     - Scala.jsFiddle
 
+--> Bsp. helloscalajs in Fallstudien
 
-\section{minimierter/optimierter Produktionscode} (mit Google Closure Compiler  -->  https://developers.google.com/closure/compiler/)
+
+\section{minimierter/optimierter Produktionscode}
+\label{sec:compiler}
+
+>> sbt-Konfiguration und "`Compilation und Optimization Pipeline"'
+
+(mit Google Closure Compiler  -->  https://developers.google.com/closure/compiler/)
 
 ...
+
+
+-- sbt-Kommandos --
+
+Infos hier geben tieferen Einblick scheinen aber nicht auf dem aktuellsten Stand zu sein.
+\url{http://www.scala-js.org/doc/internals/compile-opt-pipeline.html}
+
+\cite[\#TheCommandLine]{haoyi.HOS} ist hier wieder eine wertvolle und (als Mitarbeiter des Projekts) auch autorisierte Quelle -> es gibt weiter unten ein Kapitel "`The Command Line"' zum Thema.
+
+\texttt{set scalaJSStage in Global := FastOptStage}
+
+\texttt{set scalaJSStage in Global := FullOptStage}
+
+
+\texttt{fastOptJS // = dev} kompiliert und optimiert (schnellerer Compiler-Lauf, größere Datei) - zur Entwicklung
+
+\texttt{fullOptJS // = prod} kompiliert und optimiert (langsamerer Compiler-Lauf, aggressiver optimiert -> kleinere Datei, schnelleres JS) - zur Auslieferung
+
+mit vorangestellter  \texttt{\textasciitilde{}}, z.B. \texttt{\textasciitilde{}fastOptJS}
+
+\texttt{run} kompilierte Scala.js-Anwendung in einer JavaScript Laufzeit/VM (Rhino, Node.js oder PhantomJS) ausführen (main-Methode wird benötigt wie in -> Hallo-Welt)
+	- läuft per default in der \textit{PreLinkStage}, verwendet Rhino
+		- für DOM-API: mit \texttt{jsDependencies += RuntimeDOM} in der \texttt{build.sbt} wird die DOM-API in Rhino emuliert
+	- schnellere Laufzeit (Node.js oder PhantomJS) durch \texttt{scalaJSStage in Global := FastOptStage} in der Build-Definition oder \texttt{set scalaJSStage in Global := FastOptStage} in der sbt-REPL (oder FullOptStage) aktiviert, standardmäßig Node.js
+		- für DOM-API: \texttt{jsDependencies += RuntimeDOM} aktiviert PhantomJS (langsamer als Node.js)
+
+\texttt{test} kompilierte Scala.js-Tests im \texttt{tests/}-Verzeichnis auf Rhino, Node.js oder PhantomJS ausführen
+	- erzeugt im Verzeichnis \texttt{target/test-reports/} Test-Reports in XML-Form
+
+\texttt{compile} kompiliert zu Scala.js Bytecode
+
+\texttt{package} Scala.js-Anwendung als .jar-Datei packen (z.B. \texttt{hello-scalajs\_sjs0.6\_2.11-1.0.jar} mit Suffix: Scala.js-Version, Scala-Version, Projekt-Version)
+
+
+
+
+
+
+Das Kommando \texttt{sbt fastOptJS} (bzw. \texttt{sbt fullOptJS}) erzeugt Dateien im Ordner
+%target/scala-2.11/classes/  -- .class und .sjsir >> nicht benötigt (Output des Scala.js-Compilers: Scala/JVM-Bytecode und Scala.js-Bytecode/Zwischencode)
+%target/scala-2.11/classes/  --  html << benötigt
+%target/scala-2.11/  --  js << benötigt
+
+
+
 
 
 
@@ -1398,147 +1610,6 @@ Für die bequemere Navigation im Projekt bietet sich der Einsatz IDE an. Infrage
 (Scala IDE oder/und  installieren; IntelliJ unterstütz Scala, für ältere Versionen Scala Plugin installieren)
 (Google Chrome installieren - hat Sourcemaps-Unterstützung)
 
-\section{sbt}
-
-sbt\footnote{\url{http://www.scala-sbt.org/}} ist das Build-Werkzeug für Scala-Projekte aus dem Hause Typesafe. Es ist noch relativ neu, ist aber 
-
-- Konvention über Konfiguration wie Maven, d. h. nur Abweichungen von der Konvention müssen definiert werden
-- Verzeichnisstruktur entspricht standardmäßig der von Maven (nämlich), muss aber selbst erstellt werden
-
-- einige wichtige Kommandos
-	compile
-	test
-	run
-	package
-	clean
-
-- unterstützt die Kompilierung von Scala-Code
-- kann als Testrunner für Scala-Test-Werkzeuge verwendet werden
-- Build-Definition
-	- in einer scalabasierten DSL (statt XML-basiert wie bei Maven)
-	- größere Konfigurationen können bei Bedarf in Form von eines Scala-Programms geschrieben werden (sbt wird dabie als Library verwendet)
-- Dependency-Management mit Apache Ivy, so dass Libraries aus öffentlichen Artefakt-Repositories verwendet werden können (löst Abhängigkeiten auf und lädt die benötigten Ressourcen aus dem Internet herunter), Default von Maven Central, zusätzliche Repositories können per Konfiguration zugänglich gemacht werden
-	- Ivy legt ein lokales Repository im Verzeichnis .ivy2 unter dem HOME-Verzeichnis des Benutzers an (bei Windows: C:\\Users\\Bob); hier werden Dateien aus Remote Repositories zwischengespeichert; lokal publizierte Artefakte landen ebenfalls hier
-- kontinuierliche Builds und Tests (mit \texttt{\textasciitilde} als Präfix) - unmittelbares Feedback auf Änderungen, sehr nützlich
-- unterstützt gemischte Java/Scala-Projekte
-- interaktive Shell/Kommandozeile, unterstütz Tab-completing args to commands
-- inkrementelle Kompilation
-
-- sbt kann durch Plugins erweitert werden (z.B. Plugins, die automatisch Projekte für IDEs wie Eclipse oder IntelliJ erzeugen), dazu müssen Plugins in der Build-Definition angegeben werden
-
-- Problematisch:
-	- leichter Einstieg, aber für umfangreichere Konfigurationen ist ein tiefes Verständnis nötig -> gute Doku
-	- Syntax
-	- relativ neu im Verlgeich zu (Ant oder Maven) -> kleines aber wachsendes Ökosystem von Plugins
-
--->  \url{http://www.scala-sbt.org/}
--->  \url{https://en.wikipedia.org/wiki/SBT_%28software%29}
--->  \url{https://codeascraft.com/2014/09/30/building-a-better-build-our-transition-from-ant-to-sbt/}
-
-Bsp. für Dependencies (-->  Website Knabe)
-	libraryDependencies ++= Seq(
-       //vendor % artifact % version % scope
-       "junit" % "junit" % "4.8.1" % "test",
-       //vendor %% scalaVersionDependentArtifact % ownVersion % scope
-%       "org.scalatest" %% "scalatest" % "2.2.1" % "test"
-    )
-    "Dazu ist noch eine Erläuterung nötig. Da Scala agressiv weiterentwickelt wird, gibt es häufig inkompatible Versionsunterschiede zwischen einer Version x.y und x.(y+1), nicht aber zwischen x.y und x.y.z. Daher werden Scala-Libraries üblicherweise gegen eine bestimmte Scala-Version x.y kompiliert und es wird deren Nummer in den Artefaktnamen aufgenommen. All dies leistet der Operator \%\%. Der Operator \% nimmt hingegen den Artefaktnamen, so wie er im Buildfile angegeben ist. Er ist daher für die Benutzung von Java-Libraries meist der richtige."
-
-
-
-\section{Projekt anlegen}
-
-%-->  \url{http://www.scala-js.org/doc/tutorial.html}
-
-Ordnerstruktur anlegen wie folgt
-
-TODO: Ordner-Struktur
-
-leider nicht automatisch, es gibt (angeblich?) Plugins (???), eigenes Skript schreiben (-> Datenträger)
-	- ein Weg mit IntelliJ (zu spät entdeckt): sbt-Projekt erzeugen, generiert Standard-Ordnerstruktur (inkl. leerer Java Verzeichnisse), erzeugt build.sbt, plugins.sbt und build.properties, die angepasst werden können
-
-
-Scala.js-sbt-Plugin hinzufügen
-
-Im Ordner \texttt{project} eine Datei \texttt{plugins.sbt} erzeugen:
-\lstinputlisting[language=Scala, caption={Eine minimale plugins.sbt.}]{listings/setup/minimal_plugins.sbt}
-
-Im Basisordner des Projekts eine Datei \texttt{build.sbt} zur Build-Definition erzeugen:
-\lstinputlisting[language=Scala, caption={Eine minimale build.sbt.}]{listings/setup/minimal_build.sbt}
-
-Hier wird das Plugin aktiviert
-Name und Versionsnummer für das Projekt festgelegt
-Scala-Version festlegen, muss mindestens 2.10.2 sein
-
-mit scalaJSStage in Global := FastOptStage wird Node.js als JavaScript Runtime / Interpreter (für JS von der Kommandozeile run und test) aktiviert (statt dem langsameren Default: Rhino); Node.js muss installiert sein;
-
-\lstinputlisting[language=Scala, caption={Eine minimale build.properties.}]{listings/setup/minimal_build.properties}
-sbt-Version festlegen, muss mindestens 0.13.7 sein
-
-
-strengere Compilerprüfungen durch: ...
-
-
--- build.sbt - Dependencies --
-
-für JS-Libraries:
-SalaJSKeys.jsDependencies += "org.webjars" % "jquery" % "2.1.4" / "jquery.js"
-
-wenn es ein getyptes Interface gibt (wie für jQuery der Fall), dann genügt (webjars werden transitiv referenziert):
-libraryDependencies += "be.doeraene" %%% "scalajs-jquery" % "0.8.0"
-
-Einbindung in HTML mit einem script-Tag möglich durch:
-skip in packageJSDependencies := false
-FRAGE: ist das noch nötig, oder geschieht das schon automatisch?
-
-dann in der HTML:
-<script src="projectname-jsdeps.js"></script>
-
-
-\section{sbt-Konfiguration und "`Compilation und Optimization Pipeline"'}
-\label{sec:compiler}
-
--- sbt-Kommandos --
-
-Infos hier geben tieferen Einblick scheinen aber nicht auf dem aktuellsten Stand zu sein.
-\url{http://www.scala-js.org/doc/internals/compile-opt-pipeline.html}
-
-\cite[\#TheCommandLine]{haoyi.HOS} ist hier wieder eine wertvolle und (als Mitarbeiter des Projekts) auch autorisierte Quelle -> es gibt weiter unten ein Kapitel "`The Command Line"' zum Thema.
-
-\texttt{set scalaJSStage in Global := FastOptStage}
-
-\texttt{set scalaJSStage in Global := FullOptStage}
-
-
-\texttt{fastOptJS // = dev} kompiliert und optimiert (schnellerer Compiler-Lauf, größere Datei) - zur Entwicklung
-
-\texttt{fullOptJS // = prod} kompiliert und optimiert (langsamerer Compiler-Lauf, aggressiver optimiert -> kleinere Datei, schnelleres JS) - zur Auslieferung
-
-mit vorangestellter  \texttt{\textasciitilde{}}, z.B. \texttt{\textasciitilde{}fastOptJS}
-
-\texttt{run} kompilierte Scala.js-Anwendung in einer JavaScript Laufzeit/VM (Rhino, Node.js oder PhantomJS) ausführen (main-Methode wird benötigt wie in -> Hallo-Welt)
-	- läuft per default in der \textit{PreLinkStage}, verwendet Rhino
-		- für DOM-API: mit \texttt{jsDependencies += RuntimeDOM} in der \texttt{build.sbt} wird die DOM-API in Rhino emuliert
-	- schnellere Laufzeit (Node.js oder PhantomJS) durch \texttt{scalaJSStage in Global := FastOptStage} in der Build-Definition oder \texttt{set scalaJSStage in Global := FastOptStage} in der sbt-REPL (oder FullOptStage) aktiviert, standardmäßig Node.js
-		- für DOM-API: \texttt{jsDependencies += RuntimeDOM} aktiviert PhantomJS (langsamer als Node.js)
-
-\texttt{test} kompilierte Scala.js-Tests im \texttt{tests/}-Verzeichnis auf Rhino, Node.js oder PhantomJS ausführen
-	- erzeugt im Verzeichnis \texttt{target/test-reports/} Test-Reports in XML-Form
-
-\texttt{compile} kompiliert zu Scala.js Bytecode
-
-\texttt{package} Scala.js-Anwendung als .jar-Datei packen (z.B. \texttt{hello-scalajs\_sjs0.6\_2.11-1.0.jar} mit Suffix: Scala.js-Version, Scala-Version, Projekt-Version)
-
-
-
-
-
-
-Das Kommando \texttt{sbt fastOptJS} (bzw. \texttt{sbt fullOptJS}) erzeugt Dateien im Ordner
-%target/scala-2.11/classes/  -- .class und .sjsir >> nicht benötigt (Output des Scala.js-Compilers: Scala/JVM-Bytecode und Scala.js-Bytecode/Zwischencode)
-%target/scala-2.11/classes/  --  html << benötigt
-%target/scala-2.11/  --  js << benötigt
-
 
 
 \section{IDE-Integration}
@@ -1610,6 +1681,10 @@ EclipseKeys.withSource := true
 Eclipse erzeugt standardmäßig einen Verzeichnis bin im Projektwurzelverzeichnis, als Zielordner des Compilers ...
 
 nach Änderungen an sbt-Konfigurationsdateien ist es nötig, erneut \texttt{sbt eclipse} auszuführen und das Projekt in Eclipse im Package Explorer zu aktualisieren.
+
+
+
+
 
 
 \section{Konfiguration von Node.js (und Karma?), source-map-support}
@@ -1961,7 +2036,7 @@ ctx.fillRect(x, y, width, heigth)
 hinzufügen in der build.sbt - zack, fertig:
 
 \begin{lstlisting}
-libraryDependencies ++= Seq([...], "org.scala-js" %%% "scalajs-dom" % "0.8.0")
+libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.8.0"
 \end{lstlisting}
 
 
