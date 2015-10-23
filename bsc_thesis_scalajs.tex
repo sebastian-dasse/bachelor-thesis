@@ -5,7 +5,7 @@
 % bibtotoc		-	Das Literaturverzeichnis wird ins Inhaltsverzeichnis aufgenommen.
 % scrreprt		-	Das Template für diese Dokument ist ein KOMA-Script Report
 
-\documentclass[a4paper, 12pt, listof=totoc, bibliography=totoc]{scrreprt}
+\documentclass[a4paper, 12pt, hidelinks, listof=totoc, listoftables=totoc, bibliography=totoc]{scrreprt}
 
 \usepackage{lmodern}									% Modernes Lateinisches Schriftbild benutzen
 \usepackage[T1]{fontenc}								% Schriftbild glätten
@@ -34,6 +34,8 @@
 \usepackage{url}										% um lange URLs darzustellen
 %\usepackage{amsmath}									% für mathematische Formeln
 %\usepackage{subfigure}									% um Bilder nebeneinander zu plazieren
+%\usepackage{subcaption}
+\usepackage{subfig}
 
 
 % Bibliographie mit biblatex/biber
@@ -230,6 +232,8 @@
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 \chapter{Einleitung}
 
+%TODO Zitate checken, ggf. ergänzen um "`vgl."'
+
 % evtl. hilfreich:  D:\UNI\2014-SoSe\GWAGWA_Themenfindung_Gliederung_Schreibstil.pdf
 
 \section{Motivation}
@@ -316,7 +320,7 @@ TODO
 Scala ist eine moderne Multiparadigmen-Programmiersprache, die objektorientierte und funktionalen Programmierkonzepte mit einer statischen Typisierung verbindet. Sie wird seit 2001 federführend von Martin Odersky an der École polytechnique fédérale de Lausanne entwickelt und wurde erstmals 2004 öffentlich vorgestellt.
 %"`Scala smoothly integrates object-oriented and functional programming. It is designed to express common programming patterns in a concise, elegant, and type-safe way."'  --> \url{http://article.gmane.org/gmane.comp.lang.scala/17}
 Seit der Gründung der Firma Typesafe 2011 durch Odersky und Jonas Bonér\footnote{
-	Bonér ist der Autor von \textit{Akka}, einem Toolkit und einer Laufzeitumgebung zur Entwicklung fehlertoleranter nebenläufiger und verteilter Anwendungen. Es basiert auf einem Modell, bei dem \textit{Aktoren} genannte nebenläufige Einheiten durch Nachrichtenaustausch miteinander kommunizieren. Akka ist Teil der Typesafe-Plattform.\url{http://akka.io/}}
+	Bonér ist der Autor von \textit{Akka}, einem Toolkit und einer Laufzeitumgebung zur Entwicklung fehlertoleranter nebenläufiger und verteilter Anwendungen. Es basiert auf einem Modell, bei dem \textit{Aktoren} genannte nebenläufige Einheiten durch Nachrichtenaustausch miteinander kommunizieren. Akka ist Teil der Typesafe-Plattform. \url{http://akka.io/}}
 erfährt die Entwicklung von Scala als Teil der \textit{Typesafe Reactive Platform} nun auch kommerzielle Unterstützung.
 Hier wird unter anderem die IDE-Integration für Scala vorangetrieben und das Buildtool \textit{sbt} entwickelt.\cite{scala-lang2011.CSS} 
 
@@ -481,7 +485,7 @@ Vorteile der JavaScript-Plattform:
 - Referenzen zwischen verschiedenen Systemen durch Hyperlinks
 - Sicherheit durch Sandbox-Prinzip\footnote{
 	kein Zugriff aus dem Browser heraus (begrenzte Ausnahme: Zugriff auf User-bestimmte Dateien durch File API)}
-\cite{haoyi.HOS}
+\cite[\#Javascript-the-platform]{haoyi.HOS}
 
 (IDEs: ???)
 
@@ -533,9 +537,9 @@ unstrukturiert: JavaScript gibt keine Struktur vor
 - neuer Standard ECMAScript 6 im Juni 2015 veröffentlicht
 	- Konstanten mit const
 	- block-scoped variablen (mit let statt var) und functions
-	- sog. arrow functions (dann möglich: [1, 2, 3].map(x => x * x) statt bisher [1, 2, 3].map(function(x) { return x * x; }) )
+	- Lambdas/anonyme Funktionen -> in JS sog. arrow functions (dann möglich: [1, 2, 3].map(x => x * x) statt bisher [1, 2, 3].map(function(x) { return x * x; }) )
 	- lexikalisches this - intuitivere Behandlung des Objektkontextes
-	- Defaultwerte für Parameter
+	- Defaultwerte für Parameter, eine Art Varargs
 	- variadische Funktionen mit Parameter
 	- String Interpolation (\texttt{var person = \{ name: "Foo" \}; var message = `Hello \$\{person.name\}!`})
 	- Destructuring Assignment, mit dem Arrays oder Objekte bei der Zuweisung in ihre Bestandteile zerlegt werden können
@@ -776,6 +780,7 @@ andere Ansätze/Sprachen, deren Defizite
 JavaScript wird schon bezeichnet als Assembler für das Internet ("`assembly language for the web"') bzw. Virtual Machine des Internets ("`VM of the web"', Douglas Crockford)
   -->  \url{http://www.hanselman.com/blog/JavaScriptIsAssemblyLanguageForTheWebSematicMarkupIsDeadCleanVsMachinecodedHTML.aspx}
   --> \url{http://www.hanselman.com/blog/JavaScriptIsAssemblyLanguageForTheWebPart2MadnessOrJustInsanity.aspx}
+  - JavaScript ist eine Plattform\cite{doeraene2015.SSP}
 
 
 \url{https://en.wikipedia.org/wiki/List_of_JavaScript_libraries}
@@ -783,7 +788,7 @@ JavaScript wird schon bezeichnet als Assembler für das Internet ("`assembly lan
 \url{https://en.wikipedia.org/wiki/Comparison_of_JavaScript_frameworks}
 
 
-Liy Haoyi, Mitarbeiter beim Scala.js-Projekt und Autor des E-Books "`Hands-on Scala.js"' bringt die Motivation, für Scala.js auf den Punkt: "`At this point, all of Google, Facebook, and Microsoft have all announced work on a typed variant of Javascript. These are not academic exercises: Dart/AtScript/Flow/Typescript are all problems that solve a real need, that these large companies have all faced once they've grown beyond a certain size. Clearly, Javascript isn't cutting it anymore, and the convenience and "native-ness" of the language is more than made up for in the constant barrage of self-inflicted problems. Scala.js takes this idea and runs with it!"'\cite{haoyi.HOS}
+Liy Haoyi, Mitarbeiter beim Scala.js-Projekt und Autor des E-Books "`Hands-on Scala.js"' bringt die Motivation, für Scala.js auf den Punkt: "`At this point, all of Google, Facebook, and Microsoft have all announced work on a typed variant of Javascript. These are not academic exercises: Dart/AtScript/Flow/Typescript are all problems that solve a real need, that these large companies have all faced once they've grown beyond a certain size. Clearly, Javascript isn't cutting it anymore, and the convenience and "native-ness" of the language is more than made up for in the constant barrage of self-inflicted problems. Scala.js takes this idea and runs with it!"'\cite[\#TheLanguage]{haoyi.HOS}
 
 
 Code-Wiederverwendung
@@ -798,11 +803,20 @@ Code-Wiederverwendung
 
 
 
-
-
 Kern-Features:
+- Scala-Support
+- Typsicherheit
+- JavaScript-Interoperabilität
+- sbt-Integration
+- IDE-Support
+- Source Maps
+- minimierter/optimierter Produktionscode
+- Ökosystem: Libraries und Tools
 
->> kompletter Scala-Support
+
+\section{Scala-Support und semantische Unterschiede}
+
+kompletter Scala-Support
 
 ...
 
@@ -815,11 +829,104 @@ aber nicht unterstützt:
 - nur kleiner Teil der Java-Standardbibliothek unterstützt (Stand Juni 2014)\cite{doeraene2014.WHB}
 
 
->> garantierte Typsicherheit durch Compiler-Prüfungen:
+semantische Unterschiede (vgl. \cite{doeraene2015.SSP} und \cite{scalajs.DSS}):
+	- primitive Typen
+	- undefiniertes Verhalten
+
+primitive Typen: Zahlen-Semantik
+	- abweichend für Float, da keine Entsprechung in JS (-> Doeraene-Paper):
+    - strikte Float-Semantik kann, wenn benötigt, per sbt-Konfiguration erzwungen werden, kann aber massive Performance-Einbußen zur Folge haben
+    - alle anderen numerischen Typen habne gleiche Semantik
+    - Besonderheit: toString für Fließpunktkommazahlen:
+    	- eine einzelne Null nach dem Komma wird verschluckt
+    	- Floats werden wie Doubles behandelt und werden deshalb unschön ausgegeben:
+    	println(1.4)  // -> 1.4
+		println(1.4f) // -> 1.399999976158142
+	- deshalb müssen sie passend formatiert werden, z.B.: \texttt{f\"\${1.4}\%.1f"}  --  Achtung: String.format funktioniert nicht, weil Java
+
+semantische Unterschiede / "`The Performance/Correctness Tradeoff"' --> \cite[\#ThePerformance/CorrectnessTradeoff]{haoyi.HOS}
+- Scala.js könnte näher an Scala-Semantik sein, aber Overhead
+- Bsp. Division durch Null
+\begin{lstlisting}
+Problem:
+	JVM: 15 / 4           // 3
+	JS:  15 / 4           // 3.25
+Fix:
+	JVM: 15 / 4           // 3
+	JS:  (15 / 4) | 0     // 3
+neues Problem:
+	JVM: 15 / 0           // ArithmeticException
+	JS:  15 / 0           // Infinity
+	JS:  (15 / 0) | 0     // 0
+moeglicher Fix (aber teuer):
+	JVM: 1 / 0           // ArithmeticException
+	JS:  function intDivide(x, y){
+  var z = x / y
+  if (z == Infinity) throw new ArithmeticException("Divide by Zero")
+ else return z
+ }
+ intDivide(1, 0) // ArithmeticException
+\end{lstlisting}
+	- wäre ineffizienter Fix, für jede Division statt zwei simpler arithmetischer Operation einen Funktionsaufruf und Prüfung auf Infinity zu ersetzen
+	- Kompromiss von Scala.js: im FastOpt-Modus gibt es Prüfungen auf ArithmeticException,  ArrayIndexOutOfBoundsException usw. (aber noch work in progress); im FullOpt-Modus werden diese Prüfungen entfernt
+
+- aus Performance-Gründen kein Boxing für primitive Typen (sie werden nicht in Objekttypen eingepackt, durch die sie als Int, Double, Float etc behandelt werden können) ->->
+- Prüf-Methode isInstanceOf[T] (unter der Haube bei Pattern Matching verwendet) operiert (für primitive Werte) basierend auf dem Wert, nicht dem Typ
+[Dublette]: - Typtests zur Laufzeit sind wertbasiert, also z.B.: 1 matched Byte, Short, Int, Float und Double, 1.5 matched Float und Double, 1.4 matched Double (da es nicht als 32-bit Float repräsentiert werden kann)
+
+
+- undefiniertes Verhalten
+	- unkorrekte Typen casten ist ein Bug
+		Bsp.:
+\begin{lstlisting}[language=Scala]
+val s = "foo"
+s.asInstanceOf[List[String]]
+\end{lstlisting}
+	- JVM wirft ClassCastException
+\begin{lstlisting}
+java.lang.ClassCastException: java.lang.String cannot be cast to scala.collection.immutable.List
+\end{lstlisting}
+	- zu großer Overhead für Checks in JavaScript (Laufzeittypprüfungen würden Ausfführungszeit verdoppeln) -> undefiniertes Verhalten (alles kann passieren)
+	- dev mode (fastOpt) mit checks -> direkter Absturz für Debugbarkeit
+\begin{lstlisting}
+scala.scalajs.runtime.UndefinedBehaviorError: An undefined behavior was detected: hello is not an instance of scala.collection.immutable.List
+\end{lstlisting}
+		- Achtung: kein Hinweis auf den fehlgeschlagenen Cast
+	- prod mode (fullOpt) ohne checks für Performance (Casts werden weg-optimiert und sind eine Nicht-Operation/no-op), aber: unvorhersagbares Verhalten
+	- JVM-konformes Verhalten mit dem Werfen von ClassCastExceptions kann erzwungen werden, aber wie gesagt mit hohen Performance-Einbußen
+	
+	- auch undefiniert:
+		NullPointerException
+		StackOverflowError und andere VirtualMachineErrors
+		
+		ArrayIndexOutOfBoundException
+		StringIndexOutOfBoundException
+		ArrayStoreException
+		ArithmeticException
+		- diese vier werden in der Zukunft einmal Fatal/Unchecked/Compliant Einstellungen haben
+		- z.B. "foo".charAt(-1) //  wirft eine "`fatal"' scala.scalajs.runtime.UndefinedBehaviorError und beendet das Programm (im fastOpt-Modus)
+	- weitere Details -> gut dokumentiert in Doku
+	
+	
+	- ansonsten Semantik von Scala.js Programmen wie Scala!
+
+
+
+
+
+\section{Typsicherheit}
+
+garantierte Typsicherheit durch Compiler-Prüfungen:
 - Fehler wie: foo is not a function können nicht mehr auftreten, wenn einer Variablen, die etwa eine function erwartet auch nur eine solche zugewiesen werden kann
 
+...
 
->> Typbestimmte JavaScript-Interoperabilität
+
+
+
+\section{JavaScript-Interoperabilität}
+
+- "`Typbestimmte"' JavaScript-Interoperabilität
 -->  \url{http://www.scala-js.org/doc/js-interoperability.html}
 -->  \cite{doeraene2013.TDI}
 
@@ -828,7 +935,7 @@ Interop
 - undefined behaviour
 
 
-> Typkorrsepondenzen: "`primitive"' Scala-Typen sind unter der Haube primitive JavaScript-Typen\cite{doeraene2014.WHB} (<- auch Quelle für Tabellendaten):
+> Typkorrespondenzen: "`primitive"' Scala-Typen sind unter der Haube primitive JavaScript-Typen\cite{doeraene2014.WHB} (<- auch Quelle für Tabellendaten):
 %siehe auch -->  \url{http://www.sebnozzi.com/229/pass-simple-values-js-functions/}
 
 \medskip
@@ -867,86 +974,6 @@ import js.JSConverters.\_
 val jsArray: js.Array[Int] = Seq(1, 2, 3).toJSArray
 
 der Mechanismus für js.Dictionary und js.UndefOr ist ähnlich
-
-
-
-
-
-
-semantische Unterschiede (vgl. \cite{doeraene2015.SSP} und \cite{scalajs.DSS}):
-	- primitive Typen
-	- undefiniertes Verhalten
-
-primitive Typen: Zahlen-Semantik
-	- abweichend für Float, da keine Entsprechung in JS (-> Doeraene-Paper):
-    - strikte Float-Semantik kann, wenn benötigt, per sbt-Konfiguration erzwungen werden, kann aber massive Performance-Einbußen zur Folge haben
-    - alle anderen numerischen Typen habne gleiche Semantik
-    - Besonderheit: toString für Fließpunktkommazahlen:
-    	- eine einzelne Null nach dem Komma wird verschluckt
-    	- Floats werden wie Doubles behandelt und werden deshalb unschön ausgegeben:
-    	println(1.4)  // -> 1.4
-		println(1.4f) // -> 1.399999976158142
-	- deshalb müssen sie passend formatiert werden, z.B.: \texttt{f\"\${1.4}\%.1f"}  --  Achtung: String.format funktioniert nicht, weil Java
-
-semantische Unterschiede ("`The Performance/Correctness Tradeoff"' --> \cite{haoyi.HOS})
-- Scala.js könnte näher an Scala-Semantik sein, aber Overhead
-- Bsp. Division durch Null
-\begin{lstlisting}
-Problem:
-	JVM: 15 / 4           // 3
-	JS:  15 / 4           // 3.25
-Fix:
-	JVM: 15 / 4           // 3
-	JS:  (15 / 4) | 0     // 3
-neues Problem:
-	JVM: 15 / 0           // ArithmeticException
-	JS:  15 / 0           // Infinity
-	JS:  (15 / 0) | 0     // 0
-moeglicher Fix (aber teuer):
-	JVM: 1 / 0           // ArithmeticException
-	JS:  function intDivide(x, y){
-  var z = x / y
-  if (z == Infinity) throw new ArithmeticException("Divide by Zero")
- else return z
- }
- intDivide(1, 0) // ArithmeticException
-\end{lstlisting}
-	- wäre ineffizienter Fix, für jede Division statt zwei simpler arithmetischer Operation einen Funktionsaufruf und Prüfung auf Infinity zu ersetzen
-	- Kompromiss von Scala.js: im FastOpt-Modus gibt es Prüfungen auf ArithmeticException,  ArrayIndexOutOfBoundsException usw. (aber noch work in progress); im FullOpt-Modus werden diese Prüfungen entfernt
-	
-- Typtests zur Laufzeit sind wertbasiert, also z.B.: 1 matched Byte, Short, Int, Float und Double, 1.5 matched Float und Double, 1.4 matched Double (da es nicht als 32-bit Float repräsentiert werden kann)
-
-
-- undefiniertes Verhalten
-	- unkorrekte Typen casten ist ein Bug
-		Bsp.:
-\begin{lstlisting}[language=Scala]
-val s = "foo"
-s.asInstanceOf[List[String]]
-\end{lstlisting}
-	- JVM wirft ClassCastException
-\begin{lstlisting}
-java.lang.ClassCastException: java.lang.String cannot be cast to scala.collection.immutable.List
-\end{lstlisting}
-	- zu großer Overhead für Checks in JavaScript -> undefiniertes Verhalten (alles kann passieren)
-	- dev mode (fastOpt) mit checks -> direkter Absturz für Debugbarkeit
-\begin{lstlisting}
-scala.scalajs.runtime.UndefinedBehaviorError: An undefined behavior was detected: hello is not an instance of scala.collection.immutable.List
-\end{lstlisting}
-		- Achtung: kein Hinweis auf den fehlgeschlagenen Cast
-	- prod mode (fullOpt) ohne checks für Performance (Cast ist eine Nicht-Operation/no-op), aber: unvorhersagbares Verhalten
-	
-	- auch undefiniert:
-		NullPointerException
-		StackOverflowError und andere VirtualMachineErrors
-		
-		ArrayIndexOutOfBoundException
-		StringIndexOutOfBoundException
-		ArrayStoreException
-		ArithmeticException
-		- diese vier werden in der Zukunft einmal Fatal/Unchecked/Compliant gesetzt-Einstellungen haben
-	- Details -> 
-
 
 
 
@@ -1076,13 +1103,15 @@ object MyApp extends scala.scalajs.js.JSApp {
 
 
 
+\section{sbt-Integration}
+
+...
 
 
 
->> sbt-Integration
 
 
->> IDE-Support
+\section{IDE-Support}
 (http://www.scala-lang.org/news/2015/02/05/scala-js-no-longer-experimental.html)
 
 sbt-Plugin
@@ -1108,7 +1137,9 @@ IDE-Supports
       - intelligentes Namens-Refactoring (zumindest innerhalb einer Datei)
 
 
->> Source Maps (zum Debuggen im Browser)  -->  http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/
+\section{Source Maps}
+
+Source Maps (zum Debuggen im Browser)  -->  http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/
 
 Source Maps
   - Debugging im Browser
@@ -1123,7 +1154,10 @@ Dokumentation
     - Scala.jsFiddle
 
 
->> minimierter/optimierter Produktionscode (mit Google Closure Compiler  -->  https://developers.google.com/closure/compiler/)
+\section{minimierter/optimierter Produktionscode} (mit Google Closure Compiler  -->  https://developers.google.com/closure/compiler/)
+
+...
+
 
 
 
@@ -1140,6 +1174,8 @@ getypte Fassade vs. js.Dynamic
   - Typsicherheit
   - Performance: Compiler-Optimizer kann optimieren
 
+...
+
 
 
 
@@ -1153,54 +1189,25 @@ getypte Fassade vs. js.Dynamic
 
 
 
+
+\section{Ökosystem: Libraries und Tools}
+
 >> verwendete/ausprobierte/untersuchte Libraries (2)
-  - Scala-js-dom - statische Typen für die DOM-API, Erweiterungen
-  (- scala-js-jquery - statische Typen für jQuery)
-  - ScalaTags - cross-kompilierende HTML-Templating-Library (mehr Typsicherheit für Tags)
-  - utest - minimale cross-kompilierende Test-Library
-  (- uPickle - cross-kompilierende Library zur Serialisierung)
-  - autowire - cross-kompilierende Library für statisch getypte Ajax-Aufrufe und RPCs
-  (- spray - Sammlung von Libraries zur Entwicklung von REST/HTTP-basierten Webservices auf der Basis von Akka; beinhaltet spray-can, einen schnellen HTTP-Server)
-  (- Scala.Rx - cross-kompilierende Change-Propagation-Library ("Änderungsausbreitung"))
-  - Scala-Async - Scala-Library zur einfacheren Handhabung von Asynchronität; funktioniert mit Scala.js -->  http://docs.scala-lang.org/sips/pending/async.html
-  - Scala.js workbench - sbt-Plugin zum automatischen Live-Neuladen des Browsers
-
-
-Check: alle Infos up-to-date?
--->  http://www.scala-js.org/news/2015/02/05/announcing-scalajs-0.6.0/
--->  http://www.scala-js.org/news/2015/08/31/announcing-scalajs-0.6.5/
-
-
-
-
--------
-
-\section{Tools, IDE-Support, Öko-System}
-
-\subsection{Tools}
-
-\subsection{IDE-Support}
-
-\subsection{Debugging}
-
-\subsection{Dokumentation}
-
-\subsection{verwendete/ausprobierte/untersuchte Libraries}
 
 \subsubsection{Scala-js-dom}
+
+- statische Typen für die DOM-API, Erweiterungen
 
 http://scala-js.github.io/scala-js-dom/
 scalajs.dom.ext.Color
 
+\subsubsection{(scala-js-jquery)}
 
+- statische Typen für jQuery)
 
-- Unterschiede zu Scala  -->  http://www.scala-js.org/doc/semantics.html
+\subsubsection{ScalaTags}
 
-
-- verwendete Scala.js-Libraries
-
-ScalaTags
-=========
+- cross-kompilierende HTML-Templating-Library (mehr Typsicherheit für Tags)
 
 Motivation
 %  -->  http://lihaoyi.github.io/scalatags/#WhyScalatags
@@ -1233,6 +1240,45 @@ CSS/Style - wenn nötig können Attribute und Styles in Variablen gemerkt werden
 
 Vertiefung
 %  -->  http://lihaoyi.github.io/scalatags/#Internals
+
+
+\subsubsection{utest}
+
+- minimale cross-kompilierende Test-Library
+
+
+\subsubsection{(uPickle)}
+
+- cross-kompilierende Library zur Serialisierung)
+
+
+\subsubsection{autowire}
+
+- cross-kompilierende Library für statisch getypte Ajax-Aufrufe und RPCs
+
+\subsubsection{(spray)}
+
+- Sammlung von Libraries zur Entwicklung von REST/HTTP-basierten Webservices auf der Basis von Akka; beinhaltet spray-can, einen schnellen HTTP-Server)
+
+\subsubsection{(Scala.Rx)}
+
+- cross-kompilierende Change-Propagation-Library ("Änderungsausbreitung"))
+
+\subsubsection{Scala-Async}
+
+- Scala-Library zur einfacheren Handhabung von Asynchronität; funktioniert mit Scala.js -->  http://docs.scala-lang.org/sips/pending/async.html
+
+\subsubsection{Scala.js workbench}
+
+- sbt-Plugin zum automatischen Live-Neuladen des Browsers
+
+
+Check: alle Infos up-to-date?
+-->  http://www.scala-js.org/news/2015/02/05/announcing-scalajs-0.6.0/
+-->  http://www.scala-js.org/news/2015/08/31/announcing-scalajs-0.6.5/
+
+
+
 
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
@@ -1328,11 +1374,11 @@ Die folgende Software wird benötigt:
 	\item Scala  --  \url{http://www.scala-lang.org/}
 	\item sbt  --  \url{http://www.scala-sbt.org/}
 	\item git  --  \url{https://git-scm.com/}
-	\item node  --  \url{https://nodejs.org/en/}
-	\item phantomjs  --  \url{http://phantomjs.org/}
+	\item Node.js  --  \url{https://nodejs.org/en/}
+	\item PhantomJS  --  \url{http://phantomjs.org/}
 \end{itemize}
 
-Alle benötigten Programme sind auf dem beigefügten Datenträger enthalten, lassen sich alternativ auch unter der angegebenen Adresse beim Hersteller herunterladen. Bei Bedarf finden sich dort auch Installationsanleitungen, die allerdings nicht benötigt werden sollten. Für Windows existieren ausführbare Installationsprogramme, die selbsterklärend sind. Phantom.js muss nicht installiert werden; hier genügt es, den Inhalt der .zip-Datei ins gewünschte Programmverzeichnis zu entpacken.
+Alle benötigten Programme sind auf dem beigefügten Datenträger enthalten, lassen sich alternativ auch unter der angegebenen Adresse beim Hersteller herunterladen. Bei Bedarf finden sich dort auch Installationsanleitungen, die allerdings nicht benötigt werden sollten. Für Windows existieren ausführbare Installationsprogramme, die selbsterklärend sind. PhantomJS muss nicht installiert werden; hier genügt es, den Inhalt der .zip-Datei ins gewünschte Programmverzeichnis zu entpacken.
 
 Für alle Programme mit Ausnahme von git ist es unter Windows nötig, dem System den Installationspfad bekannt zu machen. Dies geschieht durch Setzen einer entsprechenden Umgebungsvariablen. Dazu muss der "`System"'-Dialog geöffnet werden, zum Beispiel durch die Tastenkombination \texttt{Windows-Taste + x}. Hier "`Erweiterte Systemeigenschaften"' mit Administrator-Rechten öffnen und die folgende Frage, ob Änderungen am System zugelassen werden sollen mit "`Ja"' bestätigen. Nun den Knopf "`Umgebungsvariablen"' betätigen, die Variable "`Path"' auswählen und auf "`Bearbeiten..."' klicken. Hier muss nun der Pfad der die ausführbare Datei für das entsprechende Programm enthält angegeben werden. Das ist für alle benötigten Programme mit Ausnahme von Node.js der Ordner \texttt{bin} im jeweiligen Programmverzeichnis. Dieser Pfad muss nun mit getrennt durch ein vorangestelltes Semikolon hinten an den ursprünglichen Wert angehängt werden. Für Java muss zum Beispiel \texttt{;C:\textbackslash{}Program Files\textbackslash{}Java\textbackslash{}jdk1.8.0\_51\textbackslash{}bin} angehängt werden.
 
@@ -1457,7 +1503,7 @@ dann in der HTML:
 Infos hier geben tieferen Einblick scheinen aber nicht auf dem aktuellsten Stand zu sein.
 \url{http://www.scala-js.org/doc/internals/compile-opt-pipeline.html}
 
-\cite{haoyi.HOS} ist hier wieder eine wertvolle und (als Mitarbeiter des Projekts) auch autorisierte Quelle -> es gibt weiter unten ein Kapitel "`The Command Line"' zum Thema.
+\cite[\#TheCommandLine]{haoyi.HOS} ist hier wieder eine wertvolle und (als Mitarbeiter des Projekts) auch autorisierte Quelle -> es gibt weiter unten ein Kapitel "`The Command Line"' zum Thema.
 
 \texttt{set scalaJSStage in Global := FastOptStage}
 
@@ -1470,13 +1516,13 @@ Infos hier geben tieferen Einblick scheinen aber nicht auf dem aktuellsten Stand
 
 mit vorangestellter  \texttt{\textasciitilde{}}, z.B. \texttt{\textasciitilde{}fastOptJS}
 
-\texttt{run} kompilierte Scala.js-Anwendung in einer JavaScript Laufzeit/VM (Rhino, Node.js oder Phantom.js) ausführen (main-Methode wird benötigt wie in -> Hallo-Welt)
+\texttt{run} kompilierte Scala.js-Anwendung in einer JavaScript Laufzeit/VM (Rhino, Node.js oder PhantomJS) ausführen (main-Methode wird benötigt wie in -> Hallo-Welt)
 	- läuft per default in der \textit{PreLinkStage}, verwendet Rhino
 		- für DOM-API: mit \texttt{jsDependencies += RuntimeDOM} in der \texttt{build.sbt} wird die DOM-API in Rhino emuliert
-	- schnellere Laufzeit (Node.js oder Phantom.js) durch \texttt{scalaJSStage in Global := FastOptStage} in der Build-Definition oder \texttt{set scalaJSStage in Global := FastOptStage} in der sbt-REPL (oder FullOptStage) aktiviert, standardmäßig Node.js
-		- für DOM-API: \texttt{jsDependencies += RuntimeDOM} aktiviert Phantom.js (langsamer als Node.js)
+	- schnellere Laufzeit (Node.js oder PhantomJS) durch \texttt{scalaJSStage in Global := FastOptStage} in der Build-Definition oder \texttt{set scalaJSStage in Global := FastOptStage} in der sbt-REPL (oder FullOptStage) aktiviert, standardmäßig Node.js
+		- für DOM-API: \texttt{jsDependencies += RuntimeDOM} aktiviert PhantomJS (langsamer als Node.js)
 
-\texttt{test} kompilierte Scala.js-Tests im \texttt{tests/}-Verzeichnis auf Rhino, Node.js oder Phantom.js ausführen
+\texttt{test} kompilierte Scala.js-Tests im \texttt{tests/}-Verzeichnis auf Rhino, Node.js oder PhantomJS ausführen
 	- erzeugt im Verzeichnis \texttt{target/test-reports/} Test-Reports in XML-Form
 
 \texttt{compile} kompiliert zu Scala.js Bytecode
@@ -1623,7 +1669,7 @@ wichtige Quelle
 \subsection{Untersuchungsziele}
 
 Ein minimales Setup in Form eines klassischen Hallo-Welt-Programms sollte zum Laufen gebracht werden. Anhand dieses Minimalbeispiels sollten dann bestimmte Grundbedingungen der Entwicklung mit Scala.js untersucht werden. Neben der Konfiguration selbst sollte als wichtiger Faktor für die alltägliche Entwicklungsarbeit die Zeit ermittelt werden, die für einen Build-Lauf benötigt wird. Auch die Größe der für die Auslieferung relevanten Kompilate sollte betrachtet werden, schließlich besteht ein unmittelbarer Zusammenhang zwischen der Größe der zu ladenden Datenmenge und der Ladezeit im Browser, weshalb sie eine wichtige Grundbedingung für die Zufriedenheit der Benutzer ist.
-Außerdem sollte von der  Sourcemap-Unterstützung Gebrauch gemacht werden und der 
+Außerdem sollte von der Sourcemap-Unterstützung Gebrauch gemacht werden und der ... HIER WEITER
 
 \subsection{Untersuchungskriterien}
 
@@ -1667,66 +1713,92 @@ Damit das kleine Programm im Browser ausgeführt werden kann, muß es in eine HT
 
 \lstinputlisting[language=HTML5, caption={HTML-Code zur Einbindung der Scala.js-Datei in eine Website.}, label={code:hello.html}]{listings/01hello-scalajs/index-dev.html}
 
-Der Scala.js-Compiler erzeugt, wie in Abschnitt~\ref{sec:compiler} beschrieben, je nach aufgerufenem Task, \texttt{fastOptJS } oder \texttt{fullOptJS}, JavaScript-Dateien, die an einem ensprechenden Suffix \texttt{-fastopt.js} oder \texttt{-opt.js} unterscheidbar sind. Hierbei empfehlen sich zwei getrennte HTML-Dateien, eine zur Entwicklung und eine für das fertige Produkt, in der die jeweilige Version der JavaScript-Datei verwendet wird.
+Hierbei empfehlen sich zwei getrennte HTML-Dateien, eine zur Entwicklung und eine für das fertige Produkt, in der die jeweils passenden JavaScript-Dateien zu verwenden sind. Wie in Abschnitt~\ref{sec:compiler} beschrieben, erzeugt der Scala.js-Compiler, je nach Task, \texttt{fastOptJS} oder \texttt{fullOptJS}, unterschiedliche JavaScript-Dateien, die anhand ihres Suffix, \texttt{-fastopt.js} beziehungsweise \texttt{-opt.js}, auseinandergehalten werden können.
 
 \subsection{Untersuchungsergebnisse und Bewertetung}
 
 \subsubsection{Konfigurationsaufwand}
 
-Um die gleiche Funktionalität mit reinem JavaScript und HTML zu erreichen genügt bereits eine einzige Datei mit wenigen Zeilen (Listing \ref{code:hello-js.html}).
+Im direkten Vergleich mit einem Programm in reinem JavaScript und HTML (Listing \ref{code:hello-js.html}):
 
 \lstinputlisting[language=HTML5, caption={HTML-Code mit eingebettetem JavaScript für ein Hallo-Welt-Programm.}, label={code:hello-js.html}]{listings/01hello-scalajs/hello-js-index.html}
 
-Im direkten Vergleich ist der Aufwand, der für ein Scala.js-Projekt betrieben werden muss deutlich größer: Benötigt werden Build-Definitionen und Plugins und eine ganze Projektstruktur. Andererseits schlägt sich der Gewinn, der sich daraus ergibt, typsicher in Scala für die Oberfläche zu programmieren, bei einem so trivialen Beispiel noch nicht nieder.
+ist der Aufwand, der für ein Scala.js-Projekt mit gleicher Funktionalität betrieben werden muss deutlich größer. Was sich dort auf eine einzige Datei mit wenigen Zeilen Code beschränkt, benötigt hier Build-Definitionen, Plugins und eine ganze Projektstruktur. Andererseits schlägt sich der Gewinn, der sich daraus ergibt, typsicher in Scala für die Oberfläche zu programmieren, bei einem so trivialen Beispiel noch nicht nieder.
 
 \subsubsection{Performance}
 
-Geschwindigkeit des Build-Laufs und Größe der Kompilate
+Hier wurde die Geschwindigkeit des Build-Laufs und die Größe der Kompilate untersucht.
 
 Es wurde Windows 8.1 Pro auf einem System mit 64-Bit Intel Core i7-3517U Prozessor mit einem Takt von 1,9 GHz, 4 GB RAM und einem SSD-Laufwerk verwendet.
 
+Die Ergebnisse der Untersuchung sind in Tabelle \ref{table:compiler-performance1} und \ref{table:compiler-performance2} dargestellt.
 
+\medskip
 
-| - |
-| **t1** / t2 / t3 / **t4** / tn / tc // **s1** / s2 |
-**t1** = Dauer des ersten Compilerlaufs (target-Ordner existiert noch nicht)
-**t2** = zweiter Compilerlauf nach einem `clean`
-**t3** = dritter Compilerlauf nach einem `clean`
-**t4** = dritter Compilerlauf nach einem `clean`
-**tn** = ab zweitem Compilerlauf ohne Code-Änderungen ohne `clean`
-**tc** = ab zweitem Compilerlauf mit Code-Änderungen ohne `clean`
-**s0** = Größe der erzeugten Dateien ohne Sourcemaps
-**s1** = Größe der erzeugten Dateien
-**sm** = Größe der erzeugten Sourcemaps-Datei
-**sd** = Größe der erzeugten Datei, die die JavaScript-Dependencies enthält
+\begin{table}[!h]
+\begin{tabular}{|l|r|r|r|r|r|r||r|r|r|r|}
+\hline           & t1   & t2   & t3   & t4   & tc            & tn    & s0             & s1     & sm    & sd    \\ 
+\hline fullOptJS & 10 s &  4 s &  3 s &  3 s &          2 s  & 0-1 s & \textbf{20 kB} &  77 kB & 57 kB &  0 kB \\ 
+\hline fastOptJS &  7 s &  3 s &  3 s &  2 s &  \textbf{2 s} & 0-1 s &        101 kB  & 193 kB & 92 kB &  0 kB \\ 
+\hline 
+\end{tabular} 
+\caption{Compiler-Performance für ein minimales Hallo-Welt-Programm (\texttt{hello-scalajs}).}
+\label{table:compiler-performance1}
+\end{table}
 
+\medskip
 
-== Schema
+\begin{table}[!h]
+\begin{tabular}{|l|r|r|r|r|r|r||r|r|r|r|}
+\hline           & t1   & t2   & t3   & t4   & tc            & tn    & s0             & s1     & sm     & sd     \\ 
+\hline fullOptJS & 15 s &  7 s &  5 s &  5 s &          4 s  & 0-1 s & \textbf{57 kB} & 230 kB & 173 kB &   0 kB \\ 
+\hline fastOptJS & 11 s &  5 s &  4 s &  4 s &  \textbf{3 s} & 0-1 s &        277 kB  & 520 kB & 243 kB &   0 kB \\ 
+\hline test      & 35 s & 24 s & 24 s & 22 s &         19 s  &  16 s &        1,6 MB  & 2,8 MB & 1,2 MB & 241 kB \\ 
+\hline 
+\end{tabular} 
+\caption{Compiler-Performance für ein erweitertes Hallo-Welt-Programm mit Tests (\texttt{hello-scalajs2}).}
+\label{table:compiler-performance2}
+\end{table}
 
-Anscheinend gilt:
+\medskip
 
-| - |
-| tn <= tc <= t2 |
+Die verwendeten Abkürzungen sind in der Legende \ref{table:compiler-performance-legend} aufgeschlüsselt.
 
-`test` wurde immer in Verbindung mit `fastOpJS` verwendet (dazu in der build.sbt: `scalaJSStage in Global := FastOptStage`). Außerdem wurde zwischen den Testläufen nie `clean` aufgerufen. Für den ersten Testlauf wurde der target-Ordner gelöscht.
+\medskip
 
-== minimales Hallo-Welt: hello-scalajs ==
+\begin{table}[!h]
+\begin{tabular}{|l|l|}
+\hline t1 & Dauer des 1. Compilerlaufs (target-Ordner existiert noch nicht) \\ 
+\hline t2 & Dauer des 2. Compilerlauf nach einem \texttt{clean} \\ 
+\hline t3 & Dauer des 3. Compilerlauf nach einem \texttt{clean} \\ 
+\hline t4 & Dauer des 4. Compilerlauf nach einem \texttt{clean} \\ 
+\hline tc & Dauer ab 2. Compilerlauf mit Code-Änderungen ohne \texttt{clean} \\ 
+\hline tn & Dauer ab 2. Compilerlauf ohne Code-Änderungen ohne \texttt{clean} \\ 
+\hline s0 & Größe der erzeugten Dateien ohne Sourcemaps \\ 
+\hline s1 & Größe der erzeugten Dateien mit Sourcemaps \\ 
+\hline sm & Größe der erzeugten Sourcemaps-Datei \\ 
+\hline sd & Größe der erzeugten Datei, die die JavaScript-Dependencies enthält \\ 
+\hline 
+\end{tabular} 
+\caption{Legende zu \ref{table:compiler-performance1} und \ref{table:compiler-performance2}.}
+\label{table:compiler-performance-legend}
+\end{table}
 
-| | **t1** | **t2** | t3 | **t4** | **tc** | tn | **s0** | s1 | sm | sd |
-| | **1. Lauf** | 2. Lauf nach clean | 3. Lauf nach clean | **4. Lauf nach clean** | **Lauf nach Code-Änderungen, kein clean** | Lauf ohne Code-Änderungen, kein clean | Größe ohne Sourcemaps | Größe komplett | Größe der Sourcemaps | Größe der  JS-Dependencies |
-| - | -:| -:| -:| -:| -:| -:| -:| -:| -:| -:|
-| fullOptJS | **10 s** | 4 s | 3 s | 3 s | **2 s** | 0-1 s |  **20 KB** |  77 KB | 57 KB | 0 KB |
-| fastOptJS |  **7 s** | 3 s | 3 s | 2 s | **2 s** | 0-1 s | **101 KB** | 193 KB | 92 KB | 0 KB |
+\medskip
 
+Für die ermittelten Dateigrößen wurde der erzeugte Bytecode (die \texttt{.class}- und \texttt{.sjsir}-Dateien) nicht mitgerechnet.
 
+\texttt{test} wurde immer in Verbindung mit in der FastOpt-Stage mit PhantomJS verwendet. Zwischen den Testläufen wurde nie \texttt{clean} aufgerufen. Für den ersten Testlauf existierte kein target-Ordner beziehungsweise dieser wurde zuvor gelöscht.
 
-Größe der Kompilate
-- noch relativ groß (pure HTML mit embedded JS: 187 Bytes)
-- großer Teil davon ist Scala-Standardbibliothek, deshalb wird diese Größe nicht etwa proportional sondern langsamer mit wachsender Code-Basis wachsen (Li Haoyi: ca. 2000 Zeilen Anwendung 288 kB; eigenes client-server-Bsp.: TODO!)
-- die meisten Server übertragen ihre Daten gzip-komprimiert (laut Li Haoyi reduziert sein Beispiel auf 28 kB, also um ein Zehntel)
-\cite{haoyi.HOS}
+Es wird deutlich, dass sich der Compiler ab dem zweiten Lauf "`stabilisiert"' und selbst nach einem \textbf{clean} deutlich schneller fertig ist als beim ersten Lauf. Der für den Entwicklungsalltag häufiste Fall dürfte wohl eine Build nach Code-Änderungen ohne \textbf{clean} sein. Dafür sind 3 Sekunden eine vertretbare Zeit. Bei einem weniger trivialen Beispiel mit mehr Code wachsen diese Zeiten, sind bleiben aber nach den Erfahrungen im Rahmen dieser Arbeit in einem vertretbaren Rahmen und bewegen sich jedenfalls in der Regel unter 10 Sekunden (? TODO: CHECK --> clientserver oder stringanalyzer).
 
+Es ist auch zu erkennen, dass Testläufe, selbst ohne Code-Änderungen nicht besonders schnell sind. In den insgesamt 7 Tests werden 25 Assertions verwendet.\footnote{
+	Im Code stehen 13 Assertions, davon werden 3 jeweils in einer Schleife 5-mal aufgerufen.}
+Hier darf gemutmaßt werden, ob auch dabei auch die Ausführungsgeschwindigkeit von PhantomJS eine Rolle spielt. Schnellere Testläufe wären hier in jedem Fall wünschenswert. Andererseits fallen etwas langsamere Tests weniger ins Gewicht, wenn man 
+im kontinuierlichen Modus arbeitet (durch vorangestellte \texttt{\textasciitilde} zu erreichen, also für Tests mit dem Kommando \texttt{\textasciitilde{}test}).
 
+Die Größe der Kompilate übertrifft reines HTML/JavaScript (187 Bytes) um einen Faktor von etwa 100. Andererseits ist dieser Vergleich nicht ganz fair. Ein Großer Teil der von Scala.js generierten JavaScript-Datei ist die Scala-Standardbibliothek.
+Der Optimierer und der Google Closure Compiler reduzieren die Code-Menge (durch Techniken wie \textit{dead code elimination} oder die aggressive Verkürzung von Variablennamen) schon sehr stark. Die Größe von Dateien voll optimiertem Scala.js-generierten JavaScript-Dateien wird deshalb mit wachsender Code-Basis des eigenen Software-Projekts nicht etwa proportional, sondern langsamer anwachsen. Li Haoyi verweist zum Beispiel auf ein eigenes Projekt mit einem Umfang von ca. 2000 Zeilen Code, das voll optimiert noch 288 kB groß ist. (TODO! -> eigenes client-server-Bsp.) Das Problem wird weiter relativiert durch die Tatsache, dass die meisten Server gzip-komprimiert übertragen ihre Daten, was laut Haoyi die Datenlast auf etwa ein Zehntel verkleinert.\cite[\#BlobSize]{haoyi.HOS}
 
 \subsubsection{Wartbarkeit: Debugging-Qualitäten}
 
@@ -1753,6 +1825,7 @@ IntelliJ angenehmer
 \section{hello-scalajs2, hello-scalatags -- leicht erweiterte Minimalbeispiel (3)}
 
 \subsection{Untersuchungsziele}
+
 hello-scalajs2:
 Hallo Welt im Browser-Fenster
 Interaktion im Browser-Fenster
@@ -1775,19 +1848,6 @@ kleine Tests, die ... beweisen
 
 
 \subsection{Untersuchungsergebnisse}
-
-Performance
-	Compiler
-	Testläufe
-	
-== Hallo-Welt-2: hello-scalajs2 ==
-
-| | **t1** | **t2** | t3 | **t4** | **tc** | tn | **s0** | s1 | sm | sd |
-| | **1. Lauf** | 2. Lauf nach clean | 3. Lauf nach clean | **4. Lauf nach clean** | **Lauf nach Code-Änderungen, kein clean** | Lauf ohne Code-Änderungen, kein clean | Größe ohne Sourcemaps | Größe komplett | Größe der Sourcemaps | Größe der  JS-Dependencies |
-| - | -:| -:| -:| -:| -:| -:| -:| -:| -:| -:|
-| fullOptJS | **15 s** |  7 s |  5 s |  5 s |  **4 s** | 0-1 s | **57 KB** | 230 KB | 173 KB |   0 KB |
-| fastOptJS | **11 s** |  5 s |  4 s |  4 s |  **3 s** | 0-1 s |  277 KB   | 520 KB | 243 KB |   0 KB |
-| test      | **35 s** | 24 s | 24 s | 22 s | **19 s** |  16 s |  1,6 MB   | 2,8 MB | 1,2 MB | 241 KB |
 
 Testbarkeit
 beschreiben
@@ -1814,18 +1874,145 @@ Bibliotheken einbinden und verwenden einfach, wenn Fassade vorhanden
 
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-\section{scalajs-showcase - Canvas, Timer, Events (3)}
+\section{canvas-frenzy - Canvas, Timer, Events (3)}
 
 \subsection{Untersuchungsziele}
 
-****** HIER
+Bei diesem Beispiel ging es einerseits um die Erprobung des HTML5-Canvas und der DOM-API mit Scala.js. Es sollten Timer-gesteuerte Aktionen mithilfe der Methoden des \texttt{WindowTimers}-Interface und das Arbeiten mit Event-Handlern für Maus- und Keyboard-Events ausprobiert werden. Hierbei sollte einerseits geklärt werden, ob und wie solche Standardtechniken der Oberfächenprogrammierung mit Scala.js machbar sind, andererseits sollte untersucht werden, ob die Entwicklungsarbeit dadurch sogar erleichtert wird, oder ob das Gegenteil der Fall ist.
 
+Gleichzeitig wurde die Scala.js Workbench im produktiven Einsatz ausprobiert und dabei auf ihre Nützlichkeit hin geprüft.
 
 \subsection{Untersuchungskriterien}
+
+\begin{enumerate}
+	\item Umsetzbarkeit aller Anforderungen
+	\item Leichtigkeit der Implentierung
+	\item Nützlichkeit
+\end{enumerate}
+
 \subsection{Kurzbeschreibung des Beispielprogramms}
+
+Die Anwendung erzeugt automatisch einfache Bilder indem sie zufällig Rechtecke oder Kreise von zeichnet. Zufällig sind dabei auch die Position, die Abmessungen, die Farbe und Transparenz. Bei den Abmessungen sorgt ein Mechanismus dafür, dass die Werte nicht zu abrupt variieren, sondern sich ein etwas ruhigerer Eindruck ergibt. Dazu werden die Zufallswerte jeweils durch lineare Interpolation mit dem letzten Wert geglättet. Das Ergebnis ist in den Abbildungen \ref{fig:frenzy1} und \ref{fig:frenzy2} zu sehen.
+
+Mit der Maus kann bei gedrückt gehaltener linker Maustaste auf den Canvas-Bereich gezeichnet werden. Dabei entsteht eine 
+wird ein zufälliger Farbverlauf erzeugt (siehe Abb. \ref{fig:frenzy3} und \ref{fig:frenzy4}).
+
+\begin{figure}[h]
+	\centering
+	\subfloat[][Kurz nach Start.]{
+		\includegraphics[width=0.46\textwidth]{03canvas-frenzy/frenzy-snap01}
+		\label{fig:frenzy1}
+	}
+	\quad
+	\subfloat[][Nachdem etwas Zeit vergangen ist.]{
+		\includegraphics[width=0.46\textwidth]{03canvas-frenzy/frenzy-snap02}
+		\label{fig:frenzy2}
+	}
+	\qquad
+	\subfloat[][Zeichnen mit Gradienten-Stift bei angehaltenem Auto-Zeichnen.]{
+		\includegraphics[width=0.46\textwidth]{03canvas-frenzy/frenzy-snap03}
+		\label{fig:frenzy3}
+	}
+	\quad
+	\subfloat[][Auto-Zeichnen und Gradienten-Stift.]{
+		\includegraphics[width=0.46\textwidth]{03canvas-frenzy/frenzy-snap04}
+		\label{fig:frenzy4}
+	}
+	\caption{Screenshots der Canvas-Beispielanwendung. (Quelle: eigene Anfertigung)}
+	\label{fig:frenzy}
+\end{figure}
+
+Die Anwendung lässt sich durch die Tastatur steuern. Das automatische Zeichnen kann durch Betätigen der Leertaste angehalten und wieder gestartet werden. Durch Betätigen der Escape-Taste wird die Zeichenfläche geleert. Die Geschwindigkeit, in der neue Elemente gezeichnet werden durch die Pfeil-Tasten gesteuert werden: "`nach oben"' beschleunigt das Neuzeichnen, "`nach unten"' verlangsamt es.
+
+Die Größe der Zeichenfläche wird jeweils an die aktuelle Größe des Browserfensters neu angepasst. Allerdings wird dabei auch die Zeichenfläche geleert.
+
+Eine Schwäche der aktuellen Implementierung ist es, dass die beim Zeichnen mit der Maus entstehende Linie bei langsamer Mausbewegung noch nicht sehr glatt erscheint. Das hängt damit zusammen, dass für jede registrierte Mausbewegung, die als MouseEvent verarbeitet werden kann, eine Teillinie gezeichnet wird. Diese ist jeweils die Verbindungslinie zwischen der Mausposition des vorigen mit der des aktuellen MouseEvent. Zwischen diesen Teillinie entsteht, wenn sie nicht in exakt dieselbe Richtung weisen, eine Lücke.
+
+Ein anderer bekannter Fehler ist das ungewöhnliche Verhalten der Zeichenfläche beim Zoomen im Browser.
+
+
 \subsection{Untersuchungsergebnisse}
+
+\subsubsection{Umsetzbarkeit aller Anforderungen}
+
+Alle geplanten Anforderungen ließen sich umsetzen: das Zeichnen auf den Canvas, der Zugriff auf die DOM-API, timergesteuerte Ausführung und die Verwendung von Event-Handlern
+
+
+\subsubsection{Leichtigkeit der Implentierung}
+
+Canvas:
+	Cast nötig für Typsicherheit, dann werden Methoden des \texttt{CanvasRenderingContext2D} von der IDE vorgeschlagen
+	ohne Cast: ctx ist vom Typ js.Dynamic, Methodenaufrufe gehen, aber keine IDE-Unterstützung und kein Schutz vor Tippfehlern oder Aufruf nicht vorhandener Methoden -> führt dann zu Laufzeitfehlern, deshalb lieber typsicher
+\begin{lstlisting}[language=Scala]
+val canvas = dom.document.createElement("canvas").asInstanceOf[html.Canvas]
+val ctx = canvas.getContext("2d").asInstanceOf[dom.CanvasRenderingContext2D]
+ctx.fillRect(x, y, width, heigth)
+\end{lstlisting}
+	sonst wie mit JavaScript auch verwenden
+	
+	-> Pro Typsicherheit -> weniger Fehleranfällige Software, komfortableres Editieren durch IDE-Unterstützung
+	-> Contra (?) bzw. Achtung ->  man muss durch Disziplin selbst darauf achten, dass man js.Dynamic vermeidet und ggf. castet, ist aber selten nötig (-> andere Beispiele???)
+
+
+\subsubsection{Nützlichkeit}
+
+>>Scala-js-dom
+
+hinzufügen in der build.sbt - zack, fertig:
+
+\begin{lstlisting}
+libraryDependencies ++= Seq([...], "org.scala-js" %%% "scalajs-dom" % "0.8.0")
+\end{lstlisting}
+
+
+>>Gewinn durch Möglichkeit der Verwendung von Scala
+
+
+größere Abstraktion beim Programmieren erleichtert, es wird leichter Teile "`herauszuziehen"'
+	- z.B. Timer:
+		timer.start() statt direkt:
+		dom.setInterval(() => action, interval)
+		
+		dadurch knappe und schnell verständlicher Code:
+\begin{lstlisting}[language=Scala]
+dom.document.onkeyup = { (evt: dom.KeyboardEvent) => evt.keyCode match {
+  case KeyCode.down =>   timer.incr()
+  [...]
+}}
+\end{lstlisting}
+
+		Details in Timer verborgen:
+		
+\begin{lstlisting}[language=Scala]
+class Timer(var interval: Int, action: => Unit) {
+  var timerId = -1
+  val inc = 2
+
+  def start() =
+     timerId = dom.setInterval(() => action, interval)
+   
+  def incr() = {
+    interval *= inc
+    updateInterval()
+  }
+
+  private def updateInterval() = {
+    dom.clearInterval(timerId)
+    timerId = dom.setInterval(() => action, interval)
+  }
+}
+\end{lstlisting}
+
+
+>>Workbench-Plugin
+
+
+
 \subsection{Schwierigkeiten}
+
 \subsection{Erfolge}
+
+
 \subsection{Bewertung: differenziert oder boolsch mit Begründung; Fazit aus Schwierigkeiten und Erfolgen}
 
 
@@ -1875,7 +2062,7 @@ Kommunikation mit Objekten (?) außerhalb des Web-Clients wie z.B. Webservices
 \subsection{Untersuchungsziele}
 \subsection{Untersuchungskriterien}
 \subsection{Kurzbeschreibung des Beispielprogramms}
-vgl. Using Web Services \cite{haoyi.HOS}
+vgl. Using Web Services \cite[\#UsingWebServices]{haoyi.HOS}
 \subsection{Untersuchungsergebnisse}
 \subsection{Schwierigkeiten}
 \subsection{Erfolge}
@@ -1920,7 +2107,7 @@ entsprechend Code-Vorschlägen von Li Haoy\cite{haoyi.HOS}
 \subsection{Bewertung: differenziert oder boolsch mit Begründung; Fazit aus Schwierigkeiten und Erfolgen}
 - muss nicht zwei Libraries für Client und Server finden
 - leichter nur eine (!) Library (jeweils für Templating und Serialisierung) zu lernen, die in Client und Server verwendet werden kann
-\cite{haoyi.HOS}
+\cite[\#SharingCode]{haoyi.HOS}
 - relativ einfache statisch typisierte RPCs mit autowire
 
 
@@ -1978,6 +2165,31 @@ Schwächen
   (- Debugging schwieriger???)
   - Support für einige Libraries
   - Performance
+  
+Unbequemlichkeiten
+  - Auslieferung von Produktionscode noch etwas mühsam: kompiliert nach
+\begin{lstlisting}
+target/
+  +- scala-2.11/
+  +- [...]-opt.js
+  +- [...]-jsdeps.min.js
+  +- classes/
+      +- index.html
+      +- [...].css
+\end{lstlisting}
+  - muss per Hand extrahiert werden
+  - wenn andere Ordnerstruktur gewünscht ist, z.B.:
+\begin{lstlisting}
+webapp/
+ +- js/
+ |   +- [...]-opt.js
+ |   +- [...]-jsdeps.min.js
+ +- css/
+ |   +- [...].css
+ +- index.html
+\end{lstlisting}
+  ... dann müssen die Pfade in der index.html entsprechend geändert werden
+  -> Lösung wären hier entsprechende Export-Skripte; bzw. denkbar, dass in Zukunft ein entsprechendes Tool oder sbt-Plugin (?) angeboten wird
 
 
 
@@ -2141,7 +2353,10 @@ Some HTML code with line numbers:
 \listoffigures
 
 % TABELLENVERZEICHNIS ERSTELLEN
-%\listoftables
+\listoftables
+
+% QUEELLCODEVERZEIHCHNIS ERSTELLEN
+\lstlistoflistings
 
 % LITERATURVERZEICHNIS ERSTELLEN
 %\begin{thebibliography}{xxxxxxxxxxxxxxxxxxx}
@@ -2168,8 +2383,6 @@ Some HTML code with line numbers:
 % Bibliographie mit biblatex/biber
 \printbibliography
 
-
-\lstlistoflistings
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
