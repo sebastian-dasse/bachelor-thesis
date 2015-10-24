@@ -33,9 +33,10 @@
 \usepackage{hyperref}									% für Hyperlinks
 \usepackage{url}										% um lange URLs darzustellen
 %\usepackage{amsmath}									% für mathematische Formeln
-%\usepackage{subfigure}									% um Bilder nebeneinander zu plazieren
+%\usepackage{subfigure}									% eine Möglichkeit, um Bilder nebeneinander zu plazieren
 %\usepackage{subcaption}
-\usepackage{subfig}
+\usepackage{subfig}										% um Bilder nebeneinander zu plazieren
+\usepackage[font=footnotesize]{caption}					% nötig, um die Font-Größe für Captions festzulegen
 
 
 % Bibliographie mit biblatex/biber
@@ -123,7 +124,7 @@
   backgroundcolor=
 }
 \lstdefinestyle{basic}{
-  basicstyle={\ttfamily\singlespacing\small},
+  basicstyle={\ttfamily\singlespacing\footnotesize}, 	% andere Font-Größen: \scriptsize \footnotesize \small
   showstringspaces=false,
   breaklines=true,
   breakatwhitespace=true,
@@ -979,7 +980,7 @@ Interop
 - undefined behaviour
 
 
-> Typkorrespondenzen: "`primitive"' Scala-Typen sind unter der Haube primitive JavaScript-Typen\cite{doeraene2014.WHB} (<- auch Quelle für Tabellendaten):
+> Typkorrespondenzen: "`primitive"' Scala-Typen sind primitive JavaScript-Typen\cite{doeraene2014.WHB} (<- auch Quelle für Tabellendaten):
 %siehe auch -->  \url{http://www.sebnozzi.com/229/pass-simple-values-js-functions/}
 
 \medskip
@@ -999,8 +1000,12 @@ Interop
 
 \medskip
 
+diese Typen werden direkt entsptrechend dieser Korrespondenz übersetzt
 
-- es gibt auch Nicht-Korrespondenzen
+
+- es gibt auch Nicht-Korrespondenzen:
+
+ein Scala-Function "`ist"' keine JavaScript-Function, dafür existieren implizite Konvertierungen (in beide Richtungen) und Typen js.Function-Typen
 
 
 js.Array[T] <--> mutable.Seq[T]
@@ -1105,14 +1110,33 @@ def main(pre: html.Pre): Unit = {
 - Typen wie Int oder String können normal mit Scala-Sematik verwerdet werden, obwohl hinter der Kulissen JavaScript sind (durch implizite Konvertierung durch Scala.js)
 
 
+- Werte die von Fassaden-Typen geliefert werden, werden vom Compiler systematisch entsprechend ihrer Signatur gecastet, d.h. ihr Typ ist danach bekannt
 
-- nahezu JavaScript in Scala schreiben möglich (aber zu vermeiden) mit: dynamischer Zugriff auf JavaScript über dynamisch typisierte Referenz auf den globalen Scope mit js.Dynamic.global vom Typ js.Dynamic:
+\begin{lstlisting}[language=Scala]
+class Foo extends js.Any {
+  def bar: Boolean = js.native
+}
+
+val foo = new Foo
+
+val baz = foo.bar
+\end{lstlisting}
+
+- dadurch, dass der Typ nach diesem Cast als bekannt angenommen wird, kann Scala.js-Code bei der Übersetzung optimiert werden
+- d.h. aber auch: wenn die eigentliche JavaScript-Implementierung kein Boolean zurückgibt -> undefiniertes Verhalten (keine Exception)
+\cite{doeraene2015.SSP}
+
+
+
+- wenn möglich, vermeiden, aber manchmal ist es vielleicht nötig, nach JavaScript-artig, dynamisch zu typisieren, typischerweise um auf JavaScript-API zuzugreifen, für die noch keine Scala.js-Fassade existiert: ->
+- nahezu JavaScript in Scala schreiben möglich mit: dynamischer Zugriff auf JavaScript über dynamisch typisierte Referenz auf den globalen Scope mit js.Dynamic.global vom Typ js.Dynamic:
 \begin{lstlisting}[language=Scala]
 val doc = js.Dynamic.global.document
 val foo = doc.getElementById("foo")
 val div = document.createElement("div")
 \end{lstlisting}
 dabei sind doc, foo und div vom Typ js.Dynamic, der von js.Any erbt
+
 
 Instanzen von dynamischen Typen können auch erzeugt werden:
 \begin{lstlisting}[language=Scala]
@@ -1496,6 +1520,25 @@ Check: alle Infos up-to-date?
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 \chapter{Methodik}
 
+>>Ziele
+
+Verwendungsweise(?) - wie funktioniert es in der Anwendung
+Konfiguration
+	wie?
+	Aufwand
+Performance
+	Build: Compiler, Tests
+Wartbarkeit, Entwicklerfreundlichkeit
+	Debugging-Qualitäten
+	Code-Qualität
+	Entwicklungsgeschwindigkeit (?)
+	Dokumentation
+Nützlichkeit: Umsetzbarkeit von Anforderungen der Web-Entwicklung
+	DOM
+	Events
+	Canvas
+	AJAX
+
 \section{Kriterien der Evaluierung}
 
 %\subsection{anwenderbezogen}
@@ -1582,7 +1625,7 @@ Um die Installation erfolgreich durchführen zu können ist eine gute Internetve
 Die folgende Software wird benötigt:
 
 \begin{itemize}
-	\item Java Development Kit (JDK) 8\footnote{ggf. genügt auch ein JRE}  --  \url{www.oracle.com/technetwork/java/javase/downloads/}
+	\item Java Development Kit (JDK) 8\footnote{ggf. genügt auch ein JRE}  --  \url{www.oracle.com/technetwork/java/javase/}
 	\item Scala  --  \url{http://www.scala-lang.org/}
 	\item sbt  --  \url{http://www.scala-sbt.org/}
 	\item git  --  \url{https://git-scm.com/}
@@ -1727,7 +1770,7 @@ wichtige Quelle
 
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-\section{Ein Minimalbeispiel: hello-scalajs (3)}
+\section{Hello Scala.js: Ein Minimalbeispiel}
 
 %lose orientiert an  -->  http://www.scala-js.org/doc/tutorial.html
 
@@ -1741,12 +1784,24 @@ wichtige Quelle
 %
 %\section{Beurteilung hinsichtlich der Evaluierungskriterien}
 
-\subsection{Untersuchungsziele}
+\subsection{Ziel der Untersuchung}
 
 Ein minimales Setup in Form eines klassischen Hallo-Welt-Programms sollte zum Laufen gebracht werden. Anhand dieses Minimalbeispiels sollten dann bestimmte Grundbedingungen der Entwicklung mit Scala.js untersucht werden. Neben der Konfiguration selbst sollte als wichtiger Faktor für die alltägliche Entwicklungsarbeit die Zeit ermittelt werden, die für einen Build-Lauf benötigt wird. Auch die Größe der für die Auslieferung relevanten Kompilate sollte betrachtet werden, schließlich besteht ein unmittelbarer Zusammenhang zwischen der Größe der zu ladenden Datenmenge und der Ladezeit im Browser, weshalb sie eine wichtige Grundbedingung für die Zufriedenheit der Benutzer ist.
 Außerdem sollte von der Sourcemap-Unterstützung Gebrauch gemacht werden und der ... HIER WEITER
 
-\subsection{Untersuchungskriterien}
+hello-scalajs2:
+In einer Erweiterung dieses Minimal-Beispiels, sollte eine Ausgabe ins Browser-Fenster gemacht werden. Zusätzlich sollte Benutzerinteraktion mit der Oberfläche mittels Buttons probiert werden. Als Reaktion auf Betätigung des einen Buttons sollte eine Ausgabe auf die Browser-Konsole, beim anderen eine Textänderung im Browser-Fenster erfolgen. Schließlich sollte die Testbarkeit solcher Oberflächen-Elemente geklärt werden.
+
+hello-scalajs2:
+Hallo Welt im Browser-Fenster
+Interaktion im Browser-Fenster
+Möglichkeit von Tests
+Verwendung von jQuery (für Tests)
+Dateigröße
+Turnaround-Zeiten (=Durchlauf-Zeiten)
+
+
+\subsection{Kriterien der Untersuchung}
 
 \begin{enumerate}
 	\item Konfigurationsaufwand
@@ -1755,7 +1810,11 @@ Außerdem sollte von der Sourcemap-Unterstützung Gebrauch gemacht werden und de
 		\item Compiler-Geschwindigkeit
 		\item Größe der Kompilate
 	\end{enumerate}
-	\item Wartbarkeit: Debugging-Qualitäten
+	\item Wartbarkeit: 
+		\begin{enumerate}
+			\item Debugging-Qualitäten
+			\item Testbarkeit
+		\end{enumerate}
 \end{enumerate}
 
 \subsection{Kurzbeschreibung des Beispielprogramms}
@@ -1790,7 +1849,7 @@ Damit das kleine Programm im Browser ausgeführt werden kann, muß es in eine HT
 
 Hierbei empfehlen sich zwei getrennte HTML-Dateien, eine zur Entwicklung und eine für das fertige Produkt, in der die jeweils passenden JavaScript-Dateien zu verwenden sind. Wie in Abschnitt~\ref{sec:compiler} beschrieben, erzeugt der Scala.js-Compiler, je nach Task, \texttt{fastOptJS} oder \texttt{fullOptJS}, unterschiedliche JavaScript-Dateien, die anhand ihres Suffix, \texttt{-fastopt.js} beziehungsweise \texttt{-opt.js}, auseinandergehalten werden können.
 
-\subsection{Untersuchungsergebnisse und Bewertetung}
+\subsection{Ergebnisse der Untersuchung und Bewertung}
 
 \subsubsection{Konfigurationsaufwand}
 
@@ -1806,7 +1865,7 @@ Hier wurde die Geschwindigkeit des Build-Laufs und die Größe der Kompilate unt
 
 Es wurde Windows 8.1 Pro auf einem System mit 64-Bit Intel Core i7-3517U Prozessor mit einem Takt von 1,9 GHz, 4 GB RAM und einem SSD-Laufwerk verwendet.
 
-Die Ergebnisse der Untersuchung sind in Tabelle \ref{table:compiler-performance1} und \ref{table:compiler-performance2} dargestellt.
+Die Ergebnisse der Untersuchung sind in den Tabellen \ref{table:compiler-performance1} und \ref{table:compiler-performance2} dargestellt.
 
 \medskip
 
@@ -1817,7 +1876,7 @@ Die Ergebnisse der Untersuchung sind in Tabelle \ref{table:compiler-performance1
 \hline fastOptJS &  7 s &  3 s &  3 s &  2 s &  \textbf{2 s} & 0-1 s &        101 kB  & 193 kB & 92 kB &  0 kB \\ 
 \hline 
 \end{tabular} 
-\caption{Compiler-Performance für ein minimales Hallo-Welt-Programm (\texttt{hello-scalajs}).}
+\caption{Build-Performance für ein minimales Hallo-Welt-Programm.}
 \label{table:compiler-performance1}
 \end{table}
 
@@ -1831,7 +1890,7 @@ Die Ergebnisse der Untersuchung sind in Tabelle \ref{table:compiler-performance1
 \hline test      & 35 s & 24 s & 24 s & 22 s &         19 s  &  16 s &        1,6 MB  & 2,8 MB & 1,2 MB & 241 kB \\ 
 \hline 
 \end{tabular} 
-\caption{Compiler-Performance für ein erweitertes Hallo-Welt-Programm mit Tests (\texttt{hello-scalajs2}).}
+\caption{Build-Performance für ein leicht erweitertes Hallo-Welt-Programm mit Tests.}
 \label{table:compiler-performance2}
 \end{table}
 
@@ -1863,23 +1922,60 @@ Die verwendeten Abkürzungen sind in der Legende \ref{table:compiler-performance
 
 Für die ermittelten Dateigrößen wurde der erzeugte Bytecode (die \texttt{.class}- und \texttt{.sjsir}-Dateien) nicht mitgerechnet.
 
-\texttt{test} wurde immer in Verbindung mit in der FastOpt-Stage mit PhantomJS verwendet. Zwischen den Testläufen wurde nie \texttt{clean} aufgerufen. Für den ersten Testlauf existierte kein target-Ordner beziehungsweise dieser wurde zuvor gelöscht.
+\texttt{test} wurde immer in der FastOpt-Stage mit PhantomJS verwendet. Zwischen den Testläufen wurde nie \texttt{clean} aufgerufen. Für den ersten Testlauf existierte kein target-Ordner beziehungsweise dieser wurde zuvor gelöscht.
 
-Es wird deutlich, dass sich der Compiler ab dem zweiten Lauf "`stabilisiert"' und selbst nach einem \textbf{clean} deutlich schneller fertig ist als beim ersten Lauf. Der für den Entwicklungsalltag häufiste Fall dürfte wohl eine Build nach Code-Änderungen ohne \textbf{clean} sein. Dafür sind 3 Sekunden eine vertretbare Zeit. Bei einem weniger trivialen Beispiel mit mehr Code wachsen diese Zeiten, sind bleiben aber nach den Erfahrungen im Rahmen dieser Arbeit in einem vertretbaren Rahmen und bewegen sich jedenfalls in der Regel unter 10 Sekunden (? TODO: CHECK --> clientserver oder stringanalyzer).
+Es wird deutlich, dass sich der Compiler ab dem zweiten Lauf "`stabilisiert"' und selbst nach einem \textbf{clean} deutlich schneller fertig ist als beim ersten Lauf. Der für den Entwicklungsalltag häufiste Fall dürfte wohl ein Build nach Code-Änderungen ohne \textbf{clean} sein. Dafür sind 3 Sekunden eine vertretbare Zeit. Bei einem weniger trivialen Beispiel mit mehr Code wachsen diese Zeiten, bleiben aber den Erfahrungen im Laufe dieser Arbeit nach in der Regel unter 10 Sekunden (? TODO: CHECK --> clientserver oder stringanalyzer) und damit in einem vertretbaren Rahmen.
 
 Es ist auch zu erkennen, dass Testläufe, selbst ohne Code-Änderungen nicht besonders schnell sind. In den insgesamt 7 Tests werden 25 Assertions verwendet.\footnote{
 	Im Code stehen 13 Assertions, davon werden 3 jeweils in einer Schleife 5-mal aufgerufen.}
-Hier darf gemutmaßt werden, ob auch dabei auch die Ausführungsgeschwindigkeit von PhantomJS eine Rolle spielt. Schnellere Testläufe wären hier in jedem Fall wünschenswert. Andererseits fallen etwas langsamere Tests weniger ins Gewicht, wenn man 
-im kontinuierlichen Modus arbeitet (durch vorangestellte \texttt{\textasciitilde} zu erreichen, also für Tests mit dem Kommando \texttt{\textasciitilde{}test}).
+Hier darf gemutmaßt werden, ob dabei auch die Ausführungsgeschwindigkeit von PhantomJS eine Rolle spielt. Schnellere Testläufe wären hier in jedem Fall wünschenswert. Andererseits fallen etwas langsamere Tests weniger ins Gewicht, wenn man 
+im kontinuierlichen Modus arbeitet (zu erreichen mit dem Kommando \texttt{\textasciitilde{}test}).
 
 Die Größe der Kompilate übertrifft reines HTML/JavaScript (187 Bytes) um einen Faktor von etwa 100. Andererseits ist dieser Vergleich nicht ganz fair. Ein Großer Teil der von Scala.js generierten JavaScript-Datei ist die Scala-Standardbibliothek.
-Der Optimierer und der Google Closure Compiler reduzieren die Code-Menge (durch Techniken wie \textit{dead code elimination} oder die aggressive Verkürzung von Variablennamen) schon sehr stark. Die Größe von Dateien voll optimiertem Scala.js-generierten JavaScript-Dateien wird deshalb mit wachsender Code-Basis des eigenen Software-Projekts nicht etwa proportional, sondern langsamer anwachsen. Li Haoyi verweist zum Beispiel auf ein eigenes Projekt mit einem Umfang von ca. 2000 Zeilen Code, das voll optimiert noch 288 kB groß ist. (TODO! -> eigenes client-server-Bsp.) Das Problem wird weiter relativiert durch die Tatsache, dass die meisten Server gzip-komprimiert übertragen ihre Daten, was laut Haoyi die Datenlast auf etwa ein Zehntel verkleinert.\cite[\#BlobSize]{haoyi.HOS}
+Der Optimierer und der Google Closure Compiler reduzieren die Code-Menge (durch Techniken wie \textit{dead code elimination} oder die aggressive Verkürzung von Variablennamen) schon sehr stark. Die Größe von Dateien voll optimiertem Scala.js-generierten JavaScript-Dateien wird deshalb mit wachsender Code-Basis des eigenen Software-Projekts nicht etwa proportional, sondern langsamer anwachsen. Li Haoyi verweist zum Beispiel auf ein eigenes Projekt mit einem Umfang von ca. 2000 Zeilen Code, welches voll optimiert noch 288 kB groß ist. (TODO! -> eigenes client-server-Bsp.) Das Problem wird weiter relativiert durch die Tatsache, dass die meisten Server ihre Daten gzip-komprimiert übertragen, was laut Haoyi die Datenlast auf etwa ein Zehntel verkleinert.\cite[\#BlobSize]{haoyi.HOS}
 
-\subsubsection{Wartbarkeit: Debugging-Qualitäten}
+\subsubsection{Debugging-Qualitäten}
 
 mit Sourcemaps
 \url{http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/}
-	- sinvoller Stacktrace in der Browserkonsole durch
+	- sinvoller Stacktrace in der Browserkonsole durch ...
+	
+	(siehe dazu Abb. \ref{fig:no-sourcemaps} und \ref{fig:sourcemaps})
+
+\begin{figure}[!h]
+	\centering
+	\subfloat[][]{
+		\includegraphics[width=0.66\textwidth]{sourcemaps1-dumb-stacktrace}
+		\label{fig:sourcemaps1}
+	}
+	\subfloat[][]{
+		\includegraphics[width=0.33\textwidth]{sourcemaps2-cryptic-code}
+		\label{fig:sourcemaps2}
+	}
+	\caption{Ohne Sourcemaps: Wenig aussagekräftiger Stacktrace \protect\subref{fig:sourcemaps1}, navigierbar zu schwer verständlichem, generierten JavaScript-Code \protect\subref{fig:sourcemaps2}. (Quelle: eigene Anfertigung)}
+	\label{fig:no-sourcemaps}
+\end{figure}
+
+\begin{figure}[!h]
+	\centering
+	\subfloat[][]{
+		\includegraphics[width=0.66\textwidth]{sourcemaps3-smart-stacktrace}
+		\label{fig:sourcemaps3}
+	}
+	\subfloat[][]{
+		\includegraphics[width=0.33\textwidth]{sourcemaps4-legible-code}
+		\label{fig:sourcemaps4}
+	}
+	\caption{Unterstützung durch Sourcemaps: Diagnosestärkerer Stacktrace \protect\subref{fig:sourcemaps3}, navigierbar zu verständlichem Scala-Code \protect\subref{fig:sourcemaps4}. (Quelle: eigene Anfertigung)}
+	\label{fig:sourcemaps}
+\end{figure}
+
+
+\subsubsection{Testbarkeit}
+
+%TODO ******
+
+Tests möglich ...
 
 
 \subsection{Schwierigkeiten}
@@ -1897,51 +1993,39 @@ IntelliJ angenehmer
 
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-\section{hello-scalajs2, hello-scalatags -- leicht erweiterte Minimalbeispiel (3)}
-
-\subsection{Untersuchungsziele}
-
-hello-scalajs2:
-Hallo Welt im Browser-Fenster
-Interaktion im Browser-Fenster
-Möglichkeit von Tests
-Verwendung von jQuery (für Tests)
-Dateigröße
-Turnaround-Zeiten (=Durchlauf-Zeiten)
-
-hello-scalatags:
-Templating (mehr Typsicherheit für Tags -> ScalaTags-Readme)
-\subsection{Untersuchungskriterien}
-Performance
-	Compiler
-Testbarkeit
-Konfigurationsaufwand
-\subsection{Kurzbeschreibung des Beispielprogramms}
-Hallo Welt im Browser-Fenster
-Interaktion im Browser-Fenster
-kleine Tests, die ... beweisen
-
-
-\subsection{Untersuchungsergebnisse}
-
-Testbarkeit
-beschreiben
-
-Konfigurationsaufwand
-beschreiben
-
-\subsection{Schwierigkeiten}
-keine(?)
-\subsection{Erfolge}
-Tests möglich
-Bibliotheken einbinden und verwenden einfach, wenn Fassade vorhanden
-\subsection{Bewertung: differenziert oder boolsch mit Begründung; Fazit aus Schwierigkeiten und Erfolgen}
-
-
-
-
-
-
+%\section{hello-scalajs2, hello-scalatags -- leicht erweiterte Minimalbeispiel (3)}
+%
+%\subsection{Ziel der Untersuchung}
+%
+%
+%
+%hello-scalatags:
+%Templating (mehr Typsicherheit für Tags -> ScalaTags-Readme)
+%\subsection{Kriterien der Untersuchung}
+%Performance
+%	Compiler
+%Testbarkeit
+%Konfigurationsaufwand
+%\subsection{Kurzbeschreibung des Beispielprogramms}
+%Hallo Welt im Browser-Fenster
+%Interaktion im Browser-Fenster
+%kleine Tests, die ... beweisen
+%
+%
+%\subsection{Ergebnisse der Untersuchung}
+%
+%Testbarkeit
+%beschreiben
+%
+%Konfigurationsaufwand
+%beschreiben
+%
+%\subsection{Schwierigkeiten}
+%keine(?)
+%\subsection{Erfolge}
+%Tests möglich
+%Bibliotheken einbinden und verwenden einfach, wenn Fassade vorhanden
+%\subsection{Bewertung: differenziert oder boolsch mit Begründung; Fazit aus Schwierigkeiten und Erfolgen}
 
 
 
@@ -1949,15 +2033,15 @@ Bibliotheken einbinden und verwenden einfach, wenn Fassade vorhanden
 
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-\section{canvas-frenzy - Canvas, Timer, Events (3)}
+\section{Canvas Frenzy - Canvas, Timer und Events}
 
-\subsection{Untersuchungsziele}
+\subsection{Ziel der Untersuchung}
 
-Bei diesem Beispiel ging es einerseits um die Erprobung des HTML5-Canvas und der DOM-API mit Scala.js. Es sollten Timer-gesteuerte Aktionen mithilfe der Methoden des \texttt{WindowTimers}-Interface und das Arbeiten mit Event-Handlern für Maus- und Keyboard-Events ausprobiert werden. Hierbei sollte einerseits geklärt werden, ob und wie solche Standardtechniken der Oberfächenprogrammierung mit Scala.js machbar sind, andererseits sollte untersucht werden, ob die Entwicklungsarbeit dadurch sogar erleichtert wird, oder ob das Gegenteil der Fall ist.
+Bei diesem Beispiel ging es um die Erprobung des HTML5-Canvas und der DOM-API mit Scala.js. Es sollten Timer-gesteuerte Aktionen mithilfe der Methoden des \texttt{WindowTimers}-Interface und das Arbeiten mit Event-Handlern für Maus- und Keyboard-Events ausprobiert werden. Hierbei sollte einerseits geklärt werden, ob und wie solche Standardtechniken der Oberfächenprogrammierung mit Scala.js machbar sind, andererseits sollte untersucht werden, ob die Entwicklung durch die Arbeit mit Scala.js sogar erleichtert wird, oder ob das Gegenteil der Fall ist.
 
 Gleichzeitig wurde die Scala.js Workbench im produktiven Einsatz ausprobiert und dabei auf ihre Nützlichkeit hin geprüft.
 
-\subsection{Untersuchungskriterien}
+\subsection{Kriterien der Untersuchung}
 
 \begin{enumerate}
 	\item Umsetzbarkeit aller Anforderungen
@@ -1967,30 +2051,29 @@ Gleichzeitig wurde die Scala.js Workbench im produktiven Einsatz ausprobiert und
 
 \subsection{Kurzbeschreibung des Beispielprogramms}
 
-Die Anwendung erzeugt automatisch einfache Bilder indem sie zufällig Rechtecke oder Kreise von zeichnet. Zufällig sind dabei auch die Position, die Abmessungen, die Farbe und Transparenz. Bei den Abmessungen sorgt ein Mechanismus dafür, dass die Werte nicht zu abrupt variieren, sondern sich ein etwas ruhigerer Eindruck ergibt. Dazu werden die Zufallswerte jeweils durch lineare Interpolation mit dem letzten Wert geglättet. Das Ergebnis ist in den Abbildungen \ref{fig:frenzy1} und \ref{fig:frenzy2} zu sehen.
+Die Anwendung erzeugt automatisch einfache Bilder, indem sie zufällig Rechtecke oder Kreise von zeichnet. Auch Position, Abmessungen, Farbe und Transparenz der Elemente sind zufallsgeneriert. Bei den Abmessungen sorgt ein Mechanismus dafür, dass die Werte nicht zu abrupt variieren, sondern sich ein etwas ruhigerer Eindruck ergibt. Dazu werden die Zufallswerte jeweils durch lineare Interpolation mit dem letzten Wert geglättet. Das Ergebnis ist beispielhaft in den Abbildungen \ref{fig:frenzy1} und \ref{fig:frenzy2} zu sehen.
 
-Mit der Maus kann bei gedrückt gehaltener linker Maustaste auf den Canvas-Bereich gezeichnet werden. Dabei entsteht eine 
-wird ein zufälliger Farbverlauf erzeugt (siehe Abb. \ref{fig:frenzy3} und \ref{fig:frenzy4}).
+Mit der Maus kann bei gedrückt gehaltener linker Maustaste auf den Canvas-Bereich gezeichnet werden. Dabei wird ein zufälliger Farbverlauf erzeugt (siehe Abb. \ref{fig:frenzy3} und \ref{fig:frenzy4}).
 
-\begin{figure}[h]
+\begin{figure}[!h]
 	\centering
 	\subfloat[][Kurz nach Start.]{
-		\includegraphics[width=0.46\textwidth]{03canvas-frenzy/frenzy-snap01}
+		\includegraphics[width=0.46\textwidth]{canvas-frenzy/frenzy-snap01}
 		\label{fig:frenzy1}
 	}
 	\quad
 	\subfloat[][Nachdem etwas Zeit vergangen ist.]{
-		\includegraphics[width=0.46\textwidth]{03canvas-frenzy/frenzy-snap02}
+		\includegraphics[width=0.46\textwidth]{canvas-frenzy/frenzy-snap02}
 		\label{fig:frenzy2}
 	}
 	\qquad
 	\subfloat[][Zeichnen mit Gradienten-Stift bei angehaltenem Auto-Zeichnen.]{
-		\includegraphics[width=0.46\textwidth]{03canvas-frenzy/frenzy-snap03}
+		\includegraphics[width=0.46\textwidth]{canvas-frenzy/frenzy-snap03}
 		\label{fig:frenzy3}
 	}
 	\quad
 	\subfloat[][Auto-Zeichnen und Gradienten-Stift.]{
-		\includegraphics[width=0.46\textwidth]{03canvas-frenzy/frenzy-snap04}
+		\includegraphics[width=0.46\textwidth]{canvas-frenzy/frenzy-snap04}
 		\label{fig:frenzy4}
 	}
 	\caption{Screenshots der Canvas-Beispielanwendung. (Quelle: eigene Anfertigung)}
@@ -2001,49 +2084,99 @@ Die Anwendung lässt sich durch die Tastatur steuern. Das automatische Zeichnen 
 
 Die Größe der Zeichenfläche wird jeweils an die aktuelle Größe des Browserfensters neu angepasst. Allerdings wird dabei auch die Zeichenfläche geleert.
 
-Eine Schwäche der aktuellen Implementierung ist es, dass die beim Zeichnen mit der Maus entstehende Linie bei langsamer Mausbewegung noch nicht sehr glatt erscheint. Das hängt damit zusammen, dass für jede registrierte Mausbewegung, die als MouseEvent verarbeitet werden kann, eine Teillinie gezeichnet wird. Diese ist jeweils die Verbindungslinie zwischen der Mausposition des vorigen mit der des aktuellen MouseEvent. Zwischen diesen Teillinie entsteht, wenn sie nicht in exakt dieselbe Richtung weisen, eine Lücke.
+((Eine Schwäche der aktuellen Implementierung ist es, dass die beim Zeichnen mit der Maus entstehende Linie bei langsamer Mausbewegung noch nicht sehr glatt erscheint. Das hängt damit zusammen, dass für jede registrierte Mausbewegung, die als MouseEvent verarbeitet werden kann, eine Teillinie gezeichnet wird. Diese ist jeweils die Verbindungslinie zwischen der Mausposition des vorigen mit der des aktuellen MouseEvent. Zwischen diesen Teillinie entsteht, wenn sie nicht in exakt dieselbe Richtung weisen, eine Lücke.
 
-Ein anderer bekannter Fehler ist das ungewöhnliche Verhalten der Zeichenfläche beim Zoomen im Browser.
-
-
-\subsection{Untersuchungsergebnisse}
-
-\subsubsection{Umsetzbarkeit aller Anforderungen}
-
-Alle geplanten Anforderungen ließen sich umsetzen: das Zeichnen auf den Canvas, der Zugriff auf die DOM-API, timergesteuerte Ausführung und die Verwendung von Event-Handlern
+Ein anderer bekannter Fehler ist das ungewöhnliche Verhalten der Zeichenfläche beim Zoomen im Browser.))
 
 
-\subsubsection{Leichtigkeit der Implentierung}
+\subsection{Ergebnisse der Untersuchung und Bewertung}
 
-Canvas:
-	Cast nötig für Typsicherheit, dann werden Methoden des \texttt{CanvasRenderingContext2D} von der IDE vorgeschlagen
-	ohne Cast: ctx ist vom Typ js.Dynamic, Methodenaufrufe gehen, aber keine IDE-Unterstützung und kein Schutz vor Tippfehlern oder Aufruf nicht vorhandener Methoden -> führt dann zu Laufzeitfehlern, deshalb lieber typsicher
+Alle geplanten Anforderungen ließen sich umsetzen: das Zeichnen auf den Canvas, der Zugriff auf die DOM-API, timergesteuerte Ausführung und die Verwendung von Event-Handlern.
+
+Um ein Canvas-Objekt zu erhalten, gibt es in JavaScript zwei Möglichkeiten: entweder man definiert im HTML-Dokument ein Canvas-Element mit einer eindeutigen ID \texttt{<canvas id="'myCanvas"'></canvas>} und greift im JavaScript-Code darauf zu:
+
+\begin{lstlisting}[language=JavaScript]
+var canvas = document.getElementById("my-canvas")  // JavaScript
+\end{lstlisting}
+
+oder man erzeugt das Canvas-Element mit der \texttt{createElement}-Methode:
+
+\begin{lstlisting}[language=JavaScript]
+var canvas = document.createElement("canvas")      // JavaScript
+\end{lstlisting}
+
+Um diese Methoden der DOM-API in Scala.js zu verwenden, existiert die Bibliothek Scala-js-dom. Damit können die benötigten DOM-API-Methoden erwartungsgemäß verwendet werden:
+
 \begin{lstlisting}[language=Scala]
-val canvas = dom.document.createElement("canvas").asInstanceOf[html.Canvas]
-val ctx = canvas.getContext("2d").asInstanceOf[dom.CanvasRenderingContext2D]
+val canvas = dom.document.getElementById("my-canvas").
+  asInstanceOf[html.Canvas]
+\end{lstlisting}
+
+und in der Variante mit \texttt{createElement}:
+
+\begin{lstlisting}[language=Scala]
+val canvas = dom.document.createElement("canvas").
+  asInstanceOf[html.Canvas]
+\end{lstlisting}
+
+Zu beachten ist hier der Cast mit \texttt{asInstanceOf[T]}. Die Methoden \texttt{getElementById} und \texttt{createElement}
+geben nämlich ein Objekt vom Typ \texttt{org.scalajs.dom.raw.Element} zurück. Der Cast ist also notwendig, um auf die Canvas-Methoden zuzugreifen. Er ist auch legitim, denn wir wissen hier, dass es sich um ein Canvas-Objekt handeln muss.
+
+Zum Zeichnen wird nun der 2D-Kontext benötigt. Auch hier ist aus den genannten Gründen ein Cast notwending. Danach kann der Kontext wie gewohnt verwendet werden.\footnote{Zum Zeichnen auf den Canvas siehe: \url{https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D}}
+
+\begin{lstlisting}[language=Scala]
+val ctx = canvas.getContext("2d").
+  asInstanceOf[dom.CanvasRenderingContext2D]
+ctx.fillStyle = "silver"
 ctx.fillRect(x, y, width, heigth)
 \end{lstlisting}
-	sonst wie mit JavaScript auch verwenden
-	
-	-> Pro Typsicherheit -> weniger Fehleranfällige Software, komfortableres Editieren durch IDE-Unterstützung
-	-> Contra (?) bzw. Achtung ->  man muss durch Disziplin selbst darauf achten, dass man js.Dynamic vermeidet und ggf. castet, ist aber selten nötig (-> andere Beispiele???)
 
+Die Typ-Casts mögen etwas unschön sein, aber die zwei beschriebenen Fälle sind auch die einzigen, die in der Beispielanwendung benötig werden. Sébastien Doeraene zufolge ist die erste Art Cast zur Spezialisierung des HTML-Elements, unvermeidbar, andernfalls müsste der DOM selbst Teil des Typsystems sein. Der zweite Cast zum konkreten Rendering-Kontext wird wohl in einer künftigen Version von Scala.js nicht mehr nötig sein. Doeraene weist auch darauf hin, dass in sechs Scala.js-Beispielanwendungen mit insgesamt 1000 Zeilen Code exakt diese beiden Casts, und nur diese, benötigt werden.\cite[S. 8]{doeraene2013.TDI}
 
-\subsubsection{Nützlichkeit}
+Um einen Timer zu starten, der ein Aktion regelmäßig ausführt, bietet die DOM-API die Methode \texttt{setInterval}. Die folgende Anweisung erzeugt zum Beispiel einmal pro Sekunde eine Ausgabe auf die Konsole:
 
->>Scala-js-dom
-
-hinzufügen in der build.sbt - zack, fertig:
-
-\begin{lstlisting}
-libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.8.0"
+\begin{lstlisting}[language=JavaScript]
+setInterval(function(){ console.log("hi"); }, 1000);
 \end{lstlisting}
 
+In Scala.js lässt sich das nun recht ähnlich ausdrücken:
 
->>Gewinn durch Möglichkeit der Verwendung von Scala
+\begin{lstlisting}[language=Scala]
+dom.setInterval(() => println("hi"), 1000)
+\end{lstlisting}
+
+Hier ist also nichts neu zu lernen, die JavaScript-DOM-API wird mithilfe der Fassade einfach verwendet. Zusätzlich profitieren wir hier von der prägnanten Scala-Syntax, mit der sich Lambas knapper schreiben lassen.
+
+Zur Veranschaulichung der Verwendung von Event-Handler sei hier folgendes Beispiel herausgegriffen:
+
+\begin{lstlisting}[language=Scala]
+dom.document.onkeyup = { (evt: dom.KeyboardEvent) => evt.keyCode match {
+  case KeyCode.space =>  timer.toggle()
+  case KeyCode.up =>     timer.decr()
+  case KeyCode.down =>   timer.incr()
+  case KeyCode.escape => clear()
+  case _ => ()
+}}
+\end{lstlisting}
+
+Der wird der \texttt{onkeyup}-Property eine ein Scala-Lambda zugewiesen. Durch Scalas Pattern-Matching kann sehr knapp und übersichtlich das gewünschte Verhalten formuliert werden. Scala-js-dom stellt neben Fassaden für die DOM-API im Paket \texttt{org.scalajs.dom.ext} nützliche Helfer zur Verfügung, darunter eine Liste für die meisten Keyboard-Tasten-Codes, so dass hier nicht mit kryptischen Zahlenwerten gearbeitet werden muss.
+
+Auch schlägt sich hier der Gewinn nieder, den 
+Scala befördert eine größere Abstraktion beim Programmieren. So wird es erleichtert, nach Bedarf Teile "`herauszuziehen"' (UMFORMULIEREN).
+
+So wurde im ersten Ansatz der Timer direkt mit dem Aufruf:
+
+\begin{lstlisting}[language=Scala]
+dom.setInterval(() => action, interval)
+\end{lstlisting}
+
+gestartet. Um aber die Frequenz des automatischen Zeichnens per Keyboard-Interaktion zu steuern, muss der Timer angehalten und mit einem Intervall erneut gestartet werden. Es erwies sich daher als sauberer und für den Handler-Code entlastend und ganz im Sinne von DRY\footnote{\textit{Don't Repeat Yourself!}}, eine Timer-Abstraktion einzuführen:
 
 
-größere Abstraktion beim Programmieren erleichtert, es wird leichter Teile "`herauszuziehen"'
+*** HIER ***
+
+
+Statt etwa direkt den
 	- z.B. Timer:
 		timer.start() statt direkt:
 		dom.setInterval(() => action, interval)
@@ -2079,8 +2212,109 @@ class Timer(var interval: Int, action: => Unit) {
 \end{lstlisting}
 
 
->>Workbench-Plugin
 
+
+
+
+
+
+
+
+
+
+>>Scala-js-dom       **** UP % ^^^
+
+hinzufügen in der build.sbt - zack, fertig:
+
+\begin{lstlisting}
+libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.8.0"
+\end{lstlisting}
+
+
+
+
+
+>>Gewinn durch Möglichkeit der Verwendung von Scala  ------- siehe oben - einarbeiten!!!
+
+Die Typsicherheit hat hier beim Editieren den unmittelbaren Vorteil, dass die IDE-Unterstützung
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[
+    width=1.0\textwidth
+%   scale=0.5
+    ]{typesafe-autocomplete}
+    \caption{Intelligente Auto-Vervollständigung in IntelliJ.
+    (Quelle: eigene Anfertigung)
+    }
+    \label{fig:typesafe-autocomplete}
+\end{figure}
+
+
+	-> Contra (?) bzw. Achtung ->  man muss durch Disziplin selbst darauf achten, dass man js.Dynamic vermeidet und ggf. castet, ist aber selten nötig (-> andere Beispiele???)
+
+
+
+
+
+\paragraph{Workbench-Plugin}
+
+Damit das Workbench-Plugin von sbt auch geladen wird, muss es in der \texttt{text} hinzugefügt werden:
+
+\begin{lstlisting}
+addSbtPlugin("com.lihaoyi" % "workbench" % "0.2.3")
+\end{lstlisting}
+
+In der build.sbt müssen folgende zwei Einträge hinzugefügt weden:
+\begin{lstlisting}
+bootSnippet := "frenzy.CanvasApp().main();"
+
+updateBrowsers <<= updateBrowsers.triggeredBy(fastOptJS in Compile)
+\end{lstlisting}
+
+Das \texttt{bootSnippet} legt fest, welcher JavaScript als Einsprungspunkt für das Neuladen verwendet werden soll. Manchmal genügt ein \texttt{updateBrowsers} nicht, für solche Fälle existiert das radikalere:
+
+\begin{lstlisting}
+refreshBrowsers <<= refreshBrowsers.triggeredBy(fastOptJS in Compile)
+\end{lstlisting}
+
+Nun muss die Workbench noch in der Entwicklungsversion des HTML-Dokuments eingebunden werden durch folgenden Code-Schnipsel:
+
+\begin{lstlisting}
+<script src="/workbench.js"></script>
+\end{lstlisting}
+
+Hierbei ist es wichtig, darauf zu achten, dass diese Zeile nach allen anderen JavaScript-Einbindungen ganz am Ende im \texttt{<body>} steht.
+
+Beim Start von sbt wird nun automatisch das Workbench-Plugin geladen. Dieses startet einen lokalen Server für das Projektwurzelverzeichnis unter der Adresse \url{localhost/127.0.0.1:12345}. Dadurch ist mit der Eingabe der Adresse \url{http://localhost:12345/target/scala-2.11/classes/index-dev.html} im Browser die Scala.js-Anwendung erreichbar.
+
+Zur flüssigen Entwicklung ist es am komfortabelsten, im kontinuierlichen Modus zu arbeiten. Dazu wird nun \texttt{\textasciitilde{}fastOptJS} aufgerufen, wodurch jedes Speichern von Code-Änderungen einen Build triggert. Ist hierbei die Workbench gestartet, muss das Terminal während der Entwicklung seltener aufgesucht werden, denn selbst Ausgaben des Compilers werden nützlicherweise in der Browser-Konsole ausgegeben (siehe Abb. {fig:workbench-in-action1} - {fig:workbench-in-action4}).
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[
+    width=1.0\textwidth
+%   scale=0.5
+    ]{workbench-in-action1}
+    \caption{Ausgabe des Scala.js-Compilers in der Browser-Konsole.
+    (Quelle: eigene Anfertigung)
+    }
+    \label{fig:workbench-in-action1}
+\end{figure}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[
+    width=1.0\textwidth
+%   scale=0.5
+    ]{workbench-in-action2}
+    \caption{Fehlerausgabe des Scala.js-Compilers in der Browser-Konsole.
+    (Quelle: eigene Anfertigung)
+    }
+    \label{fig:workbench-in-action2}
+\end{figure}
+
+Das Workbench-Plugin funktioniert nicht immer ganz zuverlässig, und manchmal muss das Browserfenster per Hand neu geladen werden. Alles in allem ist es aber ein sehr hilfreiches Entwicklungswerkzeug für ein flüssigeres Arbeiten.
 
 
 \subsection{Schwierigkeiten}
@@ -2121,35 +2355,154 @@ class Timer(var interval: Int, action: => Unit) {
 
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-\section{textanalyzer - ein umfangreicheres Beispiel (3)}
+\section{Textanalyzer - ein umfangreicheres Beispiel}
 
-\subsection{Untersuchungsziele}
+%TODO#############################
+
+\subsection{Ziel der Untersuchung}
 \subsection{Untersuchungskriterien}
 \subsection{Kurzbeschreibung des Beispielprogramms}
-\subsection{Untersuchungsergebnisse}
+\subsection{Ergebnisse der Untersuchung und Bewertung}
 \subsection{Schwierigkeiten}
 \subsection{Erfolge}
 \subsection{Bewertung: differenziert oder boolsch mit Begründung; Fazit aus Schwierigkeiten und Erfolgen}
 
+
+
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-\section{currency-converter - Ajax (3)}
-Kommunikation mit Objekten (?) außerhalb des Web-Clients wie z.B. Webservices
-\subsection{Untersuchungsziele}
+\section{Currency Converter - Ajax}
+
+%TODO#############################
+
+\subsection{Ziel der Untersuchung}
+
+Die Kommunikation mit Objekten ((?)) außerhalb des Web-Clients, wie zum Beispiel mit Webservices, ist ein wichtiger Bestandteil der allermeisten interaktiven Web-Anwendungen. Dazu wird standardmäßig eine als \texttt{Ajax} bezeichnete Technik verwendet. Dabei werden aus der Web-Anwendung heraus über das HTTP-Protokoll Daten von einem Server angefragt, um auf Grundlage der Antwort Teile der HTML-Seite zu aktualisieren. Diese Standardtechnik und die Behandlung von Asynchronität mit Scala.js sollte erprobt werden.
+
 \subsection{Untersuchungskriterien}
+
+\begin{enumerate}
+	\item Konfigurationsaufwand
+	\item Umsetzbarkeit aller Anforderungen
+	\item Leichtigkeit der Implementierung
+	\item Code-Qualität (Typsicherheit, Lesbarkeit, Wartbarkeit)
+\end{enumerate}
+
 \subsection{Kurzbeschreibung des Beispielprogramms}
-vgl. Using Web Services \cite[\#UsingWebServices]{haoyi.HOS}
-\subsection{Untersuchungsergebnisse}
+
+Beispielhaft wurde ein Währungsumrechner umgesetzt, der dem Benutzer die Eingabe des Betrags und die Auswahl von Quell- und Zielwährung per Auswahlliste anbietet, und auf Knopfdruck oder Betätigung der Entertaste hin die Umrechnung auf der Basis tagesaktueller Kurse durchführt. Beträge werden bis auf vier Nachkommastellen hin genau dargestellt. Die Eingabe ist fehlertolerant gegenüber ungültigen Beträgen. Als kleiner Komfort kann der Betrag mit der Escape-Taste auf 1.0000 zurückgesetzt werden.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[
+    width=1.0\textwidth
+%   scale=0.5
+    ]{currency-converter/currency-converter}
+    \caption{Der Währungsumrechner.
+    (Quelle: eigene Anfertigung)
+    }
+    \label{fig:converter}
+\end{figure}
+
+\subsection{Ergebnisse der Untersuchung und Bewertung}
+
+Ist das Setup einer einfachen Scala.js-Anwendung einmal erprobt, bleibt der weitere Konfigurationsaufwand für diese Anwendung gering: die benötigten Bibliotheken müssen lediglich als \texttt{libraryDependencies} in der Build-Definition hinzugefügt werden.
+
+Das Umrechnungsformular lässt sich mit ScalaTags sehr übersichtlich und deklarativ schreiben. Es werden zwei nahezu identische Währungsauswahllisten benötigt, mit einem Unterschied: Der Auswahlwert soll unterschiedlich behandelt werden soll, einmal als Quell-, das andere Mal als Zielwährung. Der Methode, die Auswahllisten erzeugt muss daher eine Funktion \texttt{String => Unit}) übergeben werden, die den Auswahlwert entgegennimmt, so dass der Umrechner passend aktualisiert werden kann.
+
+\begin{lstlisting}[language=Scala]
+def setupCurrencySelect(theId: String,
+                        updateConverter: String => Unit,
+                        defaultOption: String = "EUR"): html.Select = {
+  val sel = select(
+    id:=theId,
+    for ((code, name) <- Converter.currencies.toSeq) yield option(
+      id:=s"$theId-opt-${code.toLowerCase}",
+      value:=code, name
+    )
+  ).render
+  sel.onchange = (e: dom.Event) => updateConverter(sel.value)
+  sel.value = defaultOption
+  sel
+}
+\end{lstlisting}
+
+Die Liste der möglichen \texttt{<option>}s lässt sich prägnant mithilfe einer \texttt{for}-Comprehension ausrücken.
+
+Das Auswahllisten-Elemente, bei dem es sich um ein \texttt{scalatags.JsDom.TypedTag[html.Select]} handelt, muss durch Aufruf der Methode \texttt{render} in den Fassadentyp \texttt{html.Select} der Scala-js-dom-Bibliothek umgewandelt werden. Dadurch haben wir vollen, typsicheren Zugriff auf die Methoden und Attribute ((die in der DOM-API spezifiziert sind)). Ein \texttt{onchange}-Handler ließe sich eigentlich auch innerhalb des \texttt{select( ... )}-Tags schreiben, allerdings ließe sich so nicht auf das \texttt{value}-Attribut zugreifen.
+
+Nach diese Vorbereitung kann das Umrechnungsformular sehr übersichtlich und deklarativ geschrieben werden:
+
+\begin{lstlisting}[language=Scala]
+container.appendChild(
+  div(
+    h1("Currency Converter"),
+    form(
+      id:="form-conv",
+      onsubmit:={ (evt: dom.Event) => evt.preventDefault() },
+      inputAmount,
+      setupCurrencySelect("sel-src-curr", c => converter = converter.copy(srcCurr = c)),
+      outputAmount,
+      setupCurrencySelect("sel-dst-curr", c => converter = converter.copy(dstCurr = c)),
+      button(
+        id:="btn-do-get",
+        cls:="input-btn",
+        "Convert",
+        onclick:={ () => updateDstAmount() }
+      )
+    )
+  ).render
+)
+\end{lstlisting}
+
+Das Eingabefeld für den Ausgangsbetrag \texttt{inputAmount} ebenso wie das Ergebnisfeld \texttt{outputAmount} wurden zuvor definiert und mit \texttt{.render} umgewandelt, um sie im Programm referenzieren zu können. Auf diese Art ist es nicht nötig, den Umweg über \texttt{document.getElementById()} oder mit jQuery-Selektoren zu gehen.
+
+Als Quelle für die Umrechnungskurse sollte die Yahoo! Finance API\footnote{
+	\url{https://code.google.com/p/yahoo-finance-managed/wiki/YQLAPI}}
+genutzt werden, die auf HTTP-Anfrage Ergebnisse im JSON-Format\footnote{
+	JavaScript Object Notation, ein kompaktes Format zum Datenaustausch.}
+liefert
+
+\begin{lstlisting}[language=Scala]
+case class Converter(
+  srcCurr: String = "EUR",
+  dstCurr: String = "EUR"
+) {
+  def convert(srcAmount: Double): Future[Double] = async{
+    srcAmount * await{ rate }
+  }
+
+  private def url = "http://query.yahooapis.com/v1/public/yql?q=select * from yahoo.finance.xchange where pair in ('" +
+    srcCurr + dstCurr + "')&format=json&env=store://datatables.org/alltableswithkeys"
+
+  private lazy val rate: Future[Double] = Ajax.get(url).map{ case xhr =>
+    val json: js.Dynamic = js.JSON.parse(xhr.responseText)
+    assert(json.query.results.rate.id.toString == srcCurr + dstCurr)
+    json.query.results.rate.Rate.toString.toDouble
+  }
+}
+\end{lstlisting}
+
+TODO  -->  vgl. Using Web Services \cite[\#UsingWebServices]{haoyi.HOS}
+
+... HIER *** %TODO ***
+
+
+
 \subsection{Schwierigkeiten}
+
+
+
+
 \subsection{Erfolge}
 \subsection{Bewertung: differenziert oder boolsch mit Begründung; Fazit aus Schwierigkeiten und Erfolgen}
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 \section{js-interop -> playground(?) (3)}
 
-\subsection{Untersuchungsziele}
+\subsection{Ziel der Untersuchung}
 \subsection{Untersuchungskriterien}
 \subsection{Kurzbeschreibung des Beispielprogramms}
-\subsection{Untersuchungsergebnisse}
+\subsection{Ergebnisse der Untersuchung und Bewertung}
 \subsection{Schwierigkeiten}
 \subsection{Erfolge}
 \subsection{Bewertung: differenziert oder boolsch mit Begründung; Fazit aus Schwierigkeiten und Erfolgen}
@@ -2157,10 +2510,12 @@ vgl. Using Web Services \cite[\#UsingWebServices]{haoyi.HOS}
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 \section{crosscompiling-statistics-lib, js-port-of-statistics-lib, benchmarks (TODO) (3)}
 
-\subsection{Untersuchungsziele}
+%TODO#############################
+
+\subsection{Ziel der Untersuchung}
 \subsection{Untersuchungskriterien}
 \subsection{Kurzbeschreibung des Beispielprogramms}
-\subsection{Untersuchungsergebnisse}
+\subsection{Ergebnisse der Untersuchung und Bewertung}
 \subsection{Schwierigkeiten}
 \subsection{Erfolge}
 \subsection{Bewertung: differenziert oder boolsch mit Begründung; Fazit aus Schwierigkeiten und Erfolgen}
@@ -2168,7 +2523,9 @@ vgl. Using Web Services \cite[\#UsingWebServices]{haoyi.HOS}
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 \section{clientserver - minimales Client/Server-Setup mit Routing (3)}
 
-\subsection{Untersuchungsziele}
+%TODO#############################
+
+\subsection{Ziel der Untersuchung}
 eine (!) Templating-Sprache für Server und Client: ScalaTags \cite{haoyi.HOS}
 eine (!) Library zur Serialisierung: uPickle \cite{haoyi.HOS}
 Schnittstelle in einer Sprache
@@ -2176,7 +2533,7 @@ Schnittstelle in einer Sprache
 \subsection{Untersuchungskriterien}
 \subsection{Kurzbeschreibung des Beispielprogramms}
 entsprechend Code-Vorschlägen von Li Haoy\cite{haoyi.HOS}
-\subsection{Untersuchungsergebnisse}
+\subsection{Ergebnisse der Untersuchung und Bewertung}
 \subsection{Schwierigkeiten}
 \subsection{Erfolge}
 \subsection{Bewertung: differenziert oder boolsch mit Begründung; Fazit aus Schwierigkeiten und Erfolgen}
