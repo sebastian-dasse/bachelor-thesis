@@ -150,6 +150,10 @@
   basicstyle={\ttfamily\small},
   breakatwhitespace=false
 }
+\lstdefinestyle{snippet}{
+  aboveskip=-5pt,
+  belowskip=0pt
+}
 
 % Default-Style für Listings. Kann überall im Text analog geändert werden.
 \lstset{ style=standard }
@@ -413,12 +417,43 @@ Auf der Scala-Website finden sich neben der API-Dokumentation auch offizielle Tu
 
 \section{JavaScript (1.5)}
 
-JavaScript ist eine dynamische Skriptsprache\footnote{Das heißt sie wird zur Laufzeit ausgewertet und in Maschinencode übersetzt.} die, es erlaubt objektorientiert und funktional zu programmieren. Sie wurde 1995 von Brendan Eich für Netscape innerhalb von zehn Tagen entwickelt\cite{wikipedia.JS}. Der primäre Zweck von JavaScript ist es, aus statischen Webseiten interaktive Webanwendungen machen\cite[S. 361]{flanagan2011.JDG}. Der Sprachstandard wird unter dem offiziellen Namen ECMAScript (kurz: ES) von der Organisation Ecma International standardisiert (als Standard ECMA-262). Der aktuell von allen wichtigen Browsern unterstützte Standard ECMAScript 5.1 stammt aus dem Jahr 2011\footnote{\url{http://www.ecma-international.org/ecma-262/5.1/}}. Die im Juni 2015 veröffentlichte Version ECMAScript 6 enthält viele Verbesserungen um die Sprache zu modernisieren, ist aber momentan noch nicht ausreichend in den verbreiteten Browser implementiert.
+JavaScript ist eine dynamische Skriptsprache, die es erlaubt, objektorientiert und funktional zu programmieren. Die Sprache wurde 1995 von Brendan Eich für Netscape innerhalb von zehn Tagen entwickelt\cite{wikipedia.JS}. Der primäre Zweck von JavaScript ist es, aus statischen Webseiten interaktive Webanwendungen machen\cite[S. 361]{flanagan2011.JDG}.
 
-Die Syntax von JavaScript ähnelt zu großen Teilen der des ungleichen Namensvetters Java, die Semantik unterscheidet sich hingegen in Teilen stark\cite{eich1996.JSL}.
 
 warum JS?
 wo läuft JS?
+
+
+Die wichtigste Zielplattform für JavaScript ist der Browser. Dieser benötigt zur Ausführung von JavaScript eine JavaScript-Engine, die den Code zur Laufzeit interpretiert und in Maschinencode übersetzt. Aus Performancegründen sind moderne JavaScript-Engines allerdings meistens keine Interpreter mehr, sondern führen eine Just-in-time-Kompilierung (JIT)\footnote{
+	\url{https://en.wikipedia.org/wiki/Just-in-time_compilation}
+} durch. Einige aktuell verbreitete JavaScript-Engines sind V8 (Google Chrome und Opera), SpiderMonkey (Mozilla Firefox) und Nitro (Apple Safari).
+
+%TODO ++++++++   H I E R   W E I T E R   +++++++
+
+%TODO verschieben -> PhantomJS (ein auf WebKit basierender sogenannter \textit{headless browser}, der zum Beispiel für Tests zum Einsatz kommt)
+
+Darüber hinaus ist in den letzten Jahren auf der Serverseite Node.js (V8) als JavaScript leichtgewichtige Laufzeitumgebung populär geworden.
+
+Vorteile der JavaScript-Plattform:
+- Web-Anwendungen müssen vom Benutzer nicht installiert werden, können einfach im Browser aufgerufen werden
+- Referenzen zwischen verschiedenen Systemen durch Hyperlinks
+- Sicherheit durch Sandbox-Prinzip\footnote{
+	kein Zugriff aus dem Browser heraus (begrenzte Ausnahme: Zugriff auf User-bestimmte Dateien durch File API)}
+\cite[\#Javascript-the-platform]{haoyi.HOS}
+
+
+
+
+
+
+
+
+Der Sprachstandard wird unter dem offiziellen Namen ECMAScript ((kurz: ES)) von der Organisation Ecma International standardisiert (als Standard ECMA-262). Der aktuell von allen wichtigen Browsern unterstützte Standard ECMAScript 5.1 stammt aus dem Jahr 2011.\footnote{
+	\url{http://www.ecma-international.org/ecma-262/5.1/}}
+Die im Juni 2015 veröffentlichte Version ECMAScript 6 enthält viele Verbesserungen um die Sprache zu modernisieren, ist aber momentan noch nicht ausreichend in den verbreiteten Browser implementiert.
+
+
+JavaScript ähnelt zwar in der Syntax seinem ungleichen Namensvetters Java, die Semantik unterscheidet sich hingegen teilweise stark\cite{eich1996.JSL}.
 
 
 \subsection{Objektorientierung}
@@ -468,25 +503,7 @@ Es gibt den Typ \texttt{Function} für Funktionen. Daneben existieren nur noch \
 
 \subsection{Tools und Ökosystem}
 
-Die Plattform auf der JavaScript ausgeführt wird ist klassischerweise der Browser. Dieser benötigt zur Ausführung von JavaScript eine JavaScript-Engine die den Code zur Laufzeit interpretiert. Moderne JavaScript-Engines sind aber aus Performancegründen meist keine Interpreter mehr, sondern führen eine Just-in-time-Kompilierung (JIT)\footnote{
-	\url{https://en.wikipedia.org/wiki/Just-in-time_compilation}
-} durch. Verbreitete JavaScript-Engines sind:
 
-\begin{itemize}
-	\item Nitro (Apple Safari)
-	\item V8 (Google Chrome und Opera)
-	\item SpiderMonkey (Mozilla Firefox)
-	\item PhantomJS (ein auf WebKit basierender sogenannter \textit{headless browser}, der zum Beispiel für Tests zum Einsatz kommt)
-\end{itemize}
-
-Darüber hinaus ist in den letzten Jahren auf der Serverseite Node.js (V8) als JavaScript leichtgewichtige Laufzeitumgebung populär geworden.
-
-Vorteile der JavaScript-Plattform:
-- Web-Anwendungen müssen vom Benutzer nicht installiert werden, können einfach im Browser aufgerufen werden
-- Referenzen zwischen verschiedenen Systemen durch Hyperlinks
-- Sicherheit durch Sandbox-Prinzip\footnote{
-	kein Zugriff aus dem Browser heraus (begrenzte Ausnahme: Zugriff auf User-bestimmte Dateien durch File API)}
-\cite[\#Javascript-the-platform]{haoyi.HOS}
 
 (IDEs: ???)
 
@@ -923,12 +940,12 @@ moeglicher Fix (aber teuer):
 - undefiniertes Verhalten
 	- unkorrekte Typen casten ist ein Bug
 		Bsp.:
-\begin{lstlisting}[language=Scala]
+\begin{lstlisting}[language=Scala, style=snippet]
 val s = "foo"
 s.asInstanceOf[List[String]]
 \end{lstlisting}
 	- JVM wirft ClassCastException
-\begin{lstlisting}
+\begin{lstlisting}[language=Scala, style=snippet]
 java.lang.ClassCastException: java.lang.String cannot be cast to scala.collection.immutable.List
 \end{lstlisting}
 	- zu großer Overhead für Checks in JavaScript (Laufzeittypprüfungen würden Ausfführungszeit verdoppeln) -> undefiniertes Verhalten (alles kann passieren)
@@ -1032,7 +1049,7 @@ wichtigste Richtung der Interop
 
 primitive JS-Typen entsprechend Korrespondenz (-> Tabelle) repräsentiert
 
-für andere vordefinierte JavaScript-Typen existieren es Definitionen in scala.scalajs.js:
+für andere vordefinierte JavaScript-Typen existieren Definitionen in scala.scalajs.js:
 
 \begin{lstlisting}
 js.Any
@@ -1062,15 +1079,17 @@ Funktionen
 JavaScript-Objekte können als Literale erzeugt werden:
 
 dieser Scala.js-Code:
-\begin{lstlisting}[language=Scala]
+\begin{lstlisting}[language=Scala, style=snippet]
 js.Dynamic.literal(foo = 42, bar = "foobar")
 \end{lstlisting}
 
 entspricht in JavaScript:
-\begin{lstlisting}[language=JavaScript]
+\begin{lstlisting}[language=JavaScript, style=snippet]
 {foo: 42, bar: "foobar"}
 \end{lstlisting}
 
+
+Das Paket \texttt{scala.scalajs.js} enthält mit \texttt{Math} sowie \texttt{JSNumberOps} und \texttt{JSStringOps} auch Fassaden, um auf native JavaScript-Methoden und Konstanten beziehungsweise Operationen für Zahlen Strings zurückzugreifen.
 
 Integration von JavaScript-APIs
 - durch Fassaden Verwendung von JavaScript-APIs wie (wichtig!) den DOM oder auch jQuery, ganz normaler Aufruf wie Scala-Code
@@ -1139,7 +1158,7 @@ dabei sind doc, foo und div vom Typ js.Dynamic, der von js.Any erbt
 
 
 Instanzen von dynamischen Typen können auch erzeugt werden:
-\begin{lstlisting}[language=Scala]
+\begin{lstlisting}[language=Scala, style=snippet]
 val today = js.Dynamic.newInstance(js.Dynamic.global.Date)()
 \end{lstlisting}
 
@@ -1150,7 +1169,7 @@ val today = js.Dynamic.newInstance(js.Dynamic.global.Date)()
 
 Export nach JS mit Annotationen
 - oft genügt:
-\begin{lstlisting}[language=Scala]
+\begin{lstlisting}[language=Scala, style=snippet]
 object MyApp extends scala.scalajs.js.JSApp {
   def main(): Unit = {
   	/* ... */
@@ -1185,21 +1204,53 @@ command line interface (CLI)
 
 
 in
-\begin{lstlisting}
+\begin{lstlisting}[style=snippet]
 enablePlugins(ScalaJSPlugin)
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[style=snippet]
 libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.8.0"
 \end{lstlisting}
 
-\begin{lstlisting}
+oder mehrere
+
+\begin{lstlisting}[style=snippet]
 libraryDependencies ++= Seq(
   "org.scala-js" %%% "scalajs-dom" % "0.8.0",
-  "com.lihaoyi" %%% "scalatags" % "0.5.2"
+  "be.doeraene" %%% "scalajs-jquery" % "0.8.0",
+  "com.lihaoyi" %%% "scalatags" % "0.5.2",
+  "com.lihaoyi" %%% "utest" % "0.3.1" % "test"
 )
 \end{lstlisting}
 
+\texttt{\%\%\%} statt \texttt{\%\%}
+
+Scope (z.B. Test) festlegen durch nachgestelltes \texttt{\% "'test"'}
+
+Wenn eine Scala.js-Fassade für eine JavaScript-Bibliothek als Dependency definiert ist wird die entsprechende JavaScript-Bibliothek automatisch geholt.
+
+
+Diese Zeile:
+
+\begin{lstlisting}[style=snippet]
+skip in packageJSDependencies := false
+\end{lstlisting}
+
+sorgt dafür, dass alle JavaScript-Dependencies in einer Datei \texttt{-jsdeps.js} gesammelt werden. Dadurch muss nur eine (!) Datei für alle JS-Deps in das HTML-Dokument eingebunden werden. Dies ist so zufolge der offiziellen Dokumentation (-->  \url{http://www.scala-js.org/doc/sbt/depending.html}). Allen Erfahrungen im Rahmen dieser Arbeit nach funktioniert das sogar ganz ohne diese Zeile.
+
+Auch beliebige JavaScript-Bibliotheken können mittels WebJars\footnote{\url{http://www.webjars.org/}} geholt werden.
+
+Hierbei kann eine minifizierte Alternative der JavaScript-Bibliothek angegeben werden. 
+
+Durch die Zeile
+
+\begin{lstlisting}[style=snippet]
+jsDependencies += "org.webjars" % "jquery" % "2.1.4" / "jquery.js" minified "jquery.min.js"
+\end{lstlisting}
+
+wird festgelegt, dass die Scala.js-Fassaden-Bibliothek im \texttt{FullOpt}-Modus die minifizierte Version von jQuery in die 
+-jsdeps.min.js integriert. Andernfalls
+wird die nicht-minifizierte Version verwendet, das gilt auch für Dependencies, für die keine minifizierte Version existiert.
 
 
 
@@ -1439,7 +1490,7 @@ scalajs.dom.ext.Color
 
 \subsubsection{(scala-js-jquery)}
 
-- statische Typen für jQuery)
+- statische Typen für jQuery. (Alternativ gibt es die Bibliothek \texttt{jquery-facade}, die aber nicht ausprobiert wurde.))
 
 \subsubsection{ScalaTags}
 
@@ -1702,13 +1753,13 @@ Plugin: sbteclipse\footnote{\url{https://github.com/typesafehub/sbteclipse}}
 dieses erzeugt ein Eclipse-Projekt
 
 in project/plugins.sbt hinzufügen:
-\begin{lstlisting}[language=Scala]
+\begin{lstlisting}[language=Scala, style=snippet]
 addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "4.0.0")
 \end{lstlisting}
 
 wenn sbteclipse versuchen soll, die Quellen der Library-Dependencies herunterzuladen - in build.sbt hinzufügen:
 
-\begin{lstlisting}[language=Scala]
+\begin{lstlisting}[language=Scala, style=snippet]
 EclipseKeys.withSource := true
 \end{lstlisting}
 
@@ -1736,7 +1787,7 @@ Node.js ...
 
 Damit Stacktraces richtig aufgelöst werden sollte \textit{source-map-support}\footnote{\url{https://www.npmjs.com/package/source-map-support}} im Projekt installiert werden mit:
 
-\begin{lstlisting}
+\begin{lstlisting}[style=snippet]
 npm install source-map-support
 \end{lstlisting}
 
@@ -1744,7 +1795,7 @@ Die Dateien des Plugins werden im Projektverzeichnis in einem frisch erzeugten O
 
 Es ist auch möglich, das Projekt als Node.js-Projekt zu initialisieren. Das hat den Vorteil, dass man sich die benötigte Dependency in einer Konfigurationsdatei merken kann.
 
-\begin{lstlisting}
+\begin{lstlisting}[style=snippet]
 npm -y init
 npm install source-map-support --save-dev
 \end{lstlisting}
@@ -1772,35 +1823,15 @@ wichtige Quelle
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 \section{Hello Scala.js: Ein Minimalbeispiel}
 
-%lose orientiert an  -->  http://www.scala-js.org/doc/tutorial.html
-
-%TODO jeweils die folgenden \\sections:
-%
-%\section{Beschreibung und Anforderungen}
-%
-%\section{Implementierung}
-%
-%\section{angewendete Testmethoden und Testergebnisse}
-%
-%\section{Beurteilung hinsichtlich der Evaluierungskriterien}
+%TODO Hinweis: lose orientiert an  -->  http://www.scala-js.org/doc/tutorial.html
 
 \subsection{Ziel der Untersuchung}
 
 Ein minimales Setup in Form eines klassischen Hallo-Welt-Programms sollte zum Laufen gebracht werden. Anhand dieses Minimalbeispiels sollten dann bestimmte Grundbedingungen der Entwicklung mit Scala.js untersucht werden. Neben der Konfiguration selbst sollte als wichtiger Faktor für die alltägliche Entwicklungsarbeit die Zeit ermittelt werden, die für einen Build-Lauf benötigt wird. Auch die Größe der für die Auslieferung relevanten Kompilate sollte betrachtet werden, schließlich besteht ein unmittelbarer Zusammenhang zwischen der Größe der zu ladenden Datenmenge und der Ladezeit im Browser, weshalb sie eine wichtige Grundbedingung für die Zufriedenheit der Benutzer ist.
-Außerdem sollte von der Sourcemap-Unterstützung Gebrauch gemacht werden und der ... HIER WEITER
 
-hello-scalajs2:
-In einer Erweiterung dieses Minimal-Beispiels, sollte eine Ausgabe ins Browser-Fenster gemacht werden. Zusätzlich sollte Benutzerinteraktion mit der Oberfläche mittels Buttons probiert werden. Als Reaktion auf Betätigung des einen Buttons sollte eine Ausgabe auf die Browser-Konsole, beim anderen eine Textänderung im Browser-Fenster erfolgen. Schließlich sollte die Testbarkeit solcher Oberflächen-Elemente geklärt werden.
+Anhand einer erweiterten Fassung des Minimalbeispiel sollten Benutzerinteraktion und der Einsatz von jQuery ausprobiert und die Testbarkeit von Oberflächen-Elementen geklärt werden. Außerdem sollte die Sourcemap-Unterstützung erprobt werden.
 
-hello-scalajs2:
-Hallo Welt im Browser-Fenster
-Interaktion im Browser-Fenster
-Möglichkeit von Tests
-Verwendung von jQuery (für Tests)
-Dateigröße
-Turnaround-Zeiten (=Durchlauf-Zeiten)
-
-
+document.createElement("div")
 \subsection{Kriterien der Untersuchung}
 
 \begin{enumerate}
@@ -1810,7 +1841,7 @@ Turnaround-Zeiten (=Durchlauf-Zeiten)
 		\item Compiler-Geschwindigkeit
 		\item Größe der Kompilate
 	\end{enumerate}
-	\item Wartbarkeit: 
+	\item Wartbarkeit
 		\begin{enumerate}
 			\item Debugging-Qualitäten
 			\item Testbarkeit
@@ -1847,7 +1878,21 @@ Damit das kleine Programm im Browser ausgeführt werden kann, muß es in eine HT
 
 \lstinputlisting[language=HTML5, caption={HTML-Code zur Einbindung der Scala.js-Datei in eine Website.}, label={code:hello.html}]{listings/01hello-scalajs/index-dev.html}
 
-Hierbei empfehlen sich zwei getrennte HTML-Dateien, eine zur Entwicklung und eine für das fertige Produkt, in der die jeweils passenden JavaScript-Dateien zu verwenden sind. Wie in Abschnitt~\ref{sec:compiler} beschrieben, erzeugt der Scala.js-Compiler, je nach Task, \texttt{fastOptJS} oder \texttt{fullOptJS}, unterschiedliche JavaScript-Dateien, die anhand ihres Suffix, \texttt{-fastopt.js} beziehungsweise \texttt{-opt.js}, auseinandergehalten werden können.
+Hierbei empfehlen sich zwei getrennte HTML-Dateien, eine zur Entwicklung und eine für das fertige Produkt, in der die jeweils passenden JavaScript-Dateien zu verwenden sind. Wie in Abschnitt~\ref{sec:compiler} beschrieben, erzeugt der Scala.js-Compiler, je nach Task, \texttt{fastOptJS} oder \texttt{fullOptJS}, unterschiedliche JavaScript-Dateien, die anhand ihres Suffix, \texttt{-fastopt.js} beziehungsweise \texttt{-opt.js}, auseinandergehalten werden können. Die Pflege von zwei nahezu identischen HTML-Dokumenten mag etwas ärgerlich scheinen. Andererseits besteht ihr Hauptzweck in der unterschiedlichen Konfiguration für Entwicklung oder Produktion.
+
+Das erweiterte Minimalbeispiel reagiert auf Betätigung eines Buttons hin mit einer Text-Ausgabe sowohl auf die Browser-Konsole als auch in die Webseite.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[
+    width=1.0\textwidth
+%   scale=0.5
+    ]{hello-scalajs/hello2}
+    \caption{Erweitertes Minimalbeispiel mit Benutzerinteraktion.
+    (Quelle: eigene Anfertigung)
+    }
+    \label{fig:hello2}
+\end{figure}
 
 \subsection{Ergebnisse der Untersuchung und Bewertung}
 
@@ -1858,6 +1903,22 @@ Im direkten Vergleich mit einem Programm in reinem JavaScript und HTML (Listing 
 \lstinputlisting[language=HTML5, caption={HTML-Code mit eingebettetem JavaScript für ein Hallo-Welt-Programm.}, label={code:hello-js.html}]{listings/01hello-scalajs/hello-js-index.html}
 
 ist der Aufwand, der für ein Scala.js-Projekt mit gleicher Funktionalität betrieben werden muss deutlich größer. Was sich dort auf eine einzige Datei mit wenigen Zeilen Code beschränkt, benötigt hier Build-Definitionen, Plugins und eine ganze Projektstruktur. Andererseits schlägt sich der Gewinn, der sich daraus ergibt, typsicher in Scala für die Oberfläche zu programmieren, bei einem so trivialen Beispiel noch nicht nieder.
+
+Die Einbindung von \texttt{scala-js-jquery} unkompliziert. Dau muss lediglich
+\begin{lstlisting}[style=snippet]
+libraryDependencies += "be.doeraene" %%% "scalajs-jquery" % "0.8.0"
+\end{lstlisting}
+in der \texttt{buil.sbt} hinzugefügt werden.
+
+Etwas schwieriger war aber, zu verstehen wie sich hier und generell minifizierte Versionen für die im \texttt{target/}-Ordner erzeugten JavaScript-Dependencies erzwingen lassen (siehe (???)).
+
+Für Tests wurde \texttt{uTest} verwendet und ensprechend den \texttt{libraryDependencies} hinzugefügt. Um dem DOM für Tests verwenden zu können, muss wie in Kapitel (sbt-Integration ???) beschrieben, der Eintrag
+\begin{lstlisting}[style=snippet]
+jsDependencies in Test += RuntimeDOM
+\end{lstlisting}
+in der Build-Definition ergänzt werden.
+
+Um Sourcemaps-Unterstützung im Browser zu bekommen, muss eine nicht allzu aufwendige Installation vorgenommen werden, wie in ((???)) beschrieben.
 
 \subsubsection{Performance}
 
@@ -1936,7 +1997,7 @@ Der Optimierer und der Google Closure Compiler reduzieren die Code-Menge (durch 
 
 \subsubsection{Debugging-Qualitäten}
 
-mit Sourcemaps
+Der Einsatz von Sourcemaps erhöht den Komfort beim Debugging in der Browser-Konsole\footnote{Erprobt wurde hierbei Chrome.} erheblich. Wie der Vergleich in den Abbildungen \ref{fig:no-sourcemaps} und \ref{fig:sourcemaps} zeigt, macht es selbst beim nicht-minifizierten Entwicklungs-Code einen großen Unterschied, ob man zur originalen Scala-Code springen kann, oder ob man gezwungen ist, compilergeneriertes JavaScript zu verstehen. Selbst im \texttt{FullOpt}-Modus funktioniert übrigens die Auflösung der Referenzen zum Scala-Code.
 \url{http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/}
 	- sinvoller Stacktrace in der Browserkonsole durch ...
 	
@@ -1978,55 +2039,97 @@ mit Sourcemaps
 Tests möglich ...
 
 
-\subsection{Schwierigkeiten}
-keine (?)
-\subsection{Erfolge}
-Scala im Browser
-zum Code springen aus der Browser-Konsole
-\subsection{Bewertung: differenziert oder boolsch mit Begründung; Fazit aus Schwierigkeiten und Erfolgen}
-relativ große Datei für Hallo-Welt
-relativ hoher Konfigurationsaufwand im direkten Vergleich mit Hallo-Welt-JS
-komfortables Debuggin mit der Chrome-Konsole und Sourcemaps - sinnvoller Stacktrace, zum Code springen aus der Browser-Konsole
-Pflege von zwei index.html etwas ärgerlich
-IntelliJ angenehmer
-
-
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-%\section{hello-scalajs2, hello-scalatags -- leicht erweiterte Minimalbeispiel (3)}
-%
-%\subsection{Ziel der Untersuchung}
-%
-%
-%
-%hello-scalatags:
-%Templating (mehr Typsicherheit für Tags -> ScalaTags-Readme)
-%\subsection{Kriterien der Untersuchung}
-%Performance
-%	Compiler
-%Testbarkeit
-%Konfigurationsaufwand
-%\subsection{Kurzbeschreibung des Beispielprogramms}
-%Hallo Welt im Browser-Fenster
-%Interaktion im Browser-Fenster
-%kleine Tests, die ... beweisen
-%
-%
-%\subsection{Ergebnisse der Untersuchung}
-%
-%Testbarkeit
-%beschreiben
-%
-%Konfigurationsaufwand
-%beschreiben
-%
-%\subsection{Schwierigkeiten}
-%keine(?)
-%\subsection{Erfolge}
-%Tests möglich
-%Bibliotheken einbinden und verwenden einfach, wenn Fassade vorhanden
-%\subsection{Bewertung: differenziert oder boolsch mit Begründung; Fazit aus Schwierigkeiten und Erfolgen}
+\section{Hello ScalaTags: HTML-Templating}
 
+%TODO#############################
+
+\subsection{Ziel der Untersuchung}
+
+Typsicheres HTML-Templating
+
+\subsection{Untersuchungskriterien}
+
+\begin{itemize}
+	\item Machbarkeit
+	\item Lesbarkeit
+\end{itemize}
+
+\subsection{Kurzbeschreibung des Beispielprogramms}
+
+Verschiedene valide HTML-Tags werden mit Scala.js erzeugt.
+
+\subsection{Ergebnisse der Untersuchung und Bewertung}
+
+Betrachtet wurden vier Möglichkeiten, in Scala.js HTML zu generieren. Dazu sei in der \texttt{index.html} ein
+\texttt{<div>} mit der ID "`container"' definiert. Ferner gehen wir davon aus, dass die Referenz darauf im Scala.js-Programm bekannt ist durch
+
+\begin{lstlisting}[language=Scala, style=snippet]
+val container: org.scalajs.dom.raw.Element = document.getElementById("container")
+\end{lstlisting}
+
+Mithilfe von Scala-js-dom können die DOM-Methoden \texttt{createElement()} zum erzeugen von HTML-Elementen und \texttt{appendChild()} zum einhängen von Elementen in den DOM-Tree verwendet werden.
+
+\begin{lstlisting}[language=Scala, caption={HTML-Generierung mit Scala-js-dom und Nodes.}]
+val foo = document.createElement("div")
+foo.id = "hello-div"
+foo.classList.add("first")
+foo.setAttribute("style", "color: red;")
+val par = document.createElement("p")
+val txt = document.createTextNode("hello")
+div.appendChild(par)
+node.appendChild(elm)
+\end{lstlisting}
+
+Allerdings können so auch, ob absichtlich oder durch Tippfehler, nicht-valide HTML-ELemente erzeugt werden, wie zum Beispiel diese:
+\begin{lstlisting}[language=Scala, style=snippet]
+\texttt{document.createElement("xyz")}   // erzeugt: <xyz>Hello world!?</xyz>
+\texttt{document.createElement("\@\$#!")} // f"uhrt zu einem Laufzeitfehler
+\end{lstlisting}
+
+Eine weitere Möglichkeit, ist die direkte Manipulation der \texttt{innerHTML}-Property, der HTML-Code als String zugewiesen werden kann.
+
+\begin{lstlisting}[language=Scala, caption={HTML-Generierung mit Scala-js-dom und Strings.}]
+node.innerHTML = s"""
+ |<div id="hello-div" class="first" style="color: red;">
+ |  <p>hello</p>
+ |</div>
+""".stripMargin
+\end{lstlisting}
+
+Bei dieser Variante sind aus Tippfehlern resultierende unvalide HTML-Tags sogar noch wahrscheinlicher. Haoy warnt in diesem Zusammenhang auch vor der Gefahr von Cross-Site-Scripting.\cite[\#HelloWorld:HTML]{haoyi.HOS}
+
+Mit ScalaTags nun ist es möglich, in Scala typsichere HTML-Templates zu schreiben, aus denen sich valider HTML-Code generieren lässt. Attribute wie etwa \texttt{id} und \texttt{class} können ebenso wie CSS-Styles gesetzt werden.\footnote{
+	ScalaTags bietet bei Bedarf sogar eine DSL, um CSS-Stylesheets zu generieren.}
+
+Eine Möglichkeit ist es nun, aus diesen Templates HTML-Strings zu rendern, was vor allem für serverseitiges HTML-Templating interessant ist (hier existiert schließlich kein DOM). In dieser Variante kann ScalaTags auch in reinen Scala-Projekten eingesetzt werden.
+
+\begin{lstlisting}[language=Scala, caption={HTML-Generierung mit ScalaTags und Strings.}]
+import scalatags.Text.all._
+node.innerHTML =
+  div(id:="hello-div", cls:="first", color: ="red",
+    p("hello")
+  ).render
+\end{lstlisting}
+
+Für die Client-Seite existiert zusätzlich die bessere Möglichkeit, die Templates direkt in \texttt{dom.Element}s umzuwandeln:
+
+\begin{lstlisting}[language=Scala, caption={HTML-Generierung mit ScalaTags und Nodes.}]
+import scalatags.JsDom.all._
+node.appendChild(
+  div(id:="hello-div", cls:="first", color: ="red",
+    id:="hello-div",
+    p("hello")
+  ).render
+)
+\end{lstlisting}
+
+Damit ist es möglich typsicher, deklarativ und nahe an HTML, gleichzeitig (schon durch das Wegfallen der schließenden Tags) sehr lesbaren Code zu schreiben. Hinzu kommt die Möglichkeit, Kontrollfluss-Anweisungen wie \texttt{for} und \texttt{if/else} einzustreuen (ein Beispiel hierfür: Listing \ref{code:setupCurrencySelect}).
+
+\subsection{Schwierigkeiten}
+\subsection{Erfolge}
+\subsection{Bewertung: differenziert oder boolsch mit Begründung; Fazit aus Schwierigkeiten und Erfolgen}
 
 
 
@@ -2091,30 +2194,30 @@ Ein anderer bekannter Fehler ist das ungewöhnliche Verhalten der Zeichenfläche
 
 \subsection{Ergebnisse der Untersuchung und Bewertung}
 
-Alle geplanten Anforderungen ließen sich umsetzen: das Zeichnen auf den Canvas, der Zugriff auf die DOM-API, timergesteuerte Ausführung und die Verwendung von Event-Handlern.
+Alle geplanten Anforderungen ließen sich umsetzen: der Zugriff auf die DOM-API, das Zeichnen auf den Canvas, timergesteuerte Ausführung und die Verwendung von Event-Handlern.
 
 Um ein Canvas-Objekt zu erhalten, gibt es in JavaScript zwei Möglichkeiten: entweder man definiert im HTML-Dokument ein Canvas-Element mit einer eindeutigen ID \texttt{<canvas id="'myCanvas"'></canvas>} und greift im JavaScript-Code darauf zu:
 
-\begin{lstlisting}[language=JavaScript]
+\begin{lstlisting}[language=JavaScript, style=snippet]
 var canvas = document.getElementById("my-canvas")  // JavaScript
 \end{lstlisting}
 
 oder man erzeugt das Canvas-Element mit der \texttt{createElement}-Methode:
 
-\begin{lstlisting}[language=JavaScript]
+\begin{lstlisting}[language=JavaScript, style=snippet]
 var canvas = document.createElement("canvas")      // JavaScript
 \end{lstlisting}
 
 Um diese Methoden der DOM-API in Scala.js zu verwenden, existiert die Bibliothek Scala-js-dom. Damit können die benötigten DOM-API-Methoden erwartungsgemäß verwendet werden:
 
-\begin{lstlisting}[language=Scala]
+\begin{lstlisting}[language=Scala, style=snippet]
 val canvas = dom.document.getElementById("my-canvas").
   asInstanceOf[html.Canvas]
 \end{lstlisting}
 
 und in der Variante mit \texttt{createElement}:
 
-\begin{lstlisting}[language=Scala]
+\begin{lstlisting}[language=Scala, style=snippet]
 val canvas = dom.document.createElement("canvas").
   asInstanceOf[html.Canvas]
 \end{lstlisting}
@@ -2124,7 +2227,7 @@ geben nämlich ein Objekt vom Typ \texttt{org.scalajs.dom.raw.Element} zurück. 
 
 Zum Zeichnen wird nun der 2D-Kontext benötigt. Auch hier ist aus den genannten Gründen ein Cast notwending. Danach kann der Kontext wie gewohnt verwendet werden.\footnote{Zum Zeichnen auf den Canvas siehe: \url{https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D}}
 
-\begin{lstlisting}[language=Scala]
+\begin{lstlisting}[language=Scala, style=snippet]
 val ctx = canvas.getContext("2d").
   asInstanceOf[dom.CanvasRenderingContext2D]
 ctx.fillStyle = "silver"
@@ -2135,13 +2238,13 @@ Die Typ-Casts mögen etwas unschön sein, aber die zwei beschriebenen Fälle sin
 
 Um einen Timer zu starten, der ein Aktion regelmäßig ausführt, bietet die DOM-API die Methode \texttt{setInterval}. Die folgende Anweisung erzeugt zum Beispiel einmal pro Sekunde eine Ausgabe auf die Konsole:
 
-\begin{lstlisting}[language=JavaScript]
+\begin{lstlisting}[language=JavaScript, style=snippet]
 setInterval(function(){ console.log("hi"); }, 1000);
 \end{lstlisting}
 
 In Scala.js lässt sich das nun recht ähnlich ausdrücken:
 
-\begin{lstlisting}[language=Scala]
+\begin{lstlisting}[language=Scala, style=snippet]
 dom.setInterval(() => println("hi"), 1000)
 \end{lstlisting}
 
@@ -2149,7 +2252,7 @@ Hier ist also nichts neu zu lernen, die JavaScript-DOM-API wird mithilfe der Fas
 
 Zur Veranschaulichung der Verwendung von Event-Handler sei hier folgendes Beispiel herausgegriffen:
 
-\begin{lstlisting}[language=Scala]
+\begin{lstlisting}[language=Scala, style=snippet]
 dom.document.onkeyup = { (evt: dom.KeyboardEvent) => evt.keyCode match {
   case KeyCode.space =>  timer.toggle()
   case KeyCode.up =>     timer.decr()
@@ -2166,7 +2269,7 @@ Scala befördert eine größere Abstraktion beim Programmieren. So wird es erlei
 
 So wurde im ersten Ansatz der Timer direkt mit dem Aufruf:
 
-\begin{lstlisting}[language=Scala]
+\begin{lstlisting}[language=Scala, style=snippet]
 dom.setInterval(() => action, interval)
 \end{lstlisting}
 
@@ -2182,7 +2285,7 @@ Statt etwa direkt den
 		dom.setInterval(() => action, interval)
 		
 		dadurch knappe und schnell verständlicher Code:
-\begin{lstlisting}[language=Scala]
+\begin{lstlisting}[language=Scala, style=snippet]
 dom.document.onkeyup = { (evt: dom.KeyboardEvent) => evt.keyCode match {
   case KeyCode.down =>   timer.incr()
   [...]
@@ -2191,7 +2294,7 @@ dom.document.onkeyup = { (evt: dom.KeyboardEvent) => evt.keyCode match {
 
 		Details in Timer verborgen:
 		
-\begin{lstlisting}[language=Scala]
+\begin{lstlisting}[language=Scala, caption={Timer-Klasse des Canvas-Beispiels.}]
 class Timer(var interval: Int, action: => Unit) {
   var timerId = -1
   val inc = 2
@@ -2226,7 +2329,7 @@ class Timer(var interval: Int, action: => Unit) {
 
 hinzufügen in der build.sbt - zack, fertig:
 
-\begin{lstlisting}
+\begin{lstlisting}[style=snippet]
 libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.8.0"
 \end{lstlisting}
 
@@ -2256,17 +2359,18 @@ Die Typsicherheit hat hier beim Editieren den unmittelbaren Vorteil, dass die ID
 
 
 
-
-\paragraph{Workbench-Plugin}
+\subsubsection{Workbench-Plugin}
 
 Damit das Workbench-Plugin von sbt auch geladen wird, muss es in der \texttt{text} hinzugefügt werden:
 
-\begin{lstlisting}
+\begin{lstlisting}[style=snippet]
 addSbtPlugin("com.lihaoyi" % "workbench" % "0.2.3")
 \end{lstlisting}
 
-In der build.sbt müssen folgende zwei Einträge hinzugefügt weden:
-\begin{lstlisting}
+In der build.sbt müssen folgende Einträge hinzugefügt werden:
+\begin{lstlisting}[style=snippet]
+workbenchSettings
+
 bootSnippet := "frenzy.CanvasApp().main();"
 
 updateBrowsers <<= updateBrowsers.triggeredBy(fastOptJS in Compile)
@@ -2274,13 +2378,13 @@ updateBrowsers <<= updateBrowsers.triggeredBy(fastOptJS in Compile)
 
 Das \texttt{bootSnippet} legt fest, welcher JavaScript als Einsprungspunkt für das Neuladen verwendet werden soll. Manchmal genügt ein \texttt{updateBrowsers} nicht, für solche Fälle existiert das radikalere:
 
-\begin{lstlisting}
+\begin{lstlisting}[style=snippet]
 refreshBrowsers <<= refreshBrowsers.triggeredBy(fastOptJS in Compile)
 \end{lstlisting}
 
 Nun muss die Workbench noch in der Entwicklungsversion des HTML-Dokuments eingebunden werden durch folgenden Code-Schnipsel:
 
-\begin{lstlisting}
+\begin{lstlisting}[language=HTML5, style=snippet]
 <script src="/workbench.js"></script>
 \end{lstlisting}
 
@@ -2407,9 +2511,9 @@ Beispielhaft wurde ein Währungsumrechner umgesetzt, der dem Benutzer die Eingab
 
 Ist das Setup einer einfachen Scala.js-Anwendung einmal erprobt, bleibt der weitere Konfigurationsaufwand für diese Anwendung gering: die benötigten Bibliotheken müssen lediglich als \texttt{libraryDependencies} in der Build-Definition hinzugefügt werden.
 
-Das Umrechnungsformular lässt sich mit ScalaTags sehr übersichtlich und deklarativ schreiben. Es werden zwei nahezu identische Währungsauswahllisten benötigt, mit einem Unterschied: Der Auswahlwert soll unterschiedlich behandelt werden soll, einmal als Quell-, das andere Mal als Zielwährung. Der Methode, die Auswahllisten erzeugt muss daher eine Funktion \texttt{String => Unit}) übergeben werden, die den Auswahlwert entgegennimmt, so dass der Umrechner passend aktualisiert werden kann.
+Das Umrechnungsformular lässt sich mit ScalaTags sehr übersichtlich und deklarativ schreiben. Es werden zwei nahezu identische Währungsauswahllisten benötigt, mit einem Unterschied: Der Auswahlwert soll einmal als Quell-, das andere Mal als Zielwährung behandelt werden. Wir formulieren eine Methode, die Auswahllisten erzeugt.
 
-\begin{lstlisting}[language=Scala]
+\begin{lstlisting}[language=Scala, caption={Methode zur Erzeugung eines \texttt{<select>}-Elements.}, label={code:setupCurrencySelect}]
 def setupCurrencySelect(theId: String,
                         updateConverter: String => Unit,
                         defaultOption: String = "EUR"): html.Select = {
@@ -2426,25 +2530,21 @@ def setupCurrencySelect(theId: String,
 }
 \end{lstlisting}
 
-Die Liste der möglichen \texttt{<option>}s lässt sich prägnant mithilfe einer \texttt{for}-Comprehension ausrücken.
+Dieser Methode muss eine Funktion \texttt{String => Unit}) übergeben werden, die den Auswahlwert entgegennimmt, so dass der Umrechner passend aktualisiert werden kann. Die Liste der möglichen \texttt{<option>}s lässt sich prägnant mithilfe einer \texttt{for}-Comprehension ausdrücken. Das Auswahllisten-Elemente, bei dem es sich um ein \texttt{scalatags.JsDom.TypedTag[html.Select]} handelt, muss durch Aufruf der Methode \texttt{render} in den Fassadentyp \texttt{html.Select} der Scala-js-dom-Bibliothek umgewandelt werden. Dadurch haben wir vollen, typsicheren Zugriff auf die Methoden und Attribute ((die in der DOM-API spezifiziert sind)). Ein \texttt{onchange}-Handler ließe sich eigentlich auch innerhalb des \texttt{select()}-Tags schreiben, allerdings ließe sich so nicht auf das \texttt{value}-Attribut zugreifen.
 
-Das Auswahllisten-Elemente, bei dem es sich um ein \texttt{scalatags.JsDom.TypedTag[html.Select]} handelt, muss durch Aufruf der Methode \texttt{render} in den Fassadentyp \texttt{html.Select} der Scala-js-dom-Bibliothek umgewandelt werden. Dadurch haben wir vollen, typsicheren Zugriff auf die Methoden und Attribute ((die in der DOM-API spezifiziert sind)). Ein \texttt{onchange}-Handler ließe sich eigentlich auch innerhalb des \texttt{select( ... )}-Tags schreiben, allerdings ließe sich so nicht auf das \texttt{value}-Attribut zugreifen.
+Nach dieser Vorbereitung kann das Umrechnungsformular sehr übersichtlich und deklarativ geschrieben werden:
 
-Nach diese Vorbereitung kann das Umrechnungsformular sehr übersichtlich und deklarativ geschrieben werden:
-
-\begin{lstlisting}[language=Scala]
+\begin{lstlisting}[language=Scala, caption={Deklaration eines Formulars zur Währungsumrechnung mit ScalaTags.}]
 container.appendChild(
   div(
     h1("Currency Converter"),
     form(
-      id:="form-conv",
       onsubmit:={ (evt: dom.Event) => evt.preventDefault() },
       inputAmount,
       setupCurrencySelect("sel-src-curr", c => converter = converter.copy(srcCurr = c)),
       outputAmount,
       setupCurrencySelect("sel-dst-curr", c => converter = converter.copy(dstCurr = c)),
       button(
-        id:="btn-do-get",
         cls:="input-btn",
         "Convert",
         onclick:={ () => updateDstAmount() }
@@ -2456,13 +2556,75 @@ container.appendChild(
 
 Das Eingabefeld für den Ausgangsbetrag \texttt{inputAmount} ebenso wie das Ergebnisfeld \texttt{outputAmount} wurden zuvor definiert und mit \texttt{.render} umgewandelt, um sie im Programm referenzieren zu können. Auf diese Art ist es nicht nötig, den Umweg über \texttt{document.getElementById()} oder mit jQuery-Selektoren zu gehen.
 
-Als Quelle für die Umrechnungskurse sollte die Yahoo! Finance API\footnote{
+Für die Umrechnung wurde eine Klasse \texttt{Converter} definiert. Als Quelle für die Umrechnungskurse sollte die Yahoo! Finance API\footnote{
 	\url{https://code.google.com/p/yahoo-finance-managed/wiki/YQLAPI}}
-genutzt werden, die auf HTTP-Anfrage Ergebnisse im JSON-Format\footnote{
+genutzt werden, die auf HTTP-Anfrage hin Ergebnisse im JSON-Format\footnote{
 	JavaScript Object Notation, ein kompaktes Format zum Datenaustausch.}
-liefert
+liefert. Anfrage werden in einer Query-Language formuliert. Die Anfrage:
 
-\begin{lstlisting}[language=Scala]
+\begin{lstlisting}[aboveskip=0pt, style=snippet]
+http://query.yahooapis.com/v1/public/yql?q=select * from yahoo.finance.xchange where pair in ('EURUSD')&format=json&env=store://datatables.org/alltableswithkeys
+\end{lstlisting}
+
+liefert als Resultat:
+
+\begin{lstlisting}[language=JavaScript, style=snippet]
+{
+  "query": {
+    "count": 1,
+    "created": "2015-10-25T12:58:36Z",
+    "lang": "de",
+    "results": {
+      "rate": {
+          "id": "EURUSD",
+          "Name": "EUR/USD",
+          "Rate": "1.1018",
+          "Date": "10/24/2015",
+          "Time": "11:55am",
+          "Ask": "1.1022",
+          "Bid": "1.1013"
+      }
+    }
+  }
+}
+\end{lstlisting}
+
+Um HTTP-Requests mit Scala.js zu realisieren gibt es verschiedene Möglichkeiten\cite[\#UsingWebServices]{haoyi.HOS}.
+
+Dank Scala-js-dom kann das \texttt{XMLHttpRequest}-Objekt\footnote{
+	Eine ursprünglich von Microsoft entwickelte API zur Client-Server-Kommunikation, die von den großen Browserherstellern Mozilla, Apple, and Google unterstützt und gegenwärtig vom W3C standardisiert wird.\cite{mdn.XHR}}
+ganz ähnlich wie mit reinem JavaScript verwendet werden (allerdings typsicher).
+
+\begin{lstlisting}[language=Scala, caption={HTTP-Aufruf mit XMLHttpRequest.}]
+val xhr = new dom.XMLHttpRequest()
+xhr.open("GET", url)
+xhr.onload = (e: dom.Event) => {
+  if (xhr.status == 200) {
+    handleXhrResponse(xhr)
+  }
+}
+xhr.send()
+\end{lstlisting}
+
+Der \texttt{onload}-Handler wird als anonyme Funktion übergeben, semantisch ganz analog zu JavaScript:
+
+\begin{lstlisting}[language=JavaScript, style=snippet]
+xhr.onload = function(e) { /* ... */ } // JavaScript
+\end{lstlisting}
+
+\texttt{XMLHttpRequest} verlangt relativ viel Handarbeit, bietet aber dafür einen sehr direkten Zugriff auf das HTTP-Protokoll. Für viele Anwendungsfälle ist das jedoch gar nicht nötig. Damit diese prägnanter geschrieben werden können, bietet Scala-js-dom Bequemlichkeitsmethoden für die gebräuchlichsten HTTP-Methoden (GET, POST, PUT und DELETE). Diese Methoden geben eine \texttt{Future[dom.XMLHttpRequest]}\footnote{
+	Futures in Scala: \url{http://docs.scala-lang.org/overviews/core/futures.html}}
+zurück. Damit Futures und Promises in Scala.js verwendet werden können, wird ein Ausführungskontext benötigt.. \cite[\#Extensions]{scala-js-dom.DOC} Zwei zusätzliche Importe sind nötig, der GET-Aufruf schrumpft dafür auf einen Einzeiler:
+
+\begin{lstlisting}[language=Scala, caption={Futures-basierter HTTP-Aufruf mit Scala.js-Bequemlichkeitsmethode.}]
+import dom.ext.Ajax
+import scalajs.concurrent.JSExecutionContext.Implicits.runNow
+Ajax.get(url).onSuccess{ case xhr => handleXhrResponse(xhr) }
+\end{lstlisting}
+
+So definieren wir eine \texttt{Converter}-Klasse, die immutable ist. Für jedes Währungspaar soll ein neue Instanz erzeugt werden.
+
+\begin{lstlisting}[language=Scala, caption={Der Währungsumrechner.}]
 case class Converter(
   srcCurr: String = "EUR",
   dstCurr: String = "EUR"
@@ -2471,20 +2633,36 @@ case class Converter(
     srcAmount * await{ rate }
   }
 
-  private def url = "http://query.yahooapis.com/v1/public/yql?q=select * from yahoo.finance.xchange where pair in ('" +
-    srcCurr + dstCurr + "')&format=json&env=store://datatables.org/alltableswithkeys"
+  private def url = "http://query.yahooapis.com/v1/public/yql?q=select * from yahoo.finance.xchange where pair in ('" + srcCurr + dstCurr + "')&format=json&env=store://datatables.org/alltableswithkeys"
 
   private lazy val rate: Future[Double] = Ajax.get(url).map{ case xhr =>
     val json: js.Dynamic = js.JSON.parse(xhr.responseText)
-    assert(json.query.results.rate.id.toString == srcCurr + dstCurr)
     json.query.results.rate.Rate.toString.toDouble
   }
 }
 \end{lstlisting}
 
-TODO  -->  vgl. Using Web Services \cite[\#UsingWebServices]{haoyi.HOS}
+Durch den Aufruf von \texttt{JSON.parse} wird der Antworttext deserialisiert. Dabei erhalten wir ein dynamisch getyptes Objekt. Hier muss nun besonders sorgfältig vorgegangen werden, da der Compiler uns nicht vor Tippfehlern schützt. Die Rate muss zur sinnvollen Verwendung zuerst in einen String, und dieser dann in einen \texttt{Double}-Wert umgewandelt werden.
 
-... HIER *** %TODO ***
+Nun können wir eine Methode schreiben, die auf Knopfdruck hin eine HTTP-Anfrage beim Webservice stellt und beim Eintreffen der Antwort dafür sorgt, dass der umgerechnete Betrag auf der Webseite angezeigt wird.
+
+\begin{lstlisting}[language=Scala, style=snippet]
+def updateDstAmount(): Unit = converter.convert(srcAmount).onSuccess{
+  case dstAmount => outputAmount.textContent = format(dstAmount)
+}
+\end{lstlisting}
+
+Zur Formatierung des Ausgabewerts \texttt{dstAmount: Double} muss \texttt{"'\%.4f"'.format(dstAmount)} oder \texttt{f"'\$dstAmount\%.4f"'} verwendet werden, denn die Java-Methode \texttt{String.format()} funktioniert nicht.
+
+Es ist wäre hier auch möglich, durch den Import von \texttt{import scala.scalajs.js.JSNumberOps.\_}
+auf native JavaScript-Methoden zurückzugreifen und \texttt{dstAmount.toFixed(4)} zu schreiben.
+
+>>>
+- Anforderungen können umgesetzt werden
+- Muster müssen gelernt / verstanden werden
+- Doku sehr hilfreich, wichtige Orientierung für die beschriebene Implementierung -> vgl. Using Web Services \cite[\#UsingWebServices]{haoyi.HOS}
+- dann komfortabel zu benutzen, erhöht Lesbarkeit durch Prägnanz
+
 
 
 
@@ -2537,6 +2715,9 @@ entsprechend Code-Vorschlägen von Li Haoy\cite{haoyi.HOS}
 \subsection{Schwierigkeiten}
 \subsection{Erfolge}
 \subsection{Bewertung: differenziert oder boolsch mit Begründung; Fazit aus Schwierigkeiten und Erfolgen}
+
+ggf. diskutieren: Verwendung vieler objects
+
 - muss nicht zwei Libraries für Client und Server finden
 - leichter nur eine (!) Library (jeweils für Templating und Serialisierung) zu lernen, die in Client und Server verwendet werden kann
 \cite[\#SharingCode]{haoyi.HOS}
@@ -2585,6 +2766,8 @@ Die vorliegende Arbeit ...
 
 
   schneller Dev-cycle, optim. Prod.code
+  
+  Scala im Browser!!!
   
   
 was fehlt?
@@ -2638,6 +2821,19 @@ vor allem für Entwickler und Projekte die schon mit Scala arbeiten sehr interes
 
 Erfolg hängt sicher auch am Erfolg der Sprache Scala
 dafür, dass noch sehr jung, schon sehr gut entwickelt und anscheinend stabil
+
+
+
+
+Hürden
+
+- speziellere Konfiguration, besonders
+  - für Cross-Projekte
+  - vermutlich, wenn Vorgaben für die zu verwendenden Techniken bestehen
+
+Chancen
+
+- eine eindeutige, typsichere Schnittstelle zur Client-Server-Kommunikation
 
 
 
