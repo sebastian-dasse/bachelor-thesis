@@ -37,7 +37,9 @@
 %\usepackage{subcaption}
 \usepackage{subfig}										% um Bilder nebeneinander zu plazieren
 \usepackage[font=footnotesize]{caption}					% nötig, um die Font-Größe für Captions festzulegen
+\usepackage[export]{adjustbox}							% für Rahmen um figures
 
+\DeclareCaptionLabelFormat{andtable}{#1~#2  \&  \tablename~\thetable}	% für eine Caption für Abb. und Tab. nebeneinander
 
 % Bibliographie mit biblatex/biber
 \usepackage[backend=biber, style=alphabetic]{biblatex}
@@ -164,6 +166,10 @@
 \newcommand{\js}[1]{\lstinline[language=JavaScript, style=inline]|#1|}
 \newcommand{\html}[1]{\lstinline[language=HTML5, style=inline]|#1|}
 
+\newcommand{\TODO}[1]{\textcolor{red}{#1}\newline}
+\newcommand{\TODOi}[1]{\textcolor{red}{\{#1\}}}
+\newcommand{\REDOi}{\textcolor{red}{<- \{UMFORMULIEREN\}~}}
+
 
 %Arial nutzen wer will...
 %\renewcommand{\rmdefault}{phv} % Arial
@@ -251,131 +257,114 @@
 
 % siehe jeweils Einleitung von Doeraene 2013 und Haoyi 2015
 
-(- Weboberflächen basieren auf HTML und CSS)
-- von modernen Webseiten wird in zunehmendem Maße viel Interaktionsmöglichkeiten/Interaktivität erwartet, im Vergleich zu älteren/klassischen statischen Webseiten eher Desktopanwendungen ähnlich ... (man spricht deshalb auch von Rich Internet Applications) (also: für Interaktivität auf Clientseite) existiert als De-facto-Standard JavaScript (von allen Browsern ohne Plugins unterstützt (alle Browser haben einen JavaScript-Interpreter)
--->  \url{http://w3techs.com/technologies/overview/client_side_language/all}
-; mögliche Alternativen mit Plugins: Flash, Java Applets, MS Silverlight; aber beide Techniken immer weniger gebräuchlich, weil: Flash Video-Player seit HTML5 video Bedeutungsverlust, Flash-Format für animierte Inhalte ersetzt durch JS-Bibliotheken wie etwa jQuery und HTML5-Techniken wie <canvas>, SVG und WebGL, Silverlight deprecated, Applets lange Ladezeiten), verlieren aber zunehmend an Bedeutung  -->  Diagramm:   \url{https://www.google.com/trends/explore#q=adobe+flex,microsoft+silverlight,java+applet,HTML5,gwt}
-- JavaScript aus verschiedenen Gründen problematisch
-  - nicht typsicher (-> Fehler zur Laufzeit)
-  - viele kontraintuitive Besonderheiten der Sprache auf die zu achten ist -> sind zwar dokumentiert, aber erschweren das Programmieren und führen zu schwer zu findenden Fehler (wie dem notorischen Fehlertext in der Browserkonsole: \js{undefined is not a function})
-  - relativ "`verbose"'/geschwätzig
-  - schlechte Wartbarkeit
-  - aufwendiges Refactoring
+\TODO{(- Weboberflächen basieren auf HTML und CSS) \dots}
+\TODO{- von modernen Webseiten wird in zunehmendem Maße viel Interaktionsmöglichkeiten/Interaktivität erwartet, im Vergleich zu älteren/klassischen statischen Webseiten eher Desktopanwendungen ähnlich ... (man spricht deshalb auch von Rich Internet Applications) (also: für Interaktivität auf Clientseite) existiert als De-facto-Standard JavaScript (von allen Browsern ohne Plugins unterstützt (alle Browser haben einen JavaScript-Interpreter)}
+\TODO{-->  \url{http://w3techs.com/technologies/overview/client_side_language/all}}
+\TODO{
+; mögliche Alternativen mit Plugins: Flash, Java Applets, MS Silverlight; aber beide Techniken immer weniger gebräuchlich, weil: Flash Video-Player seit HTML5 video Bedeutungsverlust, Flash-Format für animierte Inhalte ersetzt durch JS-Bibliotheken wie etwa jQuery und HTML5-Techniken wie <canvas>, SVG und WebGL, Silverlight deprecated, Applets lange Ladezeiten), verlieren aber zunehmend an Bedeutung  -->  Diagramm:  
+}
+\TODO{ url %\url{https://www.google.com/trends/explore#q=adobe+flex,microsoft+silverlight,java+applet,HTML5,gwt}
+}
+\TODO{- JavaScript aus verschiedenen Gründen problematisch}
+\TODO{- nicht typsicher (-> Fehler zur Laufzeit)}
+\TODO{  - viele kontraintuitive Besonderheiten der Sprache auf die zu achten ist -> sind zwar dokumentiert, aber erschweren das Programmieren und führen zu schwer zu findenden Fehler (wie dem notorischen Fehlertext in der Browserkonsole: \js{undefined is not a function})}
+\TODO{  - relativ "`verbose"'/geschwätzig}
+\TODO{  - schlechte Wartbarkeit}
+\TODO{  - aufwendiges Refactoring}
 
-JavaScript wurde 1995 von Brendan Eich für Netscape innerhalb von zehn Tagen entwickelt\cite{wikipedia.JS}. 
-War der Einsatzzweck der Sprache zu dieser Zeit in erster Linie der, statische Webseiten durch interaktive Elemente attraktiver zu machen, so werden heute komplexe Webanwendungen in JavaScript geschrieben. Hierfür kommt häufig eine immer breiter werdende Palette an JavaScript-Frameworks zum Einsatz, durch die auf strukturierende Hilfsmittel sowie auf eine erweiterte Standardfunktionalität zurückgegriffen werden kann. Das führt wiederum zu mehr Lernaufwand bei der Einarbeitung in diese Frameworks.
+JavaScript wurde 1995 von Brendan Eich für Netscape innerhalb von zehn Tagen entwickelt\footnote{"`JS had to ,look like Java` only less so, be Java's dumb kid brother or boy-hostage sidekick. Plus, I (sic!) had to be done in ten days or something worse than JS would have happened."' \cite{eich2010.KBE}} War der Einsatzzweck der Sprache zu dieser Zeit in erster Linie der, statische Webseiten durch interaktive Elemente attraktiver zu machen, so werden heute komplexe Webanwendungen in JavaScript geschrieben. Hierfür kommt häufig eine immer breiter werdende Palette an JavaScript-Frameworks zum Einsatz, durch die auf strukturierende Hilfsmittel sowie auf eine erweiterte Standardfunktionalität zurückgegriffen werden kann. Das führt wiederum zu mehr Lernaufwand bei der Einarbeitung in diese Frameworks.
 
--->  \url{https://en.wikipedia.org/wiki/Comparison_of_JavaScript_frameworks}
+\TODO{ url %-->  \url{https://en.wikipedia.org/wiki/Comparison_of_JavaScript_frameworks}
+}
 
-
-Liy Haoyi, Mitarbeiter beim Scala.js-Projekt und Autor des E-Books "`Hands-on Scala.js"' bringt die Motivation, für Scala.js auf den Punkt: "`At this point, all of Google, Facebook, and Microsoft have all announced work on a typed variant of Javascript. These are not academic exercises: Dart/AtScript/Flow/Typescript are all problems that solve a real need, that these large companies have all faced once they've grown beyond a certain size. Clearly, Javascript isn't cutting it anymore, and the convenience and "`native-ness"' of the language is more than made up for in the constant barrage of self-inflicted problems. Scala.js takes this idea and runs with it!"'\cite[\#TheLanguage]{haoyi.HOS}
-
-
-
-
->> andere Sprachen die nach JavaScript kompilieren
-
-JavaScript wird schon bezeichnet als Assembler für das Internet ("`assembly language for the web"') bzw. Virtual Machine des Internets ("`VM of the web"', Douglas Crockford)
-  -->  \url{http://www.hanselman.com/blog/JavaScriptIsAssemblyLanguageForTheWebSematicMarkupIsDeadCleanVsMachinecodedHTML.aspx}
-  --> \url{http://www.hanselman.com/blog/JavaScriptIsAssemblyLanguageForTheWebPart2MadnessOrJustInsanity.aspx}
-  - JavaScript ist eine Plattform\cite{doeraene2015.SSP}
-
-zwei Kategorien
-1. ausgehend von JavaScript Verbesserung der Sprache durch angenehmere Syntax oder statische Typisierung
-	- CoffeeScript (nicht getypt)
-	- TypeScript (getypt, Obermenge von JavaScript, d.h. JS ist immer auch TS)
-	Kritik von Doeraene: -> wenig Gewinn an Expressivität
-2. andere statisch getypte Sprachen (extra neu entwickelte oder existierende), die nach JS kompilieren
-	Dart, GWT (Java -> JS)
-	Kritik von Doeraene: -> schlechte Interop mit JavaScript-libs, weil JS values nicht als first-class objs der host lang
-\cite[S. 1]{doeraene2013.TDI}
-
-Interop mit JavaScript-libs wichtig: DOM, andere Libs
-\cite[S. 1]{doeraene2013.TDI}
+Liy Haoyi, Mitarbeiter beim Scala.js-Projekt und Autor des E-Books "`Hands-on Scala.js"' bringt die Motivation, für Scala.js auf den Punkt: "`At this point, all of Google, Facebook, and Microsoft have all announced work on a typed variant of Javascript. These are not academic exercises: Dart/AtScript/Flow/Typescript are all problems that solve a real need, that these large companies have all faced once they've grown beyond a certain size. Clearly, Javascript isn't cutting it anymore, and the convenience and ,native-ness` of the language is more than made up for in the constant barrage of self-inflicted problems. Scala.js takes this idea and runs with it!"'\cite[\#TheLanguage]{haoyi.HOS}
 
 
 
 
+\TODO{>> andere Sprachen die nach JavaScript kompilieren}
+\TODO{JavaScript wird schon bezeichnet als Assembler für das Internet ("`assembly language for the web"') bzw. Virtual Machine des Internets ("`VM of the web"', Douglas Crockford)}
+\TODO{  url %-->  \url{http://www.hanselman.com/blog/JavaScriptIsAssemblyLanguageForTheWebSematicMarkupIsDeadCleanVsMachinecodedHTML.aspx}
+}
+\TODO{  url %--> \url{http://www.hanselman.com/blog/JavaScriptIsAssemblyLanguageForTheWebPart2MadnessOrJustInsanity.aspx}
+}
+\TODO{  - JavaScript ist eine Plattform %\cite{doeraene2015.SSP}
+}
 
-Code-Wiederverwendung
-- traditionell verschiedene Sprachen für Client und Server
-	- Client bei weitem dominiert von JavaScript (90 \% \cite{w3techs.CLI})
-	- Server (PHP, Java u.a. \cite{w3techs.SRV})
-- in dem Fall:
-	- Mehrfachimplementierung von Algorithmen
-	- Ajax-Aufrufe um Logik an einem Ort zu halten
-- eine Sprache auf Client und Server: mit Node.js JavaScript, aber mit allen beschriebenen Problemen von JS
+\TODO{zwei Kategorien}
+\TODO{1. ausgehend von JavaScript Verbesserung der Sprache durch angenehmere Syntax oder statische Typisierung}
+\TODO{	- CoffeeScript (nicht getypt)}
+\TODO{  - TypeScript (getypt, Obermenge von JavaScript, d.h. JS ist immer auch TS)}
+\TODO{	Kritik von Doeraene: -> wenig Gewinn an Expressivität}
+\TODO{2. andere statisch getypte Sprachen (extra neu entwickelte oder existierende), die nach JS kompilieren}
+\TODO{	Dart, GWT (Java -> JS)}
+\TODO{	Kritik von Doeraene: -> schlechte Interop mit JavaScript-libs, weil JS values nicht als first-class objs der host lang}
+\TODO{cite %\cite[S. 1]{doeraene2013.TDI}
+}
+
+\TODO{Interop mit JavaScript-libs wichtig: DOM, andere Libs}
+\TODO{cite %\cite[S. 1]{doeraene2013.TDI
+}
+
+\TODO{Code-Wiederverwendung}
+\TODO{- traditionell verschiedene Sprachen für Client und Server}
+\TODO{	- Client bei weitem dominiert von JavaScript (90 \% --> cite%\cite{w3techs.CLI}
+)}
+\TODO{	- Server (PHP, Java u.a. --> cite %\cite{w3techs.SRV}
+)}
+\TODO{- in dem Fall:}
+\TODO{	- Mehrfachimplementierung von Algorithmen}
+\TODO{	- Ajax-Aufrufe um Logik an einem Ort zu halten}
+\TODO{- eine Sprache auf Client und Server: mit Node.js JavaScript, aber mit allen beschriebenen Problemen von JS}
 
 
 
 
+\TODO{- nicht JavaScript verwenden -> man ist alle Probleme des Programmierens in JS los}
+\TODO{- eine Sprache für beide Seiten, Client und Server, wünschenswert}
+\TODO{  - auf Serverseite in der Regel andere Sprache wie Java, PHP, ... ???}
+\TODO{  - Vorteile wären: Wiederverwendbarkeit von Code, Definition gemeinsamer Schnittstellen (in der Form bisher nicht möglich)}
 
-
-
-
-- nicht JavaScript verwenden -> man ist alle Probleme des Programmierens in JS los
-- eine Sprache für beide Seiten, Client und Server, wünschenswert
-  - auf Serverseite in der Regel andere Sprache wie Java, PHP, ... ???
-  - Vorteile wären: Wiederverwendbarkeit von Code, Definition gemeinsamer Schnittstellen (in der Form bisher nicht möglich)
-
-- Scala.js bringt Scala (bisher auf Basis der JVM) auf die Client-Seite:
-  - es kann in Scala entwickelt werden
-  - Scala-Code wird nach JavaScript als Zielsprache übersetzt
-  - Compiler, Ökosystem aus Bibliotheken und Tools/Entwicklungswerkzeugen
+\TODO{- Scala.js bringt Scala (bisher auf Basis der JVM) auf die Client-Seite:}
+\TODO{  - es kann in Scala entwickelt werden}
+\TODO{  - Scala-Code wird nach JavaScript als Zielsprache übersetzt}
+\TODO{  - Compiler, Ökosystem aus Bibliotheken und Tools/Entwicklungswerkzeugen}
 
 
 
 \section{Zielstellung / Aufgabenstellung}
 
-Ziel: untersuchen, wie gut Scala.js zur Entwicklung von Weboberflächen geeignet ist
-Fragen:
-  - entwickelt man robuster?
-  - steigert es die Code-Qualität?
-  - entwickelt man schneller?
-  - ist es angenehm, mit Scala.js zu entwickeln?
-  - kann das Resultat mit herkömmliche Weise mit JavaScript entwickelten Anwendungen mithalten oder übertrifft es sie sogar?
-  - entsprechend: ist das Ergebnis performant genug?
-  - aus Benutzersicht: wie schnell lädt die Seite?
+\TODO{Ziel: untersuchen, wie gut Scala.js zur Entwicklung von Weboberflächen geeignet ist}
 
-Anhand verschiedener kleinerer Anwendungen / anhand der Anwendung ... soll untersucht werden, wie gut Scala.js den heutigen Anforderungen an die Frontend-Entwicklung gerecht wird.
+\TODO{Fragen:}
+\TODO{  - entwickelt man robuster?}
+\TODO{  - steigert es die Code-Qualität?}
+\TODO{  - entwickelt man schneller?}
+\TODO{  - ist es angenehm, mit Scala.js zu entwickeln?}
+\TODO{  - kann das Resultat mit herkömmliche Weise mit JavaScript entwickelten Anwendungen mithalten oder übertrifft es sie sogar?}
+\TODO{  - entsprechend: ist das Ergebnis performant genug?}
+\TODO{  - aus Benutzersicht: wie schnell lädt die Seite?}
 
+\TODO{Anhand verschiedener kleinerer Anwendungen / anhand der Anwendung ... soll untersucht werden, wie gut Scala.js den heutigen Anforderungen an die Frontend-Entwicklung gerecht wird.}
 
-Abgrenzung:
-
-	NICHT IM FOKUS: Browser-Kompatibilität
-	NICHT IM FOKUS: Server mit Datenbank
-	NICHT IM FOKUS:  ist es gut/schlecht viel clientseitigen JS-Code zu haben - möglicherweise besser, mehr statisches HTML zu serven, und nur Teile dynamisch durch JS erzeugen zu lassen?
+\TODO{Abgrenzung:}
+\TODO{	NICHT IM FOKUS: Browser-Kompatibilität}
+\TODO{	NICHT IM FOKUS: Server mit Datenbank}
+\TODO{	NICHT IM FOKUS:  ist es gut/schlecht viel clientseitigen JS-Code zu haben - möglicherweise besser, mehr statisches HTML zu serven, und nur Teile dynamisch durch JS erzeugen zu lassen?}
 
 
 \section{Aufbau der Arbeit}
 
-TODO
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+\TODO{TODO}
 
 
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-\chapter{Technikvorstellung/fachliches Umfeld/Grundbegriffe (3)}
+\chapter{Technikvorstellung/fachliches Umfeld/Grundbegriffe}
 
-\section{Scala (1.5)}
+Der hauptsächliche Zweck von Scala.js besteht darin, bestimmten Mängeln der Sprache JavaScript dadurch zu begegnen, dass sie als eine Ziel-Plattform der Sprache Scala betrachtet wird. \REDOi Für ein besseres Verständnis sollen hier deshalb zunächst beide Sprachen, Scala und JavaScript, besprochen werden. Im Anschluss folgt zur besseren Einordnung ein knapper Überblick über die Web-Kerntechnologien HTML und CSS und sowie eine kurze Vorstellung des Buildtools sbt.
+
+\section{Scala}
 
 %-->  \cite{fiedler2011.ELS} S. 5-8
 
@@ -388,9 +377,9 @@ Hier wird unter anderem die IDE-Integration für Scala vorangetrieben und das Bu
 
 Scala verwendet eine prägnante, schlanke Syntax. So lässt sich etwa eine einfache Klasse als Einzeiler schreiben: \scala{class Foo(val bar: Int)}. Damit sind sowohl ein Konstruktor als auch die Instanzvariable (\scala{bar}) definiert. Dadurch sind Scala-Programme eher kurz. Ein Java-Programm lässt sich mit etwa der halben Anzahl an \textit{Lines of Code} in Scala formulieren. Das reduziert den Schreib- und Leseaufwand und die Gelegenheit Fehler zu machen.
 
-Scala erlaubt es, auf einem relativ hohen Abstraktionslevel zu programmieren und macht es so erleichtert den Umgang mit komplexen Systemen.
+Scala erlaubt es, auf einem relativ hohen Abstraktionslevel zu programmieren und erleichtert so den Umgang auch mit komplexen Systemen.
 
-Scala-Programme kompilieren zu Java-Bytecode und laufen auf der JVM\footnote{\textit{Java Virtual Machine}}. Ihre Performance ist mit der von Java-Programmen vergleichbar. Scala-Code kann Java-Code aufrufen. Dadurch hat der Scala-Programmierer\footnote{GENDERKLAUSEL: der Einfachheit halber wird im Text die männliche Form verwendet; natürlich ist auch die Programmiererin gemeint.} automatisch auch alle Libraries zur Verfügung. Scala-Code kann auch von Java-Code aufgerufen werden, aber hier sind manchmal einige Feinheiten zu beachten.\cite[S. 13 ff.]{odersky2008.PIS}
+Scala-Programme kompilieren zu Java-Bytecode und laufen auf der JVM\footnote{\textit{Java Virtual Machine}}. Ihre Performance ist mit der von Java-Programmen vergleichbar. Scala-Code kann Java-Code aufrufen. Dadurch hat der Scala-Programmierer\footnote{\TODO{GENDERKLAUSEL: der Einfachheit halber wird im Text die männliche Form verwendet; natürlich ist auch die Programmiererin gemeint.}} automatisch auch alle Libraries zur Verfügung. Scala-Code kann auch von Java-Code aufgerufen werden, aber hier sind manchmal einige Feinheiten zu beachten.\cite[S. 13 ff.]{odersky2008.PIS}
 
 Der Einstieg in die Sprache Scala ist relativ einfach. Durch die Mächtigkeit der Sprachmittel und die Vielzahl der sich daraus ergebenden Möglichkeiten ist für eine tieferes Verständnis allerdings ein hoher Lernaufwand nötig.
 
@@ -457,13 +446,12 @@ Auf der Scala-Website finden sich neben der API-Dokumentation auch offizielle Tu
 
 
 
-\section{JavaScript (1.5)}
+\section{JavaScript}
 
 JavaScript ist eine dynamische Skriptsprache, die es erlaubt, objektorientiert und funktional zu programmieren. Der primäre Zweck von JavaScript ist es, aus statischen Webseiten interaktive Webanwendungen machen\cite[S. 361]{flanagan2011.JDG}.
 
-warum JS?
-wo läuft JS?
-
+\TODO{warum JS?}
+\TODO{wo läuft JS?}
 
 Die wichtigste Zielplattform für JavaScript ist der Browser. Dieser benötigt zur Ausführung von JavaScript eine JavaScript-Engine, die den Code zur Laufzeit interpretiert und in Maschinencode übersetzt. Aus Performancegründen sind moderne JavaScript-Engines allerdings meistens keine Interpreter mehr, sondern führen eine Just-in-time-Kompilierung (JIT)\footnote{\url{https://en.wikipedia.org/wiki/Just-in-time_compilation}} durch. Einige aktuell verbreitete JavaScript-Engines sind V8 (Google Chrome und Opera), SpiderMonkey (Mozilla Firefox) und Nitro (Apple Safari).
 
@@ -473,22 +461,15 @@ Die wichtigste Zielplattform für JavaScript ist der Browser. Dieser benötigt z
 
 Darüber hinaus ist in den letzten Jahren auf der Serverseite Node.js (V8) als JavaScript leichtgewichtige Laufzeitumgebung populär geworden.
 
-Vorteile der JavaScript-Plattform:
-- Web-Anwendungen müssen vom Benutzer nicht installiert werden, können einfach im Browser aufgerufen werden
-- Referenzen zwischen verschiedenen Systemen durch Hyperlinks
-- Sicherheit durch Sandbox-Prinzip\footnote{kein Zugriff aus dem Browser heraus (begrenzte Ausnahme: Zugriff auf User-bestimmte Dateien durch File API)}
-\cite[\#Javascript-the-platform]{haoyi.HOS}
+\TODO{Vorteile der JavaScript-Plattform:}
+\TODO{- Web-Anwendungen müssen vom Benutzer nicht installiert werden, können einfach im Browser aufgerufen werden}
+\TODO{- Referenzen zwischen verschiedenen Systemen durch Hyperlinks}
+\TODO{- Sicherheit durch Sandbox-Prinzip foot-> %\footnote{kein Zugriff aus dem Browser heraus (begrenzte Ausnahme: Zugriff auf User-bestimmte Dateien durch File API)
+}
+\TODO{cite -> %\cite[\#Javascript-the-platform]{haoyi.HOS}
+}
 
-
-
-
-
-
-
-
-Der Sprachstandard wird unter dem offiziellen Namen ECMAScript ((kurz: ES)) von der Organisation Ecma International standardisiert (als Standard ECMA-262). Der aktuell von allen wichtigen Browsern unterstützte Standard ECMAScript 5.1 stammt aus dem Jahr 2011.\footnote{\url{http://www.ecma-international.org/ecma-262/5.1/}}
-Die im Juni 2015 veröffentlichte Version ECMAScript 6 enthält viele Verbesserungen um die Sprache zu modernisieren, ist aber momentan noch nicht ausreichend in den verbreiteten Browser implementiert.
-
+Der Sprachstandard wird unter dem offiziellen Namen ECMAScript \TODOi{(kurz: ES)} von der Organisation Ecma International standardisiert (als Standard ECMA-262). Der aktuell von allen wichtigen Browsern unterstützte Standard ECMAScript 5.1 stammt aus dem Jahr 2011.\footnote{\url{http://www.ecma-international.org/ecma-262/5.1/}} Die im Juni 2015 veröffentlichte Version ECMAScript 6 enthält viele Verbesserungen um die Sprache zu modernisieren, ist aber momentan noch nicht ausreichend in den verbreiteten Browser implementiert.
 
 JavaScript ähnelt zwar in der Syntax seinem ungleichen Namensvetters Java, die Semantik unterscheidet sich hingegen teilweise stark\cite{eich1996.JSL}.
 
@@ -498,20 +479,20 @@ JavaScript ähnelt zwar in der Syntax seinem ungleichen Namensvetters Java, die 
 JavaScript ist eine objektorientierte Sprache. Objekte auf können auf drei Arten erzeugt werden:
 
 \begin{itemize}
-	\item als Literal: \js{var foo = {bar: 123}}
-	\item mit \js{new} gefolgt vom Aufruf einer Konstruktor-\code{Function}
-	\item seit ES5 mit \js{Object.create()}, wobei als Parameter der Konstruktor übergeben werden muss.
+  \item als Literal: \js{var foo = {bar: 123}}
+  \item mit \js{new} gefolgt vom Aufruf einer Konstruktor-\code{Function}
+  \item seit ES5 mit \js{Object.create()}, wobei als Parameter der Konstruktor übergeben werden muss.
 \end{itemize}
 
 Objekte haben Eigenschaften (\textit{properties}), die primitive Werte, Referenzen auf andere Objekte, oder Methoden sein können.
 
-Properties eines Objekts können neben der geläufigen Punkt-Notation (\js{foo.bar}) auch durch den in eckigen Klammern eingeschlossene Membernamen als String (\js{foo["bar"]}) referenziert werden. Bei JavaScript-Objekten handelt es sich nämlich im Grunde um Collections benannter Werten, das heißt sie sind nichts anderes als assoziative Arrays (in Scala: \textit{Map}, in anderen Sprachen gelegentlich auch: \textit{Dictionary}), und werden auch bei Bedarf als Maps verwendet.
+Properties eines Objekts können neben der geläufigen Punkt-Notation (\js{foo.bar}) auch durch den in eckigen Klammern eingeschlossene Membernamen als String \mbox{(\js{foo["bar"]})} referenziert werden. Bei JavaScript-Objekten handelt es sich nämlich im Grunde um Collections benannter Werten, das heißt sie sind nichts anderes als assoziative Arrays (in Scala: \textit{Map}, in anderen Sprachen gelegentlich auch: \textit{Dictionary}), und werden auch bei Bedarf als Maps verwendet.
 
 Das Konzept von Klassen ist nicht Teil der Sprache. Vererbung funktioniert in JavaScript über den Prototypen. Dazu referenziert jedes JavaScript-Objekt ein anderes Objekt, deren Eigenschaften es erbt: den Prototypen. Objekte die vom selbem Prototypen erben kann man als Klasse auffassen.\cite{mdn.WWO}\cite[S. 115 ff., S. 199 ff.]{flanagan2011.JDG}
 
 \subsection{Funktionale Programmierung}
 
-Funktionen sind in JavaScript \textit{first-class citizens}. Sie können in Variablen gespeichert oder verschachtelt werden, können als Parameter übergeben werden oder als Rückgabewert einer Funktion dienen. Damit sind auch Funktionen höherer Ordnung möglich. Ein häufiger Anwendungsfall für Funktionen höherer Ordnung in JavaScript sind sogenannte Callback-Funktionen. Ein andere sind Closures. Durch \textit{Currying} lässt sich auch die partielle Anwendungen von Fuktionen umsetzen. --- All das aber im Vergleich zu Scala mühsamer und verbose.
+Funktionen sind in JavaScript \textit{first-class citizens}. Sie können in Variablen gespeichert oder verschachtelt werden, können als Parameter übergeben werden oder als Rückgabewert einer Funktion dienen. Damit sind auch Funktionen höherer Ordnung möglich. Ein häufiger Anwendungsfall für Funktionen höherer Ordnung in JavaScript sind sogenannte Callback-Funktionen. Ein andere sind Closures. Durch \textit{Currying} lässt sich auch die partielle Anwendungen von Fuktionen umsetzen. --- All das aber im Vergleich zu Scala mühsamer und \TODOi{verbose}.
 
 Die Behandlung von Funktionsparametern ist in JavaScript äußerst flexibel. Werden beim Funktionsaufruf weniger Parameter übergeben als im Methodenheader deklariert sind, erhalten diese automatisch den Wert \js{undefined}. Werden zu viele Parameter übergeben, so werden diese einfach ingoriert. Auf alle tatsächlich übergebenen Argumente kann innerhalb einer \js{Function} durch eine Liste namens \js{arguments} zugegriffen werden, unabhängig vom Methodenheader.
 
@@ -540,111 +521,126 @@ Es gibt den Typ \js{Function} für Funktionen. Daneben existieren nur noch \js{D
 
 \subsection{Tools und Ökosystem}
 
-
-
-(IDEs: ???)
+\TODO{Sublime Text - guter Text-Editor mit Syntax-Highlighting, Code-Vervollständigung (auf Grundlage aller im Dokument bekannten Worte), Code-Schnipsel für häufig verwendete Muster, Doku JSDoc mit Plugin}
+\TODO{IntelliJ - in der Ultimate Edition: JavaScript-Support: Code-Vervollständigung, Navigation (Go to definition, Find usages), Refactoring-Unterstützung, Doku JSDoc}
 
 
 \subsection{Besonderheiten / Probleme - TODO mit Problemen zusammenfassen}
 
->>lexical scope (Variablen ohne var global)
->>function scope, trotz blockbasierter Syntax
-Bsp.
+\TODO{>>lexical scope (Variablen ohne var global)}
+\TODO{>>function scope, trotz blockbasierter Syntax}
+\TODO{Bsp.}
+\begin{lstlisting}[language=JavaScript, style=snippet]
 var i = 123
 for (var i = 0; i < 10; i++) { /**/ }
 console.log(i) // --> 123
-
->>Prototyp-basiert
-- statt Klassen
--> ein bereits existierendes Objekt wird geklont
-- Programmierern die von anderen Sprachen kommen nicht vertraut
-- Klassen möglich, mit Pattern; künftig mit ES6 mit Sprachmitteln
-Seit ES5 getter und setter möglich, aber keine echt privaten Member, kann nur umständlich mithilfe von Closures emuliert werden
-(siehe \cite[S. 226]{flanagan2011.JDG})
-
->>Arrays (Collections)
-Objekt als assoziatives Array / Hashmap / Hashtabelle / Dictionary
-- können als foo["mykey"] oder foo.mykey adressiert werden
-Array einzige "Collection"
-
-Set, Map, auch WeakSet und WeakMap (mit weak references die von der Garbage Collection aufgeräumt werden, gegen Memory Leaks) -> ES6, noch nicht von allen Browsern unterstützt, aber es existieren sog. Polyfills (https://en.wikipedia.org/wiki/Polyfill)
-
->> keine Konstanten (aber mit ES6)
-
->>Probleme mit uneindeutigem/unintuitivem this
-- this referenziert das aufrufenden Objekt, bei Closures problematisch; behelfsweise kann this in der Closure in einer Variablen (häufig self genannt) gemerkt und diese übergeben werden
-
->>Kapselung, Modularisierung
-- kein Zugriffsmodifizierer/Schlüsselwort private
--> behelfsweise kann Privatheit emuliert werden, aber sperrig
-	- mithilfe von Closures private Instanzvariablen (innerhalb der Konstruktorfunktion definieren)
-	- mithilfe anonymer Funktionen (function-Scope)
-- keine Pakete oder Namespaces als Teil der Sprache
--> kann durch Patterns geschaffen werden
--> Libraries wie RequireJS oder verschiedene Frameworks bieten Mechanismen zu Modularisierung
-
-- Traits und Mixins möglich, aber nicht als Teil der Sprache (\url{https://en.wikipedia.org/wiki/JavaScript#Implicit_and_explicit_delegation}
-
-unstrukturiert: JavaScript gibt keine Struktur vor
+\end{lstlisting}
 
 
->> Standard
-- neuer Standard ECMAScript 6 im Juni 2015 veröffentlicht
-	- Konstanten mit const
-	- block-scoped variablen (mit let statt var) und functions
-	- Lambdas/anonyme Funktionen -> in JS sog. arrow functions (dann möglich: [1, 2, 3].map(x => x * x) statt bisher [1, 2, 3].map(function(x) { return x * x; }) )
-	- lexikalisches this - intuitivere Behandlung des Objektkontextes
-	- Defaultwerte für Parameter, eine Art Varargs
-	- variadische Funktionen mit Parameter
-	- String Interpolation (\js{var person = \{ name: "Foo" \}; var message = `Hello \$\{person.name\}!`})
-	- Destructuring Assignment, mit dem Arrays oder Objekte bei der Zuweisung in ihre Bestandteile zerlegt werden können
-	- Klassen mit class, constructor, getter und setter, Vererbung mit extends, Zugriff auf Superklassen mit super
-	- Iterator, der mit einem For-Of-Operator verwendet werden kann
-	- komfortable Methoden für den Umgang mit Strings und Zahlen (Number.isNan(42), Number.isFinite(42) )
-	- Promises zum Umgang mit Asynchronität
-	-->  \url{es6-features.org}
-	-->  \url{http://www.ecma-international.org/publications/standards/Ecma-262.htm}
-- Firefox und Chrome unterstützen schon viele Features, aber meistens noch als experimentell gekennzeichnet, noch nur teilweise schon in
-in allen aktuell Browsern voll unterstützt: ECMAScript 5 (von 2009) bzw. 5.1 von 2011 (???)
+\TODO{>>Prototyp-basiert}
+\TODO{- statt Klassen}
+\TODO{-> ein bereits existierendes Objekt wird geklont}
+\TODO{- Programmierern die von anderen Sprachen kommen nicht vertraut}
+\TODO{- Klassen möglich, mit Pattern; künftig mit ES6 mit Sprachmitteln}
+\TODO{Seit ES5 getter und setter möglich, aber keine echt privaten Member, kann nur umständlich mithilfe von Closures emuliert werden}
+\TODO{(siehe cite -> %\cite[S. 226]{flanagan2011.JDG}
+)}
+
+
+\TODO{>>Arrays (Collections)}
+\TODO{Objekt als assoziatives Array / Hashmap / Hashtabelle / Dictionary}
+\TODO{- können als foo["mykey"] oder foo.mykey adressiert werden}
+\TODO{Array einzige "`Collection"'}
+
+\TODO{Set, Map, auch WeakSet und WeakMap (mit weak references die von der Garbage Collection aufgeräumt werden, gegen Memory Leaks) -> ES6, noch nicht von allen Browsern unterstützt, aber es existieren sog. Polyfills }
+\TODO{url -> %(https://en.wikipedia.org/wiki/Polyfill)
+}
+
+\TODO{>> keine Konstanten (aber mit ES6)}
+
+\TODO{>>Probleme mit uneindeutigem/unintuitivem this}
+\TODO{- this referenziert das aufrufenden Objekt, bei Closures problematisch; behelfsweise kann this in der Closure in einer Variablen (häufig self genannt) gemerkt und diese übergeben werden}
+
+\TODO{>>Kapselung, Modularisierung}
+\TODO{- kein Zugriffsmodifizierer/Schlüsselwort private}
+\TODO{-> behelfsweise kann Privatheit emuliert werden, aber sperrig}
+\TODO{	- mithilfe von Closures private Instanzvariablen (innerhalb der Konstruktorfunktion definieren)}
+\TODO{	- mithilfe anonymer Funktionen (function-Scope)}
+\TODO{- keine Pakete oder Namespaces als Teil der Sprache}
+\TODO{-> kann durch Patterns geschaffen werden}
+\TODO{-> Libraries wie RequireJS oder verschiedene Frameworks bieten Mechanismen zu Modularisierung}
+
+\TODO{- Traits und Mixins möglich, aber nicht als Teil der Sprache -> url -> %(\url{https://en.wikipedia.org/wiki/JavaScript#Implicit_and_explicit_delegation}
+}
+
+\TODO{unstrukturiert: JavaScript gibt keine Struktur vor}
+
+
+\TODO{>> Standard}
+\TODO{- neuer Standard ECMAScript 6 im Juni 2015 veröffentlicht}
+\TODO{	- Konstanten mit const}
+\TODO{	- block-scoped variablen (mit let statt var) und functions}
+\TODO{	- Lambdas/anonyme Funktionen -> in JS sog. arrow functions (dann möglich: [1, 2, 3].map(x => x * x) statt bisher [1, 2, 3].map(function(x) { return x * x; }) )}
+\TODO{	- lexikalisches this - intuitivere Behandlung des Objektkontextes}
+\TODO{	- Defaultwerte für Parameter, eine Art Varargs}
+\TODO{	- variadische Funktionen mit Parameter}
+\TODO{	- String Interpolation (\js{var person = \{ name: "Foo" \};} \\ \js{var message = "Hello \$\{person.name\}!"})}
+\TODO{	- Destructuring Assignment, mit dem Arrays oder Objekte bei der Zuweisung in ihre Bestandteile zerlegt werden können}
+\TODO{	- Klassen mit class, constructor, getter und setter, Vererbung mit extends, Zugriff auf Superklassen mit super}
+\TODO{	- Iterator, der mit einem For-Of-Operator verwendet werden kann}
+\TODO{	- komfortable Methoden für den Umgang mit Strings und Zahlen (Number.isNan(42), Number.isFinite(42) )}
+\TODO{	- Promises zum Umgang mit Asynchronität}
+\TODO{	url -->  %\url{es6-features.org}
+}
+\TODO{	url -->  %\url{http://www.ecma-international.org/publications/standards/Ecma-262.htm}
+}
+\TODO{- Firefox und Chrome unterstützen schon viele Features, aber meistens noch als experimentell gekennzeichnet, noch nur teilweise schon in allen aktuell Browsern voll unterstützt: ECMAScript 5 (von 2009) bzw. 5.1 von 2011 (???)}
 
 
 
-Eigenschaften (nach Schirmacher-Folie, S. 5: %D:\UNI\2014-SoSe\CG2\VL)
-	funktional
-	objektorientiert
-	dynamisch
-	unstrukturiert
-	Typisierung (vgl. %http://de.wikipedia.org/wiki/Typisierung_(Informatik))
-	Arrays
-	Probleme mit uneindeutigem this
-	Kapselung - mithilfe anonymer Funktionen
+\TODO{Eigenschaften (nach Schirmacher-Folie, S. 5: %D:\UNI\2014-SoSe\CG2\VL
+)}
+\TODO{	funktional}
+\TODO{	objektorientiert}
+\TODO{	dynamisch}
+\TODO{	unstrukturiert}
+\TODO{	Typisierung (vgl. url -> %http://de.wikipedia.org/wiki/Typisierung_(Informatik))
+}
+\TODO{	Arrays}
+\TODO{	Probleme mit uneindeutigem this}
+\TODO{	Kapselung - mithilfe anonymer Funktionen}
 	
                              
->>Probleme von JavaScript
-- häufig unerwartetes Verhalten / nicht erwartungskonform  -->  Bsp.e
-- fehlende Typsicherheit  -->  Bsp.e
-- function scope, nicht block scope
-- Vererbung mit Prototypen; kein Standard zur Modellierung von Klassen, viele verschiedene Möglichkeiten  ->  Chaos, Hürde für Programmierer die von anderen Sprachen wie Java oder C++ kommen
--->  Doeraene
-- ...
--->  BA Wiederhold
-- funktionale Methoden: map, filter reduce, forEach -- Support, Performance
-- im Browser: kann deaktiviert sein, aber verschwindender Prozentsatz der Nutzer tut dies  -->  \url{https://developer.yahoo.com/blogs/ydn/many-users-javascript-disabled-14121.html}
-	- hier ist es sinnvoll, zu unterscheiden zwischen Web-Dokumenten, die auch ohne JavaScript zugänglich sein sollten, und Web-Anwendungen, von denen man das nicht erwarten kann, schließlich handelt es sich bei diesen um JavaScript-Programme (mit dem Browser als Plattform/OS)
-	\cite[S.311]{flanagan2011.JDG}
+\TODO{>>Probleme von JavaScript}
+\TODO{- häufig unerwartetes Verhalten / nicht erwartungskonform  -->  Bsp.e}
+\TODO{- fehlende Typsicherheit  -->  Bsp.e}
+\TODO{- function scope, nicht block scope}
+\TODO{- Vererbung mit Prototypen; kein Standard zur Modellierung von Klassen, viele verschiedene Möglichkeiten  ->  Chaos, Hürde für Programmierer die von anderen Sprachen wie Java oder C++ kommen}
+\TODO{-->  Doeraene}
+\TODO{- ...}
+\TODO{-->  BA Wiederhold}
+\TODO{- funktionale Methoden: map, filter reduce, forEach -- Support, Performance}
+\TODO{- im Browser: kann deaktiviert sein, aber verschwindender Prozentsatz der Nutzer tut dies  --> url -> %\url{https://developer.yahoo.com/blogs/ydn/many-users-javascript-disabled-14121.html}
+}
+\TODO{	- hier ist es sinnvoll, zu unterscheiden zwischen Web-Dokumenten, die auch ohne JavaScript zugänglich sein sollten, und Web-Anwendungen, von denen man das nicht erwarten kann, schließlich handelt es sich bei diesen um JavaScript-Programme (mit dem Browser als Plattform/OS)}
+\TODO{	cite -> %\cite[S.311]{flanagan2011.JDG}
+}
 
--->  \cite{flanagan2011.JDG}
--->  \cite{crockford2008.JSG}
-Brendan Eich: Zitat  -->  \url{https://www.jwz.org/blog/2010/10/every-day-i-learn-something-new-and-stupid/#comment-1021}
--->  \url{https://en.wikipedia.org/wiki/ECMAScript}
+\TODO{-->  cite -> %\cite{flanagan2011.JDG}
+}
+\TODO{-->  cite -> %\cite{crockford2008.JSG}
+}
 
-- Problem: Browser-Inkompatibilitäten
-- Problem: vieles in der Sprache unspezifiziert, Lösungen dafür existieren, aber sehr viele Arten, etwas zu tun (viele verschiedene Patterns, viele verschiedene Frameworks)
+\TODO{-->  url5 -> %\url{https://en.wikipedia.org/wiki/ECMAScript}
+}
 
-- notorisch schwer zu debuggen - Fehlermeldungen wie: undefined is not a function, durch die sich häufig nicht die eigentliche Fehlerursache zurückverfolgen lässt
+\TODO{- Problem: Browser-Inkompatibilitäten}
+\TODO{- Problem: vieles in der Sprache unspezifiziert, Lösungen dafür existieren, aber sehr viele Arten, etwas zu tun (viele verschiedene Patterns, viele verschiedene Frameworks)}
+
+\TODO{- notorisch schwer zu debuggen - Fehlermeldungen wie: undefined is not a function, durch die sich häufig nicht die eigentliche Fehlerursache zurückverfolgen lässt}
 
 
-- häufig benutzte clientseitige / Frontend- Frameworks geben (ihre) Struktur, müssen aber jedesmal erst neu gelernt werden
+\TODO{- häufig benutzte clientseitige / Frontend- Frameworks geben (ihre) Struktur, müssen aber jedesmal erst neu gelernt werden}
 
 
 \section{HTML(0.5)}
@@ -655,7 +651,7 @@ Brendan Eich: Zitat  -->  \url{https://www.jwz.org/blog/2010/10/every-day-i-lear
 %-->  https://en.wikipedia.org/wiki/HTML5
 %-->  http://www.w3.org/2014/10/html5-rec.html.en
 
->>Was ist HTML?
+\TODO{>>Was ist HTML?
 	- Kernsprache des Webs (bei erster Nennung: World Wide Web)
 	- HTML (Hypertext Markup Language)
 	- Auszeichnungssprache zur Erstellung von Webseiten
@@ -672,35 +668,39 @@ Brendan Eich: Zitat  -->  \url{https://www.jwz.org/blog/2010/10/every-day-i-lear
 		- Deklaration des Dokumententyps (DTD)
 		- head = Kopf - nicht angezeigte Infos
 		- body = Körper - Infos zur Anzeige; in der Praxis aber auch unsichtbare Infos
-	
->>seit wann?
-	- seit 1993
->>von wem?
-	- entwickelt vom W3C und WHATWG
-(>>Eigenschaften)
+}
+\TODO{>>seit wann?
+	- seit 1993}
+\TODO{>>von wem?
+	- entwickelt vom W3C und WHATWG}
+\TODO{(>>Eigenschaften)}
 
-(>>einfaches Beispiel-HTML)
+\TODO{(>>einfaches Beispiel-HTML)}
 
->>aktuell HTML5
-	- aktuelle 5. Fassung von HTML  -->  \url{http://www.w3.org/TR/html5/}
-	- Oktober 2014 vom W3C unter dem Namen "`W3C Recommendation"'  -->  \url{https://www.w3.org/blog/news/archives/4167}
-	- "`HTML \& friends"' - zusätzliche JavaScript-APIs, meistens mitgemeint, wenn von HTML5 die Rede ist
+\TODO{>>aktuell HTML5}
+\TODO{	- aktuelle 5. Fassung von HTML  -->  url -> %\url{http://www.w3.org/TR/html5/}
+	}
+\TODO{	- Oktober 2014 vom W3C unter dem Namen "`W3C Recommendation"'  -->  url -> %\url{https://www.w3.org/blog/news/archives/4167}
+}
+\TODO{	- "`HTML \& friends"' - zusätzliche JavaScript-APIs, meistens mitgemeint, wenn von HTML5 die Rede ist
 		- semantische Tags (section, article, nav, head, footer, aside)
 		- Connectivity: WebSockets
 		- Storage: File API, Web Storage API, IndexedDB, 
 		- Multimedia: audio, video (leider kein Standard für verlässlich unterstützte Multimediaformate), Camera API
 		- Grafik: Canvas, WebGL, SVG
-		- Performance und Integration: XMLHttpRequest, Drag and drop, Web Workers
-	-->  \url{https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5}
-	- leider keine offizielle, leicht navigierbare HTML5-API-Docs, guter Überblick: \url{http://html5index.org/}
+		- Performance und Integration: XMLHttpRequest, Drag and drop, Web Workers}
+\TODO{	-->  url -> %\url{https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5}
+}
+\TODO{	- leider keine offizielle, leicht navigierbare HTML5-API-Docs, guter Überblick: url -> %\url{http://html5index.org/}
+}
 
-- JS und HTML
+\TODO{- JS und HTML
 	- Einbindung:
 		- inline, innerhalb der Tags <script> </script>
 		- (normalerweise am besten:) in einer separaten/externen Datei, z.B.: <script src="../js/greeting.js"></script>
 		- in einem HTML-Eventhandler-Attribut eines HTML-Eements, z.B.: <button onclick="alert('hello');">
 		- in einer URL, mithilfe des javascript:-Protokolls, z.B.: <a href="javascript:alert('hello');">greeting</a>
-
+}
 - DOM  --> \url{https://en.wikipedia.org/wiki/Document_Object_Model}
 	- durch W3C standardisierte Schnittstellenspezifikation ...
 	- Standard seit 1998
@@ -722,115 +722,97 @@ Brendan Eich: Zitat  -->  \url{https://www.jwz.org/blog/2010/10/every-day-i-lear
 
 \section{CSS (0.5)}
 
->>seit wann?
+\TODO{>>seit wann?
 >>von wem?
   seit 1996 vom W3C standardisiert
   mit CSS3 nicht eine Spezifikation, sondern aufgebrochen in verschiedene Module mit unterschiedlicher Stabilität und Reifegrad (vier davon haben den höchsten Status "`W3C recommendation"')
 >>Was ist CSS?
->>Eigenschaften
-	- (Cascading Style Sheets)
-	- Standard zur visuellen Darstellung von HTML-Dokumenten / von Webseiten
-	- Designer können präzise Schriftarten, Farben, Ränder, Einrückungen, Rahmen und Positionen von Elementen spezifizieren
-	- kann gescripted werden
-	- CSS definiert style properties für Fonts, Farben, Anstände usw.; diese properties können festgelegt werden um die Darstellung zur verändern
-	- zwei Möglichkeiten, CSS-Eigenschaften festzulegen:
-		- inline: style-Attribut eines HTML-Elements (<p style="color: red">foo</p>
-		- prinzipiell besser: in einem separaten Stylesheet
-			- Mengen von style properties können Mengen von HTML-Elementen zugeordnet werden ("`A stylesheet associates set sof style properties with sets of HTML elements that are described using selectors."')
-			- Selektoren
-				\#foo // ein Element mit id="foo"
-				div  // alle <div>-Elemente
-				.bar // alle Elemente, deren class-Attribut "bar" enthält
-				div.bar, \#foo>span // alle <div>-Elemente deren class-Attribut "bar" enthält und alle Kind-<span>-Elemente des Elements mit id="foo"
-				* // alle Elemente
-			- Stylesheets können in einem <style>-Element im <head> eines HTML-Dokuments eingebunden werden
-			- besser ist es aber (warum?) ein Stylesheet in einem eigenen Dokument zu speichern und es durch ein <link> im <head> einzubinden (Bsp.?)
-	- Anwendung der Stilregeln in der Rangfolge (steigender Priorität):
-		- Standard des Browsers
-		- die Stylesheets die im Dokument referenziert/verwendet werden
-		- die style-Attribute individueller HTML-Elemente
-		- generell "`gewinnt"' der spezifischere Selektor und überschreibt Stildefinitionen für gleichlautende Eigenschaften, z.B. Stylesheet: div { color: red; background: green; }, HTML: <div style="color: blue;">foo</div>
-	-->  vgl. \cite[S. 413 ff.]{flanagan2011.JDG}
-	\url{https://en.wikipedia.org/wiki/Cascading_Style_Sheets}
+}
+\TODO{>>Eigenschaften}
+\TODO{  - (Cascading Style Sheets)}
+\TODO{  - Standard zur visuellen Darstellung von HTML-Dokumenten / von Webseiten}
+\TODO{  - Designer können präzise Schriftarten, Farben, Ränder, Einrückungen, Rahmen und Positionen von Elementen spezifizieren}
+\TODO{  - kann gescripted werden}
+\TODO{  - CSS definiert style properties für Fonts, Farben, Anstände usw.; diese properties können festgelegt werden um die Darstellung zur verändern}
+\TODO{  - zwei Möglichkeiten, CSS-Eigenschaften festzulegen:}
+\TODO{    - inline: style-Attribut eines HTML-Elements (<p style="color: red">foo</p>}
+\TODO{    - prinzipiell besser: in einem separaten Stylesheet}
+\TODO{      - Mengen von style properties können Mengen von HTML-Elementen zugeordnet werden ("`A stylesheet associates set sof style properties with sets of HTML elements that are described using selectors."')}
+\TODO{      - Selektoren}
+%\TODO{       \#foo  ==  ein Element mit id="foo"}
+\TODO{        div  ==  alle <div>-Elemente}
+\TODO{        .bar  ==  alle Elemente, deren class-Attribut "bar" enthält}
+%\TODO{       div.bar, \#foo>span   ==  alle <div>-Elemente deren class-Attribut "bar" enthält und alle Kind-<span>-Elemente des Elements mit id="foo"}
+\TODO{        * // alle Elemente}
+\TODO{      - Stylesheets können in einem <style>-Element im <head> eines HTML-Dokuments eingebunden werden}
+\TODO{      - besser ist es aber (warum?) ein Stylesheet in einem eigenen Dokument zu speichern und es durch ein <link> im <head> einzubinden (Bsp.?)}
+\TODO{  - Anwendung der Stilregeln in der Rangfolge (steigender Priorität):}
+\TODO{    - Standard des Browsers}
+\TODO{    - die Stylesheets die im Dokument referenziert/verwendet werden}
+\TODO{    - die style-Attribute individueller HTML-Elemente}
+%\TODO{    - generell "`gewinnt"' der spezifischere Selektor und überschreibt Stildefinitionen für gleichlautende Eigenschaften, z.B. Stylesheet: div { color: red; background: green; }, HTML: <div style="color: blue;">foo</div>}
+\TODO{  -->  vgl. cite -> %\cite[S. 413 ff.]{flanagan2011.JDG}
+}
+\TODO{  url -> %\url{https://en.wikipedia.org/wiki/Cascading_Style_Sheets}
+}
 
 
-\section{sbt}
+
+
+\section{sbt (0.5)}
 
 sbt\footnote{\url{http://www.scala-sbt.org/}} ist das Build-Werkzeug für Scala-Projekte aus dem Hause Typesafe. Es ist noch relativ neu, ist aber 
 
-- Konvention über Konfiguration wie Maven, d. h. nur Abweichungen von der Konvention müssen definiert werden
-- Verzeichnisstruktur entspricht standardmäßig der von Maven (nämlich), muss aber selbst erstellt werden
+\TODO{- Konvention über Konfiguration wie Maven, d. h. nur Abweichungen von der Konvention müssen definiert werden}
+\TODO{- Verzeichnisstruktur entspricht standardmäßig der von Maven (nämlich), muss aber selbst erstellt werden}
 
-- einige wichtige Kommandos
-	compile
-	test
-	run
-	package
-	clean
+\TODO{- einige wichtige Kommandos}
+\TODO{  compile
+  test
+  run
+  package
+  clean
+}
+\TODO{- unterstützt die Kompilierung von Scala-Code}
+\TODO{- kann als Testrunner für Scala-Test-Werkzeuge verwendet werden}
+\TODO{- Build-Definition}
+\TODO{  - in einer scalabasierten DSL (statt XML-basiert wie bei Maven)}
+\TODO{  - größere Konfigurationen können bei Bedarf in Form von eines Scala-Programms geschrieben werden (sbt wird dabie als Library verwendet)}
 
-- unterstützt die Kompilierung von Scala-Code
-- kann als Testrunner für Scala-Test-Werkzeuge verwendet werden
-- Build-Definition
-	- in einer scalabasierten DSL (statt XML-basiert wie bei Maven)
-	- größere Konfigurationen können bei Bedarf in Form von eines Scala-Programms geschrieben werden (sbt wird dabie als Library verwendet)
-- Dependency-Management mit Apache Ivy, so dass Libraries aus öffentlichen Artefakt-Repositories verwendet werden können (löst Abhängigkeiten auf und lädt die benötigten Ressourcen aus dem Internet herunter), Default von Maven Central, zusätzliche Repositories können per Konfiguration zugänglich gemacht werden
-	- Ivy legt ein lokales Repository im Verzeichnis .ivy2 unter dem HOME-Verzeichnis des Benutzers an (bei Windows: C:\\Users\\Bob); hier werden Dateien aus Remote Repositories zwischengespeichert; lokal publizierte Artefakte landen ebenfalls hier
-- kontinuierliche Builds und Tests (mit \code{\~} als Präfix) - unmittelbares Feedback auf Änderungen, sehr nützlich
-- unterstützt gemischte Java/Scala-Projekte
-- interaktive Shell/Kommandozeile, unterstütz Tab-completing args to commands
-- inkrementelle Kompilation
+\TODO{- Dependency-Management mit Apache Ivy, so dass Libraries aus öffentlichen Artefakt-Repositories verwendet werden können (löst Abhängigkeiten auf und lädt die benötigten Ressourcen aus dem Internet herunter), Default von Maven Central, zusätzliche Repositories können per Konfiguration zugänglich gemacht werden}
+\TODO{  - Ivy legt ein lokales Repository im Verzeichnis .ivy2 unter dem HOME-Verzeichnis des Benutzers an (bei Windows: C:\\Users\\Bob); hier werden Dateien aus Remote Repositories zwischengespeichert; lokal publizierte Artefakte landen ebenfalls hier}
+\TODO{- kontinuierliche Builds und Tests (mit \code{\~} als Präfix) - unmittelbares Feedback auf Änderungen, sehr nützlich}
+\TODO{- unterstützt gemischte Java/Scala-Projekte}
+\TODO{- interaktive Shell/Kommandozeile, unterstütz Tab-completing args to commands}
+\TODO{- inkrementelle Kompilation}
+\TODO{- sbt kann durch Plugins erweitert werden (z.B. Plugins, die automatisch Projekte für IDEs wie Eclipse oder IntelliJ erzeugen), dazu müssen Plugins in der Build-Definition angegeben werden}
 
-- sbt kann durch Plugins erweitert werden (z.B. Plugins, die automatisch Projekte für IDEs wie Eclipse oder IntelliJ erzeugen), dazu müssen Plugins in der Build-Definition angegeben werden
+\TODO{- Problematisch:}
+\TODO{  - leichter Einstieg, aber für umfangreichere Konfigurationen ist ein tiefes Verständnis nötig -> gute Doku}
+\TODO{  - Syntax}
+\TODO{  - relativ neu im Verlgeich zu (Ant oder Maven) -> kleines aber wachsendes Ökosystem von Plugins}
+\TODO{-->  url -> %\url{http://www.scala-sbt.org/}
+}
+\TODO{-->  url -> %\url{https://en.wikipedia.org/wiki/SBT_%28software%29}
+}
+\TODO{-->  url -> %\url{https://codeascraft.com/2014/09/30/building-a-better-build-our-transition-from-ant-to-sbt/}
+}
 
-- Problematisch:
-	- leichter Einstieg, aber für umfangreichere Konfigurationen ist ein tiefes Verständnis nötig -> gute Doku
-	- Syntax
-	- relativ neu im Verlgeich zu (Ant oder Maven) -> kleines aber wachsendes Ökosystem von Plugins
 
--->  \url{http://www.scala-sbt.org/}
--->  \url{https://en.wikipedia.org/wiki/SBT_%28software%29}
--->  \url{https://codeascraft.com/2014/09/30/building-a-better-build-our-transition-from-ant-to-sbt/}
-
-Bsp. für Dependencies (-->  Website Knabe)
-	libraryDependencies ++= Seq(
-       //vendor % artifact % version % scope
-       "junit" % "junit" % "4.8.1" % "test",
-       //vendor %% scalaVersionDependentArtifact % ownVersion % scope
+\TODO{Bsp. für Dependencies (-->  Website Knabe)}
+%  libraryDependencies ++= Seq(
+%       //vendor % artifact % version % scope
+%       "junit" % "junit" % "4.8.1" % "test",
+%       //vendor %% scalaVersionDependentArtifact % ownVersion % scope
 %       "org.scalatest" %% "scalatest" % "2.2.1" % "test"
-    )
-    "Dazu ist noch eine Erläuterung nötig. Da Scala agressiv weiterentwickelt wird, gibt es häufig inkompatible Versionsunterschiede zwischen einer Version x.y und x.(y+1), nicht aber zwischen x.y und x.y.z. Daher werden Scala-Libraries üblicherweise gegen eine bestimmte Scala-Version x.y kompiliert und es wird deren Nummer in den Artefaktnamen aufgenommen. All dies leistet der Operator \%\%. Der Operator \% nimmt hingegen den Artefaktnamen, so wie er im Buildfile angegeben ist. Er ist daher für die Benutzung von Java-Libraries meist der richtige."
+%    )
+%    "Dazu ist noch eine Erläuterung nötig. Da Scala agressiv weiterentwickelt wird, gibt es häufig inkompatible Versionsunterschiede zwischen einer Version x.y und x.(y+1), nicht aber zwischen x.y und x.y.z. Daher werden Scala-Libraries üblicherweise gegen eine bestimmte Scala-Version x.y kompiliert und es wird deren Nummer in den Artefaktnamen aufgenommen. All dies leistet der Operator \%\%. Der Operator \% nimmt hingegen den Artefaktnamen, so wie er im Buildfile angegeben ist. Er ist daher für die Benutzung von Java-Libraries meist der richtige."
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+\TODO{muss von der Kommandozeile aus ausgeführt werden}
 
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-\chapter{Vorstellung von Scala.js (5)}
-
-
-%TODO Bild: Was ist Scala.js -->  \cite[Folie 17]{doeraene2014.WHB}
+\chapter{Scala.js}
 
 Scala.js\footnote{\url{http://www.scala-js.org/}} ist ein Scala-Dialekt der nach JavaScript kompiliert\cite[S. 1]{doeraene2013.TDI}. Dabei wird für den generierten JavaScript-Code durch Compiler-Prüfungen Typsicherheit garantiert. Schwer zu beseitigende Fehler, die mitunter zu nutzlosen Fehlerausgaben wie dem, jedem JavaScript-Programmierer vertrauten, "`\js{undefined is not a function}"' in der Browser-Konsole führen können, werden hierdurch vermieden.
 
@@ -841,68 +823,55 @@ Scala.js unterstützt ((nahezu (?))) die komplette Scala-Standard-Library und bi
 
 \section{Grundlagen der Implementierung von Scala.js}
 
-%TODO % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+Die Kernfunktionalität von Scala.js beruht auf drei Konzepten.
+\begin{enumerate}
+	\item Durch \textit{Fassaden-Typen} können JavaScript-Werte als First-Class-Citizens des Scala-Typsystems behandelt werden \cite[S. 4]{doeraene2013.TDI}.
+	\item \textit{Typbestimmte implizite Konvertierungen}, die vom Programmierer selbst definiert werden können, erleichtern die Interoperabilität mit JavaScript \cite[S. 5]{doeraene2013.TDI}.
+	\item Mit einem \textit{dynamischen Typ} (der auf Fassaden-Typen und impliziten Konvertierungen basiert) kann die dynamische Typisierung von JavaScript in das statische Scala-Typsystem überführt werden \cite[S. 6]{doeraene2013.TDI}.
+\end{enumerate}
 
->>Basis für Scala.js: zwei besondere Scala-Eigenschaften
-1. implizite Konvertierungen
-	- mit Schlüsselwort \scala{implicit} können implizite Konvertierungs-Methoden definiert werden
-\begin{lstlisting}[language=Scala]
+Dafür sind wiederum zwei besondere Scala-Eigenschaften grundlegend: implizite Konvertierungen und dynamische Typen.
+
+Mit dem Schlüsselwort \scala{implicit} können in Scala implizite Konvertierungs-Methoden definiert werden, wie zum Beispiel:
+\begin{lstlisting}[language=Scala, style=snippet]
 class MyDouble(d: Double) {
   def reciprocal: Double = 1.0 / d
 }
 implicit def double2myDouble(d: Double): Double = new MyDouble(d)
 \end{lstlisting}
 
-Wird nun ein Ausdruck nicht gemäß seinem Typ verwendet und ist eine passende implizite Konvertierung im Scope/Sichtbarkeitsbereich, so wird der Aufruf dieser Konvertierungsmethode automatisch eingefügt.
-Im Beispiel ist also nun der folgende Aufruf erlaubt:
+Wird nun ein Ausdruck nicht gemäß seinem Typ verwendet und befindet sich aber eine passende implizite Konvertierung im Scope, so wird der Aufruf dieser Konvertierungsmethode automatisch vom Compiler eingefügt. In unserem Beispiel ist also nun der folgende Aufruf erlaubt:
 
-\begin{lstlisting}[language=Scala]
+\begin{lstlisting}[language=Scala, style=snippet]
 val rec = 123.4.reciprocal
 \end{lstlisting}
 
 Der Type-checker des Scala-Compilers übersetzt dies nach:
 
-\begin{lstlisting}[language=Scala]
+\begin{lstlisting}[language=Scala, style=snippet]
 val rec = double2myDouble(123.4).reciprocal
 \end{lstlisting}
-2. benutzerdefinierte dynamische Typen
-	- ab Scala 2.10 können Typen vom Trait scala.Dynamic erben, dann sind für Instanzen Lese- und Schreibzugriffe auch auf solche Attribute und Methodenaufrufe erlaubt, die dem Scala-Compiler statisch nicht bekannt sind
-vgl. \cite[S. 3]{doeraene2013.TDI}
-Laut Doeraene liesse sich die JS-Interop die Scala.js bietet in jeder Sprache umsetzen, die diese zwei Eigenschaften hat
-vgl. \cite[S. 3]{doeraene2013.TDI}
 
+Scala kennt seit Version 2.10 den Trait \scala{scala.Dynamic}. Für Instanzen dieses Typs sind Attributzugriffe und Methodenaufrufe auch dann erlaubt, wenn die betreffenden Attribute und Methoden dem Scala-Compiler statisch nicht bekannt sind. Doeraene zufolge ließe sich eine Scala.js vergleichbare JavaScript-Interoperabilität in jeder anderen Programmiersprache umsetzen, die diese beiden Eigenschaften hat.\cite[S. 3]{doeraene2013.TDI}
 
+Beide Sprachen, Scala und JavaScript, unterscheiden sich sowohl in der Art ihrer Typisierung als auch in der Art, wie Objektorientierung umgesetzt ist. Deshalb muss Scala.js die Eigenschaften von Scala-Klassen, Scala-Arrays und Scala-Funktionen auf besondere Weise zu "`kodieren"'. Das Überladen von Methoden anhand der Parametertypen ist in JavaScript unbekannt. Darum müssen die erzeugten JavaScript-Methoden anhand ihres Namens unterschieden werden. So werden zum Beispiel für die Scala-Methodensignaturen:
 
-
-
-
-
->> "`Typbestimmte"' JavaScript-Interoperabilität
--->  \url{http://www.scala-js.org/doc/js-interoperability.html}
--->  \cite{doeraene2013.TDI}
-
-
-- um "`typbestimmte Interoperabilität"'\cite{doeraene2013.TDI} mit JavaScript zu ermöglichen: erzeugt für alle Klassen und Traits speziell "`kodierten"' Code
-- Überladen von Methoden, d.h. gleichnamig aber unterschiedliche Typen
-	- in JavaScript nicht vorhanden
-	- kodiert über Namen, z.B.
-\begin{lstlisting}[language=Scala]
+\begin{lstlisting}[language=Scala, style=snippet]
 def foo(x: Int): Int
 def foo(x: String): Int
+def bar(x: Any, y: Int => Int): Unit
 \end{lstlisting}
-wir in im generierten Scala.js-Code zu:
-\begin{lstlisting}[language=JavaScript]
+
+von Scala.js folgende JavaScript-Methodennamen generiert:
+
+\begin{lstlisting}[language=JavaScript, style=snippet]
 foo__I_I
 foo__Ljava_lang_String__I
+foo__Ljava_lang_Object__Lscala_Function1__V
 \end{lstlisting}
-	
-- isInstanceOf[T] (-> wird für Pattern Matching benötigt)
-	- spezielles Attribut \code{\$classData} wird zum Prototyp der generierten JavaScript-Klasse hinzugefügt; es enthält alle Supertypen, dadurch Instanztests möglich
-vgl. \cite[S. 3 f.]{doeraene2013.TDI}
 
-
-
-
+Zuverlässige Instanztests (\scala{isInstanceOf[T]}), welche in Scala zum Pattern Matching benötigt werden, werden in Scala.js dadurch möglich, dass dem Prototyp der generierten JavaScript-Klasse ein spezielles Attribut \code{\$classData} 
+hinzugefügt wird, welches alle Supertypen der Klasse enthält. \cite[Vgl.][S. 3 f.]{doeraene2013.TDI}
 
 
 
@@ -1141,54 +1110,69 @@ val today = js.Dynamic.newInstance(js.Dynamic.global.Date)()
 Auf diese Weise kann nahezu JavaScript-Semantik in Scala geschrieben werden, sollte dies nötig sein.\cite[Vgl.][]{scalajs.DCJ}
 
 \subsection{Scala.js nach JavaScript exportieren}
-	-->  \url{http://www.scala-js.org/doc/export-to-javascript.html}
 
-Export nach JS mit Annotationen
-- oft genügt:
+Damit auf Scala.js-Code von JavaScript direkt zugegriffen werden kann, muss dieser explizit exportiert werden. Häufig genügt es, die Hauptmethode zu exportieren, so dass die Anwendung gestartet werden kann. Hierfür reicht es aus, vom Trait \scala{js.App} zu erben:
+
 \begin{lstlisting}[language=Scala, style=snippet]
 object MyApp extends scala.scalajs.js.JSApp {
-  def main(): Unit = {
-  	/* ... */
-  }
+  def main(): Unit = { /* ... */ }
 }
 \end{lstlisting}
-	- damit MyApp und main exportiert
-- @JSExport
-	- Überladen von Methoden mit gleichem Namen und unterschiedlicher Signatur möglich
-- toString standardmäßig exportiert
-- mehr siehe Doku
 
-\cite[Vgl.][]{scalajs.DEJ}
+Damit sind sowohl \scala{MyApp} als auch \scala{main} exportiert und die Anwendung kann durch den Aufruf \scala{MyApp().main()} gestartet werden.
+
+Für den gezielten Export einzelner Klassen, Methoden und Felder existiert die Annotation \scala{@JSExport}. Damit ist es auch möglich, die exportierte Methode für JavaScript umzubenennen, was zum Beispiel fürs Überladen von Methoden wichtig ist. Die Methode \scala{toString} wird standardmäßig exportiert. Für speziellere Anwendungsfälle, wie benannte Parameter oder den Export aller Nachfahren einer Klasse existieren weitere Annotationen.\cite[Vgl.][]{scalajs.DEJ}
 
 
 
 
 
 
+\section{Compiler und Optimizer // Builds/Entwicklungszyklus und minimierter/optimierter Produktionscode}\label{sec:compiler}
+
+Scala.js erzeugt in mehreren Stufen aus Scala-Code optimierten JavaScript-Code (siehe Abb. \ref{fig:sjs-compilation}). Dabei wird im ersten Schritten vom Scala.js-Compiler\footnote{genauer: vom scalac-Compiler mit dem Scala.js-Plugin} jede .scala-Datei zu einer .sjsir-Datei\footnote{Scala.js Intermediate Representation} mit Zwischencode (vergleichbar mit Java-Bytecode) kompiliert.
+
+Als nächstes werden alle .sjsir-Dateien mit allen transitiven Dependencies gelinkt. An diesem Punkt ist die komplette Scala-Standard-Library enthalten, und die generierten JavaScript-Dateien hätten eine Größe von über 20 MB. Nun können starke Optimierungen vorgenommen werden, weil Scala.js zur Link-Zeit den kompletten Code, inklusive aller Dependencies kennt; da Scala.js keine Laufzeit-Reflections unterstützt, muss auch hierauf keine Rücksicht genommen werden \cite[Folie 45 ff., Min. 36]{doeraene2015.SSP}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[
+    width=0.75\textwidth
+%   scale=0.5
+    ]{Doeraene2014-Scalajs-p17}
+    \caption{Der Scala.js-Kompilationsprozess.
+    (Quelle: \cite[Folie 17]{doeraene2014.WHB})
+    }
+    \label{fig:sjs-compilation}
+\end{figure}
+
+In der Optimierungsstufe (\code{FastOpt}) wird unter anderem unerreichbarer Code entfernt (\textit{Dead code elimination}) und es werden Methoden- und insbesondere anonyme Funktionsaufrufe ge-inlined (\textit{Closure elimination}), das heißt die Aufrufe werden durch ihre Implementierungen ersetzt. Hierdurch wird die Größe der Kompilate verringert und insbesondere die Performance verbessert. Das Ergebnis dieser Phase ist eine einzige JavaScript-Datei. Für die Entwicklungsphase endet der Prozess hier.
+
+Zur weiteren Verringerung der Dateigröße gibt es nun noch eine Optimierungsphase (\code{FullOpt}), bei welcher der Google Closure Compiler\footnote{\url{https://developers.google.com/closure/compiler/}} diese "`schnell-optimierte"' JavaScript-Datei durch Dead code elimination, Entfernung von Whitespace, aggressive Verkürzung von Variablennamen und zusätzlich verkleinert. Dieser Optimierungsschritt ist allerdings nicht besonders schnell und ist für die Produktionsphase vorgesehen.
+\cite[Vgl.][]{scalajs.DCO}\cite[Vgl.][\#HowCompilationWorks]{haoyi.HOS}
+
+Der Scala.js-Compiler unterstützt separate und inkrementelle Kompilierung, das heißt nur die einzelnen geänderten Kompilationseinheiten beziehungsweise sogar nur einzelne geänderte Programmteile innerhalb einer Datei werden neu übersetzt. Das beschleunigt inkrementelle Builds erheblich, was insbesondere dem gewohnten Workflow von Frontend-Entwicklern entsprechen dürfte.
 
 
+\section{Stabilität / Korrektheit / Zuverlässigkeit}
 
+Scala.js garantiert ab Version 0.6.0 Rückwärtskompatibilität, und zwar sowohl bezüglich der Semantik als auch für die Standardbibliothek\footnote{Dokumentation: \url{http://www.scala-js.org/api/scalajs-library/0.6.5/\#scala.scalajs.js.package}}, (die sowohl Quellcode- als auch binärkompatibel sein wird) und mit sbt erzeugte Builds (Quellcode-kompatibel). Einzig das Format für den Scala.js-spezifischen Zwischencode (.sjsir) könnte bis zur Version 1.0.0 noch einmal geändert werden.
 
-
-
-
-
-
-
-
-
+Die Scala Test-Suite läuft für knapp 2000 Tests, die das erwartungsgemäße Kompilieren beziehungsweise Nicht-Kompilieren prüfen, zu 99\% erfolgreich durch. Von über 1000 Tests, die die korrekte Ausführung überprüfen, sind nur 51 \% erfolgreich \cite[Folie 36, Min. 35]{doeraene2014.WHB}. Bei den wenigsten der Fehlschläge handelt es sich laut Doeraene allerdings tatsächlich um Bugs. Der Grund hierfür liegt darin, dass Scala.js bestimmte Spracheigenschaften wie Laufzeit-Reflections und die Java Collections nicht unterstützt \cite[S. 7]{doeraene2013.TDI}. Zusätzlich gibt es eine eigene Test-Suite mit über 400 Tests \cite[Folie 36, Min. 35]{doeraene2014.WHB}.
 
 
 \section{sbt-Integration}
 
-(http://www.scala-lang.org/news/2015/02/05/scala-js-no-longer-experimental.html)
+%TODO % % % %
 
-sbt-Plugin
-  - compiling, running, linking, optimizing --> http://www.scala-js.org/doc/sbt-plugin.html
-  - als Test-Runner - mit Rhino, Node.js oder PhantomJS
+\TODO{Für Scala.js existiert ein sbt-Plugin, mit dem es möglich ist, Scala.js-Anwendungen zu kompilieren, zu testen und auszuführen.}
+\TODO{  - compiling, running, linking, optimizing --> url -> %http://www.scala-js.org/doc/sbt-plugin.html
+}
+\TODO{  - als Test-Runner - mit Rhino, Node.js oder PhantomJS}
 
-command line interface (CLI)
-  - Scala.js ohne sbt  -->  http://www.scala-js.org/downloads.html
+\TODO{command line interface (CLI)}
+\TODO{  - Scala.js ohne sbt  -->  url -> %http://www.scala-js.org/downloads.html
+}
 
 
 
@@ -1243,18 +1227,56 @@ wird die nicht-minifizierte Version verwendet, das gilt auch für Dependencies, 
 
 
 
-%TODO Grafik referenzieren:
-\begin{figure}[!h]
-    \centering
-    \includegraphics[
-    width=0.75\textwidth
-%   scale=0.5
-    ]{Doeraene2014-Scalajs-p17}
-    \caption{Der Scala.js-Kompilationsprozess.
-    (Quelle: \cite[Folie 17]{doeraene2014.WHB})
-    }
-    \label{fig:sjs-compilation}
-\end{figure}
+
+
+
+
+
+-- sbt-Kommandos --
+
+Infos hier geben tieferen Einblick scheinen aber nicht auf dem aktuellsten Stand zu sein.
+\url{http://www.scala-js.org/doc/internals/compile-opt-pipeline.html}
+
+\cite[\#TheCommandLine]{haoyi.HOS} ist hier wieder eine wertvolle und (als Mitarbeiter des Projekts) auch autorisierte Quelle -> es gibt weiter unten ein Kapitel "`The Command Line"' zum Thema.
+
+\code{set scalaJSStage in Global := FastOptStage}
+
+\code{set scalaJSStage in Global := FullOptStage}
+
+
+\code{fastOptJS // = dev} kompiliert und optimiert (schnellerer Compiler-Lauf, größere Datei) - zur Entwicklung
+
+\code{fullOptJS // = prod} kompiliert und optimiert (langsamerer Compiler-Lauf, aggressiver optimiert -> kleinere Datei, schnelleres JS) - zur Auslieferung
+
+mit vorangestellter  \code{\~}, z.B. \code{\~fastOptJS}
+
+\code{run} kompilierte Scala.js-Anwendung in einer JavaScript Laufzeit/VM (Rhino, Node.js oder PhantomJS) ausführen (main-Methode wird benötigt wie in -> Hallo-Welt)
+	- läuft per default in der \textit{PreLinkStage}, verwendet Rhino
+		- für DOM-API: mit \code{jsDependencies += RuntimeDOM} in der \code{build.sbt} wird die DOM-API in Rhino emuliert
+	- schnellere Laufzeit (Node.js oder PhantomJS) durch \code{scalaJSStage in Global := FastOptStage} in der Build-Definition oder \code{set scalaJSStage in Global := FastOptStage} in der sbt-REPL (oder FullOptStage) aktiviert, standardmäßig Node.js
+		- für DOM-API: \code{jsDependencies += RuntimeDOM} aktiviert PhantomJS (langsamer als Node.js)
+
+\code{test} kompilierte Scala.js-Tests im \code{tests/}-Verzeichnis auf Rhino, Node.js oder PhantomJS ausführen
+	- erzeugt im Verzeichnis \code{target/test-reports/} Test-Reports in XML-Form
+
+\code{compile} kompiliert zu Scala.js Bytecode
+
+\code{package} Scala.js-Anwendung als .jar-Datei packen (z.B. \code{hello-scalajs\_sjs0.6\_2.11-1.0.jar} mit Suffix: Scala.js-Version, Scala-Version, Projekt-Version)
+
+
+
+
+
+
+Das Kommando \code{sbt fastOptJS} (bzw. \code{sbt fullOptJS}) erzeugt Dateien im Ordner
+%target/scala-2.11/classes/  -- .class und .sjsir >> nicht benötigt (Output des Scala.js-Compilers: Scala/JVM-Bytecode und Scala.js-Bytecode/Zwischencode)
+%target/scala-2.11/classes/  --  html << benötigt
+%target/scala-2.11/  --  js << benötigt
+
+
+
+
+
 
 
 
@@ -1354,6 +1376,26 @@ dann in der HTML:
 
 
 
+
+
+
+
+
+
+
+
+>> was ist neu
+  -->  http://www.scala-js.org/news/2015/08/31/announcing-scalajs-0.6.5/
+  -->  http://www.scala-js.org/doc/sjs-defined-js-classes.html
+
+
+
+
+
+
+
+
+
 \section{IDE-Support}
 (http://www.scala-lang.org/news/2015/02/05/scala-js-no-longer-experimental.html)
 
@@ -1392,117 +1434,6 @@ Dokumentation
 --> Bsp. helloscalajs in Fallstudien
 
 
-\section{Builds/Entwicklungszyklus und minimierter/optimierter Produktionscode}
-\label{sec:compiler}
-
-zur Link-Zeit kennt Scala.js den kompletten Code, inkl. JavaScript-Dependencies, keine Rücksichtnahme auf Laufzeit-Reflections nötig -> starke Optimierungen können vorgenommen werden
-\cite[Folie 45 ff., Min. 36]{doeraene2015.SSP}
-	-> Optimierungen:
-		- FastOptJS
-			- Dead code elimination: Code der weder im Programm aufgerufen noch mit \@JSExported exportiert wird
-			- Inlining: bestimmte Methodenaufrufe werden "`ge-inlined"' -> weniger Overhead durch weniger Indirektion ((?)) (implizite Konvertierungen, Funktionen höherer Ordnung) -> schneller
-			- Closure elimination: anonyme Funktionen für Funktionen höherer Ordnung wie map werden ge-inlined
-		- FullOptJS -> Google Closure Compiler
-			- Whitespace removal (= Entfernung von Whitespace)
-			- Variablenunbemennung
-			- Dead code elimination
-			- Inlining
-		\cite[\#HowCompilationWorks]{haoyi.HOS}
-
->> sbt-Konfiguration und "`Compilation und Optimization Pipeline"'
-
-mit Google Closure Compiler  -->  https://developers.google.com/closure/compiler/
-	seit August 2013 im Projekt
-	- Hallo-Welt-Programm beim Prototyp noch zu 16 MB kompiliert
-	- mit Google Closure Compiler Aug 2013 nur noch 900 KB
-
-	separate (je Kompilationseinheit = Datei) und inkrementelle (nur einzelne Programmteile) Kompilierung für schnellere inkrementelle Builds
-	
-	komplette Scala-Library muss per dead-code-opt reduziert werden
-
-...
-
-
--- sbt-Kommandos --
-
-Infos hier geben tieferen Einblick scheinen aber nicht auf dem aktuellsten Stand zu sein.
-\url{http://www.scala-js.org/doc/internals/compile-opt-pipeline.html}
-
-\cite[\#TheCommandLine]{haoyi.HOS} ist hier wieder eine wertvolle und (als Mitarbeiter des Projekts) auch autorisierte Quelle -> es gibt weiter unten ein Kapitel "`The Command Line"' zum Thema.
-
-\code{set scalaJSStage in Global := FastOptStage}
-
-\code{set scalaJSStage in Global := FullOptStage}
-
-
-\code{fastOptJS // = dev} kompiliert und optimiert (schnellerer Compiler-Lauf, größere Datei) - zur Entwicklung
-
-\code{fullOptJS // = prod} kompiliert und optimiert (langsamerer Compiler-Lauf, aggressiver optimiert -> kleinere Datei, schnelleres JS) - zur Auslieferung
-
-mit vorangestellter  \code{\~}, z.B. \code{\~fastOptJS}
-
-\code{run} kompilierte Scala.js-Anwendung in einer JavaScript Laufzeit/VM (Rhino, Node.js oder PhantomJS) ausführen (main-Methode wird benötigt wie in -> Hallo-Welt)
-	- läuft per default in der \textit{PreLinkStage}, verwendet Rhino
-		- für DOM-API: mit \code{jsDependencies += RuntimeDOM} in der \code{build.sbt} wird die DOM-API in Rhino emuliert
-	- schnellere Laufzeit (Node.js oder PhantomJS) durch \code{scalaJSStage in Global := FastOptStage} in der Build-Definition oder \code{set scalaJSStage in Global := FastOptStage} in der sbt-REPL (oder FullOptStage) aktiviert, standardmäßig Node.js
-		- für DOM-API: \code{jsDependencies += RuntimeDOM} aktiviert PhantomJS (langsamer als Node.js)
-
-\code{test} kompilierte Scala.js-Tests im \code{tests/}-Verzeichnis auf Rhino, Node.js oder PhantomJS ausführen
-	- erzeugt im Verzeichnis \code{target/test-reports/} Test-Reports in XML-Form
-
-\code{compile} kompiliert zu Scala.js Bytecode
-
-\code{package} Scala.js-Anwendung als .jar-Datei packen (z.B. \code{hello-scalajs\_sjs0.6\_2.11-1.0.jar} mit Suffix: Scala.js-Version, Scala-Version, Projekt-Version)
-
-
-
-
-
-
-Das Kommando \code{sbt fastOptJS} (bzw. \code{sbt fullOptJS}) erzeugt Dateien im Ordner
-%target/scala-2.11/classes/  -- .class und .sjsir >> nicht benötigt (Output des Scala.js-Compilers: Scala/JVM-Bytecode und Scala.js-Bytecode/Zwischencode)
-%target/scala-2.11/classes/  --  html << benötigt
-%target/scala-2.11/  --  js << benötigt
-
-
-
-
-
-
-
-
-
-
-
-
->> hinter der Fassade / Interna
-
-getypte Fassade vs. js.Dynamic
-- Vergleich
-- asInstanceOf[T]
-  - Typsicherheit
-  - Performance: Compiler-Optimizer kann optimieren
-
-...
-
-
-
-
-
-
->> was ist neu
-  -->  http://www.scala-js.org/news/2015/08/31/announcing-scalajs-0.6.5/
-  -->  http://www.scala-js.org/doc/sjs-defined-js-classes.html
-
-
-
-
-
-\section{Stabilität / Korrektheit / Zuverlässigkeit}
-
-Ab Version 0.6.0 wird Rückwärtskompatibilität garantiert, und zwar sowohl bezüglich der Semantik als auch für die Standardbibliothek\footnote{Dokumentation: \url{http://www.scala-js.org/api/scalajs-library/0.6.5/\#scala.scalajs.js.package}}, (die sowohl Quellcode- als auch binärkompatibel sein wird) und mit sbt erzeugte Builds (Quellcode-kompatibel). Einzig das Format für den Scala.js-spezifischen Zwischencode (.sjsir) könnte bis zur Version 1.0.0 noch einmal geändert werden.
-
-Die Scala Test-Suite läuft für knapp 2000 Tests, die das erwartungsgemäße Kompilieren beziehungsweise Nicht-Kompilieren prüfen, zu 99\% erfolgreich durch. Von über 1000 Tests, die die korrekte Ausführung überprüfen, sind nur 51 \% erfolgreich \cite[Folie 36, Min. 35]{doeraene2014.WHB}. Bei den wenigsten der Fehlschläge handelt es sich laut Doeraene allerdings tatsächlich um Bugs. Der Grund hierfür liegt darin, dass Scala.js bestimmte Spracheigenschaften wie Laufzeit-Reflections und die Java Collections nicht unterstützt \cite[S. 7]{doeraene2013.TDI}. Zusätzlich gibt es eine eigene Test-Suite mit über 400 Tests \cite[Folie 36, Min. 35]{doeraene2014.WHB}.
 
 
 
@@ -1510,6 +1441,12 @@ Die Scala Test-Suite läuft für knapp 2000 Tests, die das erwartungsgemäße Ko
 \section{Ökosystem: Libraries und Tools}\label{sec:sjs-libs}
 
 >> verwendete/ausprobierte/untersuchte Libraries (2)
+
+
+\subsection{Scala.js workbench}
+
+- sbt-Plugin zum automatischen Live-Neuladen des Browsers
+
 
 \subsubsection{Scala-js-dom}
 
@@ -1588,35 +1525,22 @@ asynchrone Tests mit Futures möglich, aber nicht erforscht
 Die bekannten Test-Bibliotheken ScalaTest und Specs2 können nicht verwendet werden, da sie zu stark von Java-Spezifika abhängen, um nach Scala.js portiert werden zu können\cite[\#OtherTestingLibraries]{haoyi.HOS}.
 
 
-\subsubsection{(uPickle)}
+\subsubsection{Scala-Async}
 
-- cross-kompilierende Library zur Serialisierung)
-
+- Scala-Library zur einfacheren Handhabung von Asynchronität; funktioniert mit Scala.js -->  http://docs.scala-lang.org/sips/pending/async.html
 
 \subsubsection{autowire}
 
 - cross-kompilierende Library für statisch getypte Ajax-Aufrufe und RPCs
 
-\subsubsection{(spray)}
+\subsubsection{(uPickle)}
 
-- Sammlung von Libraries zur Entwicklung von REST/HTTP-basierten Webservices auf der Basis von Akka; beinhaltet spray-can, einen schnellen HTTP-Server)
+- cross-kompilierende Library zur Serialisierung)
 
 \subsubsection{(Scala.Rx)}
 
 - cross-kompilierende Change-Propagation-Library ("Änderungsausbreitung"))
 
-\subsubsection{Scala-Async}
-
-- Scala-Library zur einfacheren Handhabung von Asynchronität; funktioniert mit Scala.js -->  http://docs.scala-lang.org/sips/pending/async.html
-
-\subsubsection{Scala.js workbench}
-
-- sbt-Plugin zum automatischen Live-Neuladen des Browsers
-
-
-Check: alle Infos up-to-date?
--->  http://www.scala-js.org/news/2015/02/05/announcing-scalajs-0.6.0/
--->  http://www.scala-js.org/news/2015/08/31/announcing-scalajs-0.6.5/
 
 
 
@@ -1628,23 +1552,67 @@ Check: alle Infos up-to-date?
 >>Ziele
 
 Verwendungsweise(?) - wie funktioniert es in der Anwendung
+
 Konfiguration
+
 	wie?
+
 	Aufwand
+
 Performance
+
 	Build: Compiler, Tests
+
 Wartbarkeit, Entwicklerfreundlichkeit
+
 	Debugging-Qualitäten
+
 	Code-Qualität
+
 	Entwicklungsgeschwindigkeit (?)
+
 	Dokumentation
+
 Nützlichkeit: Umsetzbarkeit von Anforderungen der Web-Entwicklung
+
 	DOM
+
 	Events
+
 	Canvas
+
 	AJAX
 
-\section{Kriterien der Evaluierung}
+
+>>Kriterien der Evaluierung
+
+\TODO{S A M M E L N !}
+
+Konfigurationsaufwand
+Performance
+  Compiler-Geschwindigkeit
+  Größe der Kompilate
+Wartbarkeit
+  Debugging-Qualitäten
+  Testbarkeit
+Machbarkeit
+Lesbarkeit
+Umsetzbarkeit aller Anforderungen
+Leichtigkeit der Implementierung
+Nützlichkeit
+Code-Qualität
+  Typsicherheit
+  Lesbarkeit
+  Wartbarkeit
+
+
+
+
+
+>>Vorgehensweise bei der Untersuchung
+
+
+%\section{Kriterien der Evaluierung}
 
 %\subsection{anwenderbezogen}
 %
@@ -1713,7 +1681,7 @@ Nützlichkeit: Umsetzbarkeit von Anforderungen der Web-Entwicklung
 %\subsection{m09 - Anzahl zusätzlicher Library-Dependencies}
 %\subsection{m10 - empirische/experimentell}
 
-\section{Vorgehensweise bei der Untersuchung}
+%\section{Vorgehensweise bei der Untersuchung}
 
 %Matrix - welche Methode für welche Kriterien
 
@@ -1790,9 +1758,7 @@ Es ist auch möglich, mit sbt ein eine
     width=0.25\linewidth
 %   scale=0.5
     ]{tux}
-    \caption{Eine Beispielabbildung.
-    (Quelle: \cite{aab.FBB})
-    }
+    \caption{Eine Beispielabbildung. (Quelle: \cite{aab.FBB})}
     \label{fig:a_picture_of_tux}
 \end{figure}
 
@@ -1865,13 +1831,13 @@ Künftig kann der \code{node\_modules}-Ordner bedenkenlos gelöscht werden. Ein 
 
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-\chapter{Fallstudien (20)}
+\chapter{Fallstudien}
 
 
 bei den Eingangsbeispielen gestützt auf
 -->  Scala.js-Tutorial
 
-wichtige Quelle
+wichtige Anregungen aus Quelle
 -->  Hands-on Scala.js
 
 %TODO Liste der Beispielprojekte, verlinkt auf GitHub
@@ -1883,13 +1849,14 @@ TODO Liste der Beispielprojekte, verlinkt auf GitHub
 
 %TODO Hinweis: lose orientiert an  -->  http://www.scala-js.org/doc/tutorial.html
 
+\minisec{Hallo asdfsflkj}
+
 \subsection{Ziel der Untersuchung}
 
 Ein minimales Setup in Form eines klassischen Hallo-Welt-Programms sollte zum Laufen gebracht werden. Anhand dieses Minimalbeispiels sollten dann bestimmte Grundbedingungen der Entwicklung mit Scala.js untersucht werden. Neben der Konfiguration selbst sollte als wichtiger Faktor für die alltägliche Entwicklungsarbeit die Zeit ermittelt werden, die für einen Build-Lauf benötigt wird. Auch die Größe der für die Auslieferung relevanten Kompilate sollte betrachtet werden, schließlich besteht ein unmittelbarer Zusammenhang zwischen der Größe der zu ladenden Datenmenge und der Ladezeit im Browser, weshalb sie eine wichtige Grundbedingung für die Zufriedenheit der Benutzer ist.
 
 Anhand einer erweiterten Fassung des Minimalbeispiel sollten Benutzerinteraktion und der Einsatz von jQuery ausprobiert und die Testbarkeit von Oberflächen-Elementen geklärt werden. Außerdem sollte die Sourcemap-Unterstützung erprobt werden.
 
-document.createElement("div")
 \subsection{Kriterien}
 
 \begin{enumerate}
@@ -2050,6 +2017,8 @@ Es ist auch zu erkennen, dass Testläufe, selbst ohne Code-Änderungen nicht bes
 Die Größe der Kompilate übertrifft reines HTML/JavaScript (187 Bytes) um einen Faktor von etwa 100. Andererseits ist dieser Vergleich nicht ganz fair. Ein Großer Teil der von Scala.js generierten JavaScript-Datei ist die Scala-Standardbibliothek.
 Der Optimierer und der Google Closure Compiler reduzieren die Code-Menge (durch Techniken wie \textit{dead code elimination} oder die aggressive Verkürzung von Variablennamen) schon sehr stark. Die Größe von Dateien voll optimiertem Scala.js-generierten JavaScript-Dateien wird deshalb mit wachsender Code-Basis des eigenen Software-Projekts nicht etwa proportional, sondern langsamer anwachsen. Li Haoyi verweist zum Beispiel auf ein eigenes Projekt mit einem Umfang von ca. 2000 Zeilen Code, welches voll optimiert noch 288 kB groß ist. (TODO! -> eigenes client-server-Bsp.) Das Problem wird weiter relativiert durch die Tatsache, dass die meisten Server ihre Daten gzip-komprimiert übertragen, was laut Haoyi die Datenlast auf etwa ein Zehntel verkleinert.\cite[\#BlobSize]{haoyi.HOS}
 
+Seit Bestehen des Projekts wurden bei der Verringerung der erzeugten Dateigröße schon erhebliche Fortschritte erzielt. Generierte der Prototyp des Compilers für ein Hallo-Welt-Programm noch 16 MB, so reduzierte sich dies bald darauf mit der Einführung des Google Closure Compilers ins Projekt im August 2013 schon auf 900 kB \cite[Folie 5 f., Min. 6]{doeraene2014.WHB}. Der aktuelle Stand mit 20 kB (siehe \ref{table:compiler-performance1}) ist somit schon erstaunlich gut und lässt auf weitere Verbesserung in der Zukunft hoffen.
+
 \subsubsection{Debugging-Qualitäten}
 
 %TODO$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
@@ -2105,6 +2074,8 @@ Mit der verwendeten Test-Biliothek uTest lassen sich Tests formulieren, um zu pr
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 \section{HTML-Templating: Hello ScalaTags}
+
+%TODO -----> Kapitel raus, Wichtiges übernehmen in StringAnalyzer
 
 \subsection{Ziel der Untersuchung}
 
@@ -2318,7 +2289,7 @@ dom.document.onkeyup = { (evt: dom.KeyboardEvent) => evt.keyCode match {
 }}
 \end{lstlisting}
 
-Hier wird der \scala{onkeyup}-Property eine ein Event-Handler als Scala-Lambda zugewiesen. Dank Scalas Pattern-Matching kann sehr knapp und übersichtlich das gewünschte Verhalten formuliert werden. Scala-js-dom stellt neben Fassaden für die DOM-API im Paket \scala{org.scalajs.dom.ext} nützliche Helfer zur Verfügung, darunter eine Liste für die meisten Keyboard-Tasten-Codes, so dass hier nicht mit kryptischen Zahlenwerten gearbeitet werden muss.
+Hier wird der \scala{onkeyup}-Property eine ein Event-Handler als Scala-Lambda zugewiesen. Dank Scalas Pattern Matching kann sehr knapp und übersichtlich das gewünschte Verhalten formuliert werden. Scala-js-dom stellt neben Fassaden für die DOM-API im Paket \scala{org.scalajs.dom.ext} nützliche Helfer zur Verfügung, darunter eine Liste für die meisten Keyboard-Tasten-Codes, so dass hier nicht mit kryptischen Zahlenwerten gearbeitet werden muss.
 
 Um die Frequenz des automatischen Zeichnens per Keyboard-Interaktion steuerbar zu machen, muss der Timer angehalten und mit einem Intervall erneut gestartet werden können. Es erwies sich daher als sauberer und für den Handler-Code entlastend (und ganz im Sinne von DRY\footnote{\textit{Don't Repeat Yourself!}}), gewisse Implementierungsdetails in einer eigenen Timer-Abstraktion zu verbergen (Listing \ref{code:canvas-timer}).
 		
@@ -2469,18 +2440,14 @@ Das Workbench-Plugin funktioniert nicht immer ganz zuverlässig, und manchmal mu
 
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-\section{Textanalyzer - ein umfangreicheres Beispiel}
+\section{HTML-Templating mit ScalaTags: Textanalyzer}
 
 %TODO#############################
 
 \subsection{Ziel der Untersuchung}
-\subsection{Untersuchungskriterien}
+\subsection{Kriterien}
 \subsection{Kurzbeschreibung des Beispielprogramms}
 \subsection{Ergebnisse der Untersuchung und Bewertung}
-\subsection{Schwierigkeiten}
-\subsection{Erfolge}
-\subsection{Bewertung: differenziert oder boolsch mit Begründung; Fazit aus Schwierigkeiten und Erfolgen}
-
 
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
@@ -2492,7 +2459,7 @@ Das Workbench-Plugin funktioniert nicht immer ganz zuverlässig, und manchmal mu
 
 Die Kommunikation mit Objekten ((?)) außerhalb des Web-Clients, wie zum Beispiel mit Webservices, ist ein wichtiger Bestandteil der allermeisten interaktiven Web-Anwendungen. Dazu wird standardmäßig eine als \textit{Ajax} bezeichnete Technik verwendet. Dabei werden aus der Web-Anwendung heraus über das HTTP-Protokoll Daten von einem Server angefragt, um auf Grundlage der Antwort Teile der HTML-Seite zu aktualisieren. Diese Standardtechnik und die Behandlung von Asynchronität mit Scala.js sollte erprobt werden.
 
-\subsection{Untersuchungskriterien}
+\subsection{Kriterien}
 
 \begin{enumerate}
 	\item Konfigurationsaufwand
@@ -2683,13 +2650,145 @@ auf native JavaScript-Methoden zurückzugreifen und \scala{dstAmount.toFixed(4)}
 %TODO#############################
 
 \subsection{Ziel der Untersuchung}
+
 Cross-compiling lib
+
 Performance-Vergleich zu reinem JS - Micro-Benchmark
+
 BILD -> \cite[Folie 52, Min. ???]{doeraene2015.SSP} % -->  Doeraene2015-Scalajs-p52.jpg
 
-\subsection{Untersuchungskriterien}
+\subsection{Kriterien}
+
+TODO
+
 \subsection{Kurzbeschreibung des Beispielprogramms}
+
+Mittelwert, Median, Varianz und Standardabweichung als Bibliotheksfunktionen
+- in Scala.js, cross-kompilierendes Projekt (nach JVM und JS), Unit-Tests (uTest), kleines JS-Frontend zur Benutzung (fehlertolerante Eingabe)
+- Portierung in natives JavaScript zum Vergleich, Unit-Tests (Jasmine)
+- Benchmark (JSLitmus) -> \url{http://www.broofa.com/Tools/JSLitmus/}
+
 \subsection{Ergebnisse der Untersuchung und Bewertung}
+
+einfache GUI in klassischem HTML/JavaScript, die Scala.js-generierte Statistik-Lib verwendet (siehe Abb. \ref{fig:stat-lib-gui}) - funktioniert sehr gut
+
+
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[
+    width=0.75\textwidth,
+%   scale=0.5
+	frame
+    ]{statistics-lib/statistics-gui}
+    \caption{Einfache GUI der Statistik-Bibliothek im Browser. (Quelle: eigene Anfertigung)}
+    \label{fig:stat-lib-gui}
+\end{figure}
+
+
+>>Benchmark - der Statistik-Lib
+
+- sjs etwa 9 \% (CHECK AGAIN) langsamer als pures js
+- ops/sec (viel ist gut)
+%- (siehe Tabelle \ref{table:stat-lib-benchmark} und Abb. \ref{fig:stat-lib-benchmark})
+- (siehe Tabelle ?? und Abb. ??)
+
+also recht nahe beieinander
+
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.35\textwidth]{statistics-lib/benchmark-statistics-lib-chart}
+%	\label{fig:stat-lib-benchmark}
+	\qquad
+	\qquad
+	\begin{tabular}[b]{|l|r|}
+		\hline \textbf{Test} & \textbf{Ops/sec} \\ 
+		\hline mean-js       & 595399 \\ 
+		\hline mean-sjs      & 552250 \\ 
+		\hline median-js     & 4839 \\ 
+		\hline median-sjs    & 5049 \\ 
+		\hline variance-js   & 70267 \\ 
+		\hline variance-sjs  & 65650 \\ 
+		\hline deviation-js  & 72506 \\ 
+		\hline deviation-sjs & 67156 \\ 
+		\hline 
+	\end{tabular}
+%	\label{table:stat-lib-benchmark}
+	\captionlistentry[table]{Benchmark der Statistik-Bibliothek. (Quelle: eigene Anfertigung)}
+	\captionsetup{labelformat=andtable}
+	\caption{Benchmark der Statistik-Bibliothek. (Quelle: eigene Anfertigung)}
+\end{figure}
+
+
+
+%
+%
+%\begin{minipage}{\textwidth}
+%	\begin{minipage}[b]{0.6\textwidth}
+%		\vspace{0pt}
+%		\centering
+%		\begin{tabular}{|l|r|}
+%		\hline \textbf{Test} & \textbf{Ops/sec} \\ 
+%		\hline mean-js       & 595399 \\ 
+%		\hline mean-sjs      & 552250 \\ 
+%		\hline median-js     & 4839 \\ 
+%		\hline median-sjs    & 5049 \\ 
+%		\hline variance-js   & 70267 \\ 
+%		\hline variance-sjs  & 65650 \\ 
+%		\hline deviation-js  & 72506 \\ 
+%		\hline deviation-sjs & 67156 \\ 
+%		\hline 
+%		\end{tabular}
+%%		\captionof{table}{Benchmark der Statistik-Bibliothek.}
+%		\label{table:stat-lib-benchmark00001}
+%	\end{minipage}%
+%%	\hfill
+%	\begin{minipage}[b]{.3\textwidth}
+%		\vspace{0pt}
+%		\centering
+%		\includegraphics[width=1.0\textwidth]{statistics-lib/benchmark-statistics-lib-chart}
+%%		\captionof{figure}{Benchmark.}
+%		\label{fig:stat-lib-benchmark0002}
+%	\end{minipage}
+%	\captionof{table}{Benchmark der Statistik-Bibliothek. (Quelle: eigene Anfertigung)}
+%\end{minipage}
+%
+%
+%
+%
+%\medskip
+%
+%\begin{table}[!h]
+%\begin{tabular}{|l|r|}
+%\hline \textbf{Test} & \textbf{Ops/sec} \\ 
+%\hline mean-js       & 595399 \\ 
+%\hline mean-sjs      & 552250 \\ 
+%\hline median-js     & 4839 \\ 
+%\hline median-sjs    & 5049 \\ 
+%\hline variance-js   & 70267 \\ 
+%\hline variance-sjs  & 65650 \\ 
+%\hline deviation-js  & 72506 \\ 
+%\hline deviation-sjs & 67156 \\ 
+%\hline 
+%\end{tabular}
+%\caption{Benchmark der Statistik-Bibliothek.}
+%\label{table:stat-lib-benchmark}
+%\end{table}
+%
+%\medskip
+%
+%\begin{figure}[!h]
+%    \centering
+%    \includegraphics[
+%    width=0.25\linewidth
+%%   scale=0.5
+%    ]{statistics-lib/benchmark-statistics-lib-chart}
+%    \caption{Benchmark der Statistik-Bibliothek.
+%    (Quelle: eigene Anfertigung)
+%    }
+%    \label{fig:stat-lib-benchmark}
+%\end{figure}
 
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
@@ -2698,21 +2797,40 @@ BILD -> \cite[Folie 52, Min. ???]{doeraene2015.SSP} % -->  Doeraene2015-Scalajs-
 %TODO#############################
 
 \subsection{Ziel der Untersuchung}
-eine (!) Templating-Sprache für Server und Client: ScalaTags \cite{haoyi.HOS}
-eine (!) Library zur Serialisierung: uPickle \cite{haoyi.HOS}
-Schnittstelle in einer Sprache
 
-\subsection{Untersuchungskriterien}
+Cient/Server-Setup zum Laufen bringen, ausprobieren
+
+geteilte Schnittstelle ausprobieren
+
+Clientseitiges Routing verwenden, ggf. selbst schreiben
+
+\subsection{Kriterien}
 \subsection{Kurzbeschreibung des Beispielprogramms}
-entsprechend Code-Vorschlägen von Li Haoy\cite{haoyi.HOS}
+
+Clientseitiges Routing
+
+Freundesliste (hart-codiert, keine DB), hinzufügen und entfernen von Freunden
+
+Client/Server und RPCs entsprechend Code-Vorschlägen von Li Haoy\cite[]{haoyi.HOS}
+
+verwendet: spray - Sammlung von Libraries zur Entwicklung von REST/HTTP-basierten Webservices auf der Basis von Akka; beinhaltet spray-can, einen schnellen HTTP-Server)
+
 \subsection{Ergebnisse der Untersuchung und Bewertung}
 
 
 ggf. diskutieren: Verwendung vieler objects
 
+eine (!) Templating-Sprache für Server und Client: ScalaTags \cite{haoyi.HOS}
+
+eine (!) Library zur Serialisierung: uPickle \cite{haoyi.HOS}
+
+Schnittstelle in einer Sprache
+
 - muss nicht zwei Libraries für Client und Server finden
+
 - leichter nur eine (!) Library (jeweils für Templating und Serialisierung) zu lernen, die in Client und Server verwendet werden kann
 \cite[\#SharingCode]{haoyi.HOS}
+
 - relativ einfache statisch typisierte RPCs mit autowire
 
 
@@ -2751,6 +2869,7 @@ Die vorliegende Arbeit ...
 	- Sourcemaps zum besseren Debugging
 - Nachteile ...
 	- noch etwas große Kompilate
+	- Doku momentan noch etwas (!) unübersichtlich und im Wandel
 
 Pro Scala.js:
     - direkt mit dem DOM arbeiten, aber getypt
@@ -2838,7 +2957,7 @@ großes Potential
 	typbedingte Laufzeitfehler auch für Client-Seite (JavaScript) ausgeschlossen sind
 	mit Templating-Library auch HTML-Tags typsicher macht
 	
-Doku noch im Wandel, stellenweise ("`tiefer drin"') noch etwas sparsam erklärt, zeitweise und sporadisch nicht mit den neuesten Änderungen synchron, aber im Großen und Ganzen ziemlich gut
+Doku noch im Wandel, stellenweise ("`tiefer drin"') noch etwas sparsam erklärt, zeitweise und sporadisch nicht mit den neuesten Änderungen synchron (/nicht auf dem aktuellsten Stand), aber im Großen und Ganzen ziemlich gut, erlaubt recht tiefen Einblick
 
 vor allem für Entwickler und Projekte die schon mit Scala arbeiten sehr interessant
 
