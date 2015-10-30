@@ -227,41 +227,49 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
-% Import der Titelseite aus dem Ordner "title".
-\input{./title/titlepage.tex}
+\input{./title/titlepage.tex} % Import der Titelseite aus dem Ordner "title".
 
-% Keine Kopfzeile im Inhaltsverzeichnis
-\pagenumbering{gobble}
+%\pagenumbering{gobble} % Keine Seitennumerierung
 
-% Inhaltsverzeichnis erstellen
+\pagestyle{empty} % Keine Kopfzeile
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+\begin{abstract}
+
+%\section*{Abstract}
+\Large
+	\textbf{Abstract}
+
+\normalsize
+
+
+ping
+
+pang
+
+pong \\
+
+
+ping
+
+pang
+
+pong
+\end{abstract}
+
+
+\pagestyle{scrheadings} % Kopfzeile an
+
+\pagenumbering{roman}
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 \tableofcontents
 
-% Neue Seite.
 \newpage
 
-% Kopfzeile an
-\pagestyle{scrheadings}
-
-%Seitennummern anfangen
 \pagenumbering{arabic}
-
-
-
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-%\chapter*{Abstract}
-
-
-
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-\chapter*{Abkürzungsverzeichnis}
-\begin{acronym}[EPFL] % längste Abkürzung hier als Argument angeben
-	\acro{DOM}{Document Object Model}
-	\acro{JVM}{Java Virtual Machine}
-	\acro{EPFL}{École polytechnique fédérale de Lausanne}
-\end{acronym}
-
-
-
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 \chapter{Einleitung}
@@ -2778,95 +2786,93 @@ Schnittstelle in einer Sprache
 
 \section{Zusammenfassung der Ergebnisse}
 
-TODO - NACH FERTIGSTELLUNG DER ÜBRIGEN KAPITEL NEU SCHREIBEN!
+   Korrektheit \\
+	-> doeraene TDI S.7, links \\
+   Performance \\
+	--> doeraene TDI S. 7, oben rechts \\
+	(-> eigenes Micro-Benchmark -> Bsp.) \\
+>> Nützlichkeit \\
+	- getypter DOM \\
+	- getypte Fassaden für jQuery und Libs \\
+	- bei Bedarf: js.Dynamic \\
 
-   Korrektheit
-	-> doeraene TDI S.7, links
-   Performance
-	--> doeraene TDI S. 7, oben rechts
-	(-> eigenes Micro-Benchmark -> Bsp.)
->> Nützlichkeit
-	- getypter DOM
-	- getypte Fassaden für jQuery und Libs
-	- bei Bedarf: js.Dynamic
+Die vorliegende Arbeit ... \\
+- Überblick über Entwicklung von Weboberflächen mit Scala.js \\
+- Eignung aus Anwendersicht ... \\
+- Eignung aus Entwicklersicht ... \\
+- Vorteile ... \\
+	- vollständiger Scala-Support \\
+	- umfassende JS-Interop \\
+	- sbt-Integration \\
+	- Typsicherheit \\
+		- weniger Fehler \\
+		- IDE-Support! \\
+	- Sourcemaps zum besseren Debugging \\
+- Nachteile ... \\
+	- noch etwas große Kompilate \\
+	- Doku momentan noch etwas (!) unübersichtlich und im Wandel, nicht ganz vollständig \\
+		- ein Beispiel hier: \url{http://www.scala-js.org/doc/cookbook/} \\
+		Dokumentation: \\
+		- offizielle Referenzseite \\
+		- API-Doku - vollständig (?) aber knapp \\
+		- Tutorial \\
+		- Hands-on Scala \\
+		- Scala-Js-Fiddle  -->  \url{http://www.scala-js-fiddle.com/} \\
 
-Die vorliegende Arbeit ...
-- Überblick über Entwicklung von Weboberflächen mit Scala.js
-- Eignung aus Anwendersicht ...
-- Eignung aus Entwicklersicht ...
-- Vorteile ...
-	- vollständiger Scala-Support
-	- umfassende JS-Interop
-	- sbt-Integration
-	- Typsicherheit
-		- weniger Fehler
-		- IDE-Support!
-	- Sourcemaps zum besseren Debugging
-- Nachteile ...
-	- noch etwas große Kompilate
-	- Doku momentan noch etwas (!) unübersichtlich und im Wandel, nicht ganz vollständig
-		- ein Beispiel hier: \url{http://www.scala-js.org/doc/cookbook/}
-		Dokumentation:
-		- offizielle Referenzseite
-		- API-Doku - vollständig (?) aber knapp
-		- Tutorial
-		- Hands-on Scala
-		- Scala-Js-Fiddle  -->  \url{http://www.scala-js-fiddle.com/}
-
-Pro Scala.js:
-    - direkt mit dem DOM arbeiten, aber getypt
-    - zwischen Client/Server geteilt: Konstanten, Algorithmen, Datenstrukturen, Libraries
-    - Typsicherheit
-    - Interface zwischen Client/Server
-    - Scala-Programmierer können ohne die Sprache zu wechseln fürs Web programmieren
-    - inkrementelle Kompilation, DCE (Dead code elemination)
-Contra Scala.js:
-    - small Community
-    - kleines Entwicklerteam, keine Unterstützung durch ein größere Firma
-    - langsamer Scala-Compiler
-    - große Bibliothek --> relativ große Kompilate
+Pro Scala.js: \\
+    - direkt mit dem DOM arbeiten, aber getypt \\
+    - zwischen Client/Server geteilt: Konstanten, Algorithmen, Datenstrukturen, Libraries \\
+    - Typsicherheit \\
+    - Interface zwischen Client/Server \\
+    - Scala-Programmierer können ohne die Sprache zu wechseln fürs Web programmieren \\
+    - inkrementelle Kompilation, DCE (Dead code elemination) \\
+Contra Scala.js: \\
+    - small Community \\
+    - kleines Entwicklerteam, keine Unterstützung durch ein größere Firma \\
+    - langsamer Scala-Compiler \\
+    - große Bibliothek --> relativ große Kompilate \\
 
 
 
 
 
->> was spricht für Scala.js?
-    nach nicht-repräsentativer Umfrage (
-      vgl.  -->  \url{http://www.scala-lang.org/news/2015/02/05/scala-js-no-longer-experimental.html}
-      Diskussion hier  -->  \url{https://groups.google.com/forum/#!topic/scala-js/_1Sfb5Nj08w}
-    ):
-    - geteilter Code zwischen Client und Server, eine Sprache für die gesamte Anwendung, z.B. für Validierungs-Logik, aber auch Wiederverwendbarkeit von Code (wenn keine Plattformspezifika direkt verwendet werden)
-    \cite{doeraene2013.CSJ}
-    - starke Typisierung, auch für JavaScript-Libraries
-    - Tooling: IDE-Support, sbt-Integration, Dependency-Management, Unit-Tests, Stacktraces und Sourcemaps, kross-compilierende Projekte
-    - Portababilität: Scala auf JavaScript-basierten Plattformen
+>> was spricht für Scala.js? \\
+    nach nicht-repräsentativer Umfrage ( \\
+      vgl.  -->  \url{http://www.scala-lang.org/news/2015/02/05/scala-js-no-longer-experimental.html} \\
+      Diskussion hier  -->  \url{https://groups.google.com/forum/#!topic/scala-js/_1Sfb5Nj08w} \\
+    ): \\
+    - geteilter Code zwischen Client und Server, eine Sprache für die gesamte Anwendung, z.B. für Validierungs-Logik, aber auch \\ Wiederverwendbarkeit von Code (wenn keine Plattformspezifika direkt verwendet werden) \\
+    \cite{doeraene2013.CSJ} \\
+    - starke Typisierung, auch für JavaScript-Libraries \\
+    - Tooling: IDE-Support, sbt-Integration, Dependency-Management, Unit-Tests, Stacktraces und Sourcemaps, kross-compilierende Projekte \\
+    - Portababilität: Scala auf JavaScript-basierten Plattformen \\
 
-  kompletter Scala-Support
+  kompletter Scala-Support \\
   
-  schnelle Ints:
-  - Int-Operationen werden durch bitweise Veroderung umgesetzt (z.B. Scala.js: a + b -> JS: (a + b) | 0)
-  - JS VMs verwenden intern int32 als Optimierung für bitweise Operationen
-  -> schneller\cite{doeraene2015.SSP}
+  schnelle Ints: \\
+  - Int-Operationen werden durch bitweise Veroderung umgesetzt (z.B. Scala.js: a + b -> JS: (a + b) | 0) \\
+  - JS VMs verwenden intern int32 als Optimierung für bitweise Operationen \\
+  -> schneller\cite{doeraene2015.SSP} \\
 
 
-  schneller Dev-cycle, optim. Prod.code
+  schneller Dev-cycle, optim. Prod.code \\
   
-  Scala im Browser!!!
+  Scala im Browser!!! \\
   
   
-was fehlt?
-  (- checked Exceptions???)
-  (- Regex???)
-  - Unterstützung von Laufzeit-Reflection
+was fehlt? \\
+  (- checked Exceptions???) \\
+  (- Regex???) \\
+  - Unterstützung von Laufzeit-Reflection \\
 
-Schwächen
-  - relativ große Dateien
-  (- Debugging schwieriger???)
-  - Support für einige Libraries
-  - Performance
+Schwächen \\
+  - relativ große Dateien \\
+  (- Debugging schwieriger???) \\
+  - Support für einige Libraries \\
+  - Performance \\
   
-Unbequemlichkeiten
-  - Auslieferung von Produktionscode noch etwas mühsam: kompiliert nach
+Unbequemlichkeiten \\
+  - Auslieferung von Produktionscode noch etwas mühsam: kompiliert nach \\
 \begin{lstlisting}
 target/
   +- scala-2.11/
@@ -2887,37 +2893,37 @@ webapp/
  |   +- [...].css
  +- index.html
 \end{lstlisting}
-  ... dann müssen die Pfade in der index.html entsprechend geändert werden
-  -> Lösung wären hier entsprechende Export-Skripte; bzw. denkbar, dass in Zukunft ein entsprechendes Tool oder sbt-Plugin (?) angeboten wird
+  ... dann müssen die Pfade in der index.html entsprechend geändert werden \\
+  -> Lösung wären hier entsprechende Export-Skripte; bzw. denkbar, dass in Zukunft ein entsprechendes Tool oder sbt-Plugin (?) angeboten wird \\
 
 
 
-großes Potential
-	besonders weil: eine Sprache für Client und Server
-		Wiederverwendbarkeit von Code
-		nur in einer Sprache denken, nicht eine weitere lernen
-	typbedingte Laufzeitfehler auch für Client-Seite (JavaScript) ausgeschlossen sind
-	mit Templating-Library auch HTML-Tags typsicher macht
+großes Potential \\
+	besonders weil: eine Sprache für Client und Server \\
+		Wiederverwendbarkeit von Code \\
+		nur in einer Sprache denken, nicht eine weitere lernen \\
+	typbedingte Laufzeitfehler auch für Client-Seite (JavaScript) ausgeschlossen sind \\
+	mit Templating-Library auch HTML-Tags typsicher macht \\
 	
-Doku noch im Wandel, stellenweise ("`tiefer drin"') noch etwas sparsam erklärt, zeitweise und sporadisch nicht mit den neuesten Änderungen synchron (/nicht auf dem aktuellsten Stand), aber im Großen und Ganzen ziemlich gut, erlaubt recht tiefen Einblick
+Doku noch im Wandel, stellenweise ("`tiefer drin"') noch etwas sparsam erklärt, zeitweise und sporadisch nicht mit den neuesten Änderungen synchron (/nicht auf dem aktuellsten Stand), aber im Großen und Ganzen ziemlich gut, erlaubt recht tiefen Einblick \\
 
-vor allem für Entwickler und Projekte die schon mit Scala arbeiten sehr interessant
+vor allem für Entwickler und Projekte die schon mit Scala arbeiten sehr interessant \\
 
-Erfolg hängt sicher auch am Erfolg der Sprache Scala
-dafür, dass noch sehr jung, schon sehr gut entwickelt und anscheinend stabil
-
-
+Erfolg hängt sicher auch am Erfolg der Sprache Scala \\
+dafür, dass noch sehr jung, schon sehr gut entwickelt und anscheinend stabil \\
 
 
-Hürden
 
-- speziellere Konfiguration, besonders
-  - für Cross-Projekte
-  - vermutlich, wenn Vorgaben für die zu verwendenden Techniken bestehen
 
-Chancen
+Hürden \\
 
-- eine eindeutige, typsichere Schnittstelle zur Client-Server-Kommunikation
+- speziellere Konfiguration, besonders \\
+  - für Cross-Projekte \\
+  - vermutlich, wenn Vorgaben für die zu verwendenden Techniken bestehen \\
+
+Chancen \\
+
+- eine eindeutige, typsichere Schnittstelle zur Client-Server-Kommunikation \\
 
 
 
@@ -2925,143 +2931,84 @@ Chancen
 
 \section{Ausblick}
 
-TODO - NACH FERTIGSTELLUNG DER ÜBRIGEN KAPITEL NEU SCHREIBEN!
-
-Blick über den Tellerrand:
-- anderer vielversprechender Ansatz: Elm
-	-->  \url{http://elm-lang.org/}
-	- FRP (Functional Reactive Programming) Sprache um deklarativ UIs für den Browser zu schreiben, statisch typisiert
-	- kompiliert nach HTML, CSS und JavaScript
-	- hat REPL, package manager, debugger
-	- libraries
-	- Alternative zu Scala.js? - kein Scala, nur Client...
+Blick über den Tellerrand: \\
+- anderer vielversprechender Ansatz: Elm \\
+	-->  \url{http://elm-lang.org/} \\
+	- FRP (Functional Reactive Programming) Sprache um deklarativ UIs für den Browser zu schreiben, statisch typisiert \\
+	- kompiliert nach HTML, CSS und JavaScript \\
+	- hat REPL, package manager, debugger \\
+	- libraries \\
+	- Alternative zu Scala.js? - kein Scala, nur Client... \\
 
 
 
-Weiterentwicklung
+Weiterentwicklung \\
 
-	ganz neu (aber nicht untersucht): \url{http://www.scala-js.org/doc/sjs-defined-js-classes.html}
-	SJS-Klassen von JS-Klassen erben lassen  -->  \url{https://github.com/scala-js/scala-js/issues/1795}
+	ganz neu (aber nicht untersucht): \url{http://www.scala-js.org/doc/sjs-defined-js-classes.html} \\
+	SJS-Klassen von JS-Klassen erben lassen  -->  \url{https://github.com/scala-js/scala-js/issues/1795} \\
 	
 	
-	angekündigt: volle Unterstützung von runtime reflections\cite[S. 2]{doeraene2013.TDI}
-	angekündigt: eventuell Compiler im Browser\cite[Folie 39, Min. 39]{doeraene2014.WHB}
-	angekündigt: vollwertige Akka-Aktoren\cite[Folie 39, Min. 39]{doeraene2014.WHB}
+	angekündigt: volle Unterstützung von runtime reflections\cite[S. 2]{doeraene2013.TDI} \\
+	angekündigt: eventuell Compiler im Browser\cite[Folie 39, Min. 39]{doeraene2014.WHB} \\
+	angekündigt: vollwertige Akka-Aktoren\cite[Folie 39, Min. 39]{doeraene2014.WHB} \\
 	
-	>> Projektfortschritt (Anzahl Commiter, Geschwindigkeit der Meilensteine, wann v1.0?)
+	>> Projektfortschritt (Anzahl Commiter, Geschwindigkeit der Meilensteine, wann v1.0?) \\
 
 
-professionelle Anwendungen mit Scala.js
+professionelle Anwendungen mit Scala.js \\
 
-		https://jaxenter.com/happy-tenth-birthday-scala-whats-next-107440.html
-	https://jaxenter.de/scala-javascript-compiler-scalajs-0-6-0-produktionseinsatz-13633
-	- die Frage ist, ob Frontend/Client-side-Entwickler bereit sind, auf Scala.js umzusteigen (ohne vorherige Scala-Kenntnisse, und die sind i.d.R. nicht anzunehmen), aber es könnte ein großer Gewinn sein: Vorteile mit Scala zu arbeiten\cite{doeraene2013.CSJ}
-
-
-
-
-Ausblick
-  - (hoffentlich) schnell (?) wachsender Library-Support, 
-     	- gerade wegen der Erweiterbarkeit von Scala auch bei kleiner (aber reger und enthusiastischer) Scala.js-Community  recht wahrscheinlich
-  - Performance-Verbesserungen
-  - professioneller Einsatz?
-    -->  \url{https://www.reddit.com/r/scala/comments/2spdlq/is_anyone_using_scalajs_in_nontrivial/}
+		https://jaxenter.com/happy-tenth-birthday-scala-whats-next-107440.html \\
+	https://jaxenter.de/scala-javascript-compiler-scalajs-0-6-0-produktionseinsatz-13633 \\
+	- die Frage ist, ob Frontend/Client-side-Entwickler bereit sind, auf Scala.js umzusteigen (ohne vorherige Scala-Kenntnisse, und die sind i.d.R. nicht anzunehmen), aber es könnte ein großer Gewinn sein: Vorteile mit Scala zu arbeiten\cite{doeraene2013.CSJ} \\
 
 
 
 
-
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-
-\appendix
-\chapter{Quellcodeauszüge usw.}
-
-\section{Beispielabbildung}
-
-blabla (siehe Abb. \ref{fig:a_picture_of_tux}) blabla
-
-\begin{figure}[!h]
-    \centering
-    \includegraphics[
-    width=0.25\linewidth
-%   scale=0.5
-    ]{tux}
-    \caption{Eine Beispielabbildung.
-    (Quelle: \cite{aab.FBB})
-    }
-    \label{fig:a_picture_of_tux}
-\end{figure}
-
-blabla
+Ausblick \\
+  - (hoffentlich) schnell (?) wachsender Library-Support,  \\
+     	- gerade wegen der Erweiterbarkeit von Scala auch bei kleiner (aber reger und enthusiastischer) Scala.js-Community  recht wahrscheinlich \\
+  - Performance-Verbesserungen \\
+  - professioneller Einsatz? \\
+    -->  \url{https://www.reddit.com/r/scala/comments/2spdlq/is_anyone_using_scalajs_in_nontrivial/} \\
 
 
-\section{Beispielcode}
 
-blabla \verb|println(this)| blabla
-
-blablba \verb|var sqr = function(x) { return x * x; }| blabla
-
-\verb|var sqr = function(x) { return x * x; }|
-
-\begin{verbatim}
-var sqr = function(x) { return x * x; }
-for (var i = 0; i < 10; i++) {
-  console.log(i, sqr(i));
-}
-\end{verbatim}
-
-% possible to emph and textbf, but curly braces have to be escaped:
-\begin{alltt}
-var \emph{sqr} = function(x) \{ \textbf{return} x * x; \}
-for (var i = 0; i < 10; i++) \{
-  console.log(i, \emph{sqr}(i));
-\}
-\end{alltt}
-
-
-Ein kleines JavaScript-Codeschnipsel könnte man \lstinline[language=JavaScript, style=inline]!function(x) { return 2 + x; }! inline schreiben. Und ein kleines Scala-Codeschnipsel könnte man \lstinline[language=Scala, style=inline]|def foo(): Unit = println("bar")| inline schreiben.
-
-
-\begin{lstlisting}
-var sqr = function(x) { return x * x; }
-for (var i = 0; i < 10; i++) {
-  console.log(i, sqr(i));
-}
-\end{lstlisting}
-
-Some Python code:
-\lstinputlisting[language=Python, xleftmargin=10pt, caption={This is just a Python example}]{listings/example.py}
 
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
+% ANHANG ERSTELLEN
+%\appendix
+%\chapter{Quellcodeauszüge usw.}
+%
+%\section{Beispielcode}
+%
+%Ein kleines JavaScript-Codeschnipsel könnte man \lstinline[language=JavaScript, style=inline]!function(x) { return 2 + x; }! inline schreiben. Und ein kleines Scala-Codeschnipsel könnte man \lstinline[language=Scala, style=inline]|def foo(): Unit = println("bar")| inline schreiben.
+%
+%
+%\begin{lstlisting}
+%var sqr = function(x) { return x * x; }
+%for (var i = 0; i < 10; i++) {
+%  console.log(i, sqr(i));
+%}
+%\end{lstlisting}
 
-Some Scala code:
-\lstinputlisting[language=Scala, caption={And this is a very stupid Scala example}]{listings/example.scala}
-
-And again some Scala code:
-\lstinputlisting[language=Scala, linerange={3-6,16-31}, style=uncolored, style=numbered, caption={An excerpt from the very same example}]{listings/example.scala}
-
-
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-
-
-Some JavaScript code:
-\lstinputlisting[language=JavaScript, caption={A JavaScript example}, firstline=3, lastline=39, style=unframed, style=numbered, frame=single, rulecolor=\color{blue}]{listings/example.js}
-
-
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-
-
-Some HTML code with line numbers:
-\lstinputlisting[language=HTML5, style=numbered, caption={And finally a HTML example}]{listings/example.html}
 
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
-
-
+% AKÜRZUNGSVERZEICHNIS ERSTELLEN
+\clearpage
+\markboth{Abkürzungsverzeichnis}{Abkürzungsverzeichnis}
+%\pagestyle{\markboth{Abkürzungsverzeichnis}{Abkürzungsverzeichnis}}
+\chapter*{Abkürzungsverzeichnis}
+\addcontentsline{toc}{chapter}{Abkürzungsverzeichnis}
+\begin{acronym}[EPFL] % längste Abkürzung hier als Argument angeben
+	\acro{DOM}{Document Object Model}
+	\acro{JVM}{Java Virtual Machine}
+	\acro{EPFL}{École polytechnique fédérale de Lausanne}
+\end{acronym}
 
 % ABBILDUNGSVERZEICHNIS ERSTELLEN
 \listoffigures
