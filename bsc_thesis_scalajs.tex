@@ -187,8 +187,6 @@
 	\titleformat{\subsection}[hang]{\bfseries}{\thesubsection\quad}{0pt}{}
 	% 4. Ebene -- subsubsection
 	\titleformat{\subsubsection}[hang]{\bfseries}{\thesubsubsection\quad}{0pt}{}
-	% 5. Ebene -- subsubsection
-	\titleformat{\minisec}[hang]{\bfseries}{\theminisec\quad}{0pt}{}
 
 	% Platz um die Überschriften
 	% Erklärung: \titlespacing{Überschriftenklasse}{Linker Einzug}{Platz oberhalb}{Platz unterhalb}[rechter Einzug]
@@ -196,6 +194,11 @@
 	\titlespacing{\section}{0pt}{20pt}{10pt}
 	\titlespacing{\subsection}{0pt}{20pt}{10pt}
 % FORMATIERUNG DER ÜBERSCHRIFTEN ENDE
+
+% FORMATIERUNG FÜR ZWISCHENÜBERSCHRIFTEN OHNE NUMERIERUNG
+\newcommand{\MyMiniSec}[1]{\rmfamily\fontsize{12}{15}\selectfont
+	\vspace{7pt}\textbf{#1} %\vspace{1.0cm}
+}
 
 % FORMATIERUNG FLIESSTEXT ANFANG
 	% Absatzeinrueckung unterdruecken
@@ -785,7 +788,7 @@ sbt\footnote{\url{http://www.scala-sbt.org/}} ist das Build-Werkzeug für Scala-
 }
 
 
-\TODO{Bsp. für Dependencies (-->  Website Knabe)}
+\TODO{Bsp. für Dependencys (-->  Website Knabe)}
 %  libraryDependencies ++= Seq(
 %       //vendor % artifact % version % scope
 %       "junit" % "junit" % "4.8.1" % "test",
@@ -929,7 +932,7 @@ JVM-konformes Verhalten kann in der sbt-Build-Definition erzwungen werden, dabei
 % intDivide(1, 0) // ArithmeticException
 %\end{lstlisting}
 %	- wäre ineffizienter Fix, für jede Division statt zwei simpler arithmetischer Operation einen Funktionsaufruf und Prüfung auf Infinity zu ersetzen
-%	- Kompromiss von Scala.js: im FastOpt-Modus gibt es Prüfungen auf ArithmeticException,  ArrayIndexOutOfBoundsException usw. (aber noch work in progress); im FullOpt-Modus werden diese Prüfungen entfernt
+%	- Kompromiss von Scala.js: im FastOptJS-Modus gibt es Prüfungen auf ArithmeticException,  ArrayIndexOutOfBoundsException usw. (aber noch work in progress); im FullOptJS-Modus werden diese Prüfungen entfernt
 %-->  \url{http://lihaoyi.github.io/hands-on-scala-js/#Whydoeserrorbehaviordiffer?}
 	
 
@@ -1122,7 +1125,7 @@ Für den gezielten Export einzelner Klassen, Methoden und Felder existiert die A
 
 Scala.js erzeugt in mehreren Stufen aus Scala-Code optimierten JavaScript-Code (siehe Abb. \ref{fig:sjs-compilation}). Dabei wird im ersten Schritten vom Scala.js-Compiler\footnote{genauer: vom scalac-Compiler mit dem Scala.js-Plugin} jede .scala-Datei zu einer .sjsir-Datei\footnote{Scala.js Intermediate Representation} mit Zwischencode (vergleichbar mit Java-Bytecode) kompiliert.
 
-Als nächstes werden alle .sjsir-Dateien mit allen transitiven Dependencies gelinkt. An diesem Punkt ist die komplette Scala-Standard-Library enthalten, und die generierten JavaScript-Dateien hätten eine Größe von über 20 MB. Nun können starke Optimierungen vorgenommen werden, weil Scala.js zur Link-Zeit den kompletten Code, inklusive aller Dependencies kennt; da Scala.js keine Laufzeit-Reflections unterstützt, muss auch hierauf keine Rücksicht genommen werden \cite[Folie 45 ff., Min. 36]{doeraene2015.SSP}.
+Als nächstes werden alle .sjsir-Dateien mit allen transitiven Dependencys gelinkt. An diesem Punkt ist die komplette Scala-Standard-Library enthalten, und die generierten JavaScript-Dateien hätten eine Größe von über 20 MB. Nun können starke Optimierungen vorgenommen werden, weil Scala.js zur Link-Zeit den kompletten Code, inklusive aller Dependencys kennt; da Scala.js keine Laufzeit-Reflections unterstützt, muss auch hierauf keine Rücksicht genommen werden \cite[Folie 45 ff., Min. 36]{doeraene2015.SSP}.
 
 \begin{figure}[!h]
     \centering
@@ -1136,9 +1139,9 @@ Als nächstes werden alle .sjsir-Dateien mit allen transitiven Dependencies geli
     \label{fig:sjs-compilation}
 \end{figure}
 
-In der Optimierungsstufe (\code{FastOpt}) wird unter anderem unerreichbarer Code entfernt (\emph{Dead code elimination}) und es werden Methoden- und insbesondere anonyme Funktionsaufrufe ge-inlined (\emph{Closure elimination}), das heißt die Aufrufe werden durch ihre Implementierungen ersetzt. Hierdurch wird die Größe der Kompilate verringert und insbesondere die Performance verbessert. Das Ergebnis dieser Phase ist eine einzige JavaScript-Datei. Für die Entwicklungsphase endet der Prozess hier.
+In der Optimierungsstufe (\code{FastOptJS}) wird unter anderem unerreichbarer Code entfernt (\emph{Dead code elimination}) und es werden Methoden- und insbesondere anonyme Funktionsaufrufe ge-inlined (\emph{Closure elimination}), das heißt die Aufrufe werden durch ihre Implementierungen ersetzt. Hierdurch wird die Größe der Kompilate verringert und insbesondere die Performance verbessert. Das Ergebnis dieser Phase ist eine einzige JavaScript-Datei. Für die Entwicklungsphase endet der Prozess hier.
 
-Zur weiteren Verringerung der Dateigröße gibt es nun noch eine Optimierungsphase (\code{FullOpt}), bei welcher der Google Closure Compiler\footnote{\url{https://developers.google.com/closure/compiler/}} diese "`schnell-optimierte"' JavaScript-Datei durch Dead code elimination, Entfernung von Whitespace sowie die aggressive Verkürzung von Variablennamen zusätzlich verkleinert. Dieser Optimierungsschritt ist allerdings nicht besonders schnell und ist für die Produktionsphase vorgesehen.
+Zur weiteren Verringerung der Dateigröße gibt es nun noch eine Optimierungsphase (\code{FullOptJS}), bei welcher der Google Closure Compiler\footnote{\url{https://developers.google.com/closure/compiler/}} diese "`schnell-optimierte"' JavaScript-Datei durch Dead code elimination, Entfernung von Whitespace sowie die aggressive Verkürzung von Variablennamen zusätzlich verkleinert. Dieser Optimierungsschritt ist allerdings nicht besonders schnell und ist für die Produktionsphase vorgesehen.
 \cite[Vgl.][]{scalajs.DCO}\cite[Vgl.][\#HowCompilationWorks]{haoyi.HOS}
 
 Der Scala.js-Compiler unterstützt separate und inkrementelle Kompilierung, das heißt nur die einzelnen geänderten Kompilationseinheiten beziehungsweise sogar nur einzelne geänderte Programmteile innerhalb einer Datei werden neu übersetzt. Das beschleunigt inkrementelle Builds erheblich, was insbesondere dem gewohnten Workflow von Frontend-Entwicklern entsprechen dürfte.
@@ -1245,7 +1248,7 @@ Diese Zeile:
 skip in packageJSDependencies := false
 \end{lstlisting}
 
-sorgt dafür, dass alle JavaScript-Dependencies in einer Datei \code{-jsdeps.js} gesammelt werden. Dadurch muss nur eine (!) Datei für alle JS-Deps in das HTML-Dokument eingebunden werden. Dies ist so zufolge der offiziellen Dokumentation (-->  \url{http://www.scala-js.org/doc/sbt/depending.html}). Allen Erfahrungen im Rahmen dieser Arbeit nach funktioniert das sogar ganz ohne diese Zeile.
+sorgt dafür, dass alle JavaScript-Dependencys in einer Datei \code{-jsdeps.js} gesammelt werden. Dadurch muss nur eine (!) Datei für alle JS-Deps in das HTML-Dokument eingebunden werden. Dies ist so zufolge der offiziellen Dokumentation (-->  \url{http://www.scala-js.org/doc/sbt/depending.html}). Allen Erfahrungen im Rahmen dieser Arbeit nach funktioniert das sogar ganz ohne diese Zeile.
 
 Auch beliebige JavaScript-Bibliotheken können mittels WebJars\footnote{\url{http://www.webjars.org/}} geholt werden.
 
@@ -1257,9 +1260,9 @@ Durch die Zeile
 jsDependencies += "org.webjars" % "jquery" % "2.1.4" / "jquery.js" minified "jquery.min.js"
 \end{lstlisting}
 
-wird festgelegt, dass die Scala.js-Fassaden-Bibliothek im \code{FullOpt}-Modus die minifizierte Version von jQuery in die 
+wird festgelegt, dass die Scala.js-Fassaden-Bibliothek im \code{FullOptJS}-Modus die minifizierte Version von jQuery in die 
 -jsdeps.min.js integriert. Andernfalls
-wird die nicht-minifizierte Version verwendet, das gilt auch für Dependencies, für die keine minifizierte Version existiert.
+wird die nicht-minifizierte Version verwendet, das gilt auch für Dependencys, für die keine minifizierte Version existiert.
 
 
 
@@ -1360,7 +1363,7 @@ sbt-Version festlegen, muss mindestens 0.13.7 sein
 strengere Compilerprüfungen durch: ...
 
 
--- build.sbt - Dependencies --
+-- build.sbt - Dependencys --
 
 für JS-Librarys:
 SalaJSKeys.jsDependencies += "org.webjars" % "jquery" % "2.1.4" / "jquery.js"
@@ -1573,47 +1576,37 @@ An dieser Stelle soll die Vorgehensweise der Untersuchung erläutert werden. Zun
 
 Bei der Einschätzung des Gebrauchswerts von Scala.js sind zwei Blickwinkel zu berücksichtigen: einerseits der des Entwicklers, der Scala.js verwendet, andererseits der des Anwenders, für den eine Software mit Scala.js entwickelt wird.
 
-\minisec{Entwicklersicht}
+\MyMiniSec{Entwicklersicht}
 
-%Aus Entwicklersicht sind vier Hauptaspekte interessant: die Verwendungsweise, die Bequemlichkeit in der Anwendung, die Leistungsfähigkeit und die Qualität des entwickelten Codes. 
+Aus Entwicklersicht steht die Frage im Vordergrund, wie Scala.js produktiv eingesetzt werden kann. Hierfür ist es zunächst wichtig die Handhabung zu verstehen. Dabei gilt es herauszufinden, auf welche Feinheiten zu achten ist, aber auch ob an bestehendes Wissen angeknüpft werden kann, kurz: wie hoch der Lernaufwand ist.
 
-Für den Entwickler steht die Frage im Vordergrund, wie das Werkzeug Scala.js produktiv eingesetzt werden kann. Hierfür ist es zunächst wichtig zu verstehen, wie Scala.js zu handhaben ist. Dabei gilt es herauszufinden, auf welche Feinheiten zu achten ist, aber auch ob an bestehendes Wissen angeknüpft werden kann, kurz: wie hoch der Lernaufwand ist.
+Für eine hohe Produktivität bei der Entwicklung ist der Komfort in der Handhabung von nicht zu unterschätzender Bedeutung. Dazu zählen die Unterstützung durch Programmierwerkzeuge und die Automatisierbarkeit von häufig wiederholten Entwicklungsschritten (zum Beispiel durch Buildtools). Hierbei spielt ist die Schnelligkeit der Compiler-Läufe und Tests ein wichtiger Faktor in der alltäglichen Entwicklungsarbeit. Besonders Frontend-Entwickler sind hier schnelle Builds und ein inkrementelles Arbeiten gewohnt. Beim komplexen Prozess der Softwareentwicklung ist es wichtig, die Frustration der Entwickler niedrig zu halten. Der Aufwand, der für die Konfiguration eines Projekts getrieben werden muss, ist hierfür ebenso relevant wie eine gute Dokumentation.
 
-Für eine hohe Produktivität bei der Entwicklung ist der Komfort in der Handhabung von nicht zu unterschätzender Bedeutung. Dazu zählen die Unterstützung durch Programmierwerkzeuge und die Automatisierbarkeit von häufig wiederholten Entwicklungsschritten (zum Beispiel durch Buildtools). Hierbei spielt auch der Aspekt der Schnelligkeit der Compiler-Läufe und Tests eine Rolle. Besonders Frontend-Entwickler sind hier schnelle Builds und ein inkrementelles Arbeiten gewohnt. Beim komplexen Prozess der Softwareentwicklung ist es wichtig, die Frustration der Entwickler niedrig zu halten. Der Aufwand, der für die Konfiguration eines Projekts getrieben werden muss, ist hierfür ebenso relevant wie eine gute Dokumentation.
+Entscheidend für die Produktivität bei der Entwicklung wie auch für die Qualität der Software ist die Code-Qualität. Robert C. Martin bezeichnet guten Code als eine der "`robustesten, am besten unterstützten und meistdiskutierten Prämissen unserer Zunft"' \cite[S. 27]{martin2009.CCH}. In einer Negativ-Definition charakterisiert Martin schlechten Code drastisch als schwer zu durchschauendes "`Chaos"'. Als häufigen Grund, für solchen Code nennt er das Arbeiten unter Zeitdruck. Schlechter Code lässt sich nur schwer ändern und führt zu mehr schlechtem Code und einer asymptotisch abnehmenden Produktivität. \cite[S. 27 f.]{martin2009.CCH}
 
-Ganz entscheidend für die Qualität der Software aber auch für die Produktivität der Entwicklung ist die Code-Qualität. 
-Robert C. Martin bezeichnet guten Code als eine der "`robustesten, am besten unterstützten und meistdiskutierten Prämissen unserer Zunft"' \cite[S. 27]{martin2009.CCH}. In einer Negativ-Definition beschreibt Martin schlechten Code als schwer zu durchschauendes und Chaos. Schlechter Code lässt sich nur schwer ändern und führt zu mehr schlechtem Code und einer asymptotisch abnehmenden Produktivität. \cite[S. 27 f.]{martin2009.CCH}
+Dave Thomas macht Code-Qualität an folgenden Kriterien fest: "`Sauberer Code kann von anderen Entwicklern gelesen und verbessert werde. Er verfügt über Unit- und Acceptance-Tests. Er enthält bedeutungsvolle Namen. Er stellt zur Lösung einer Aufgabe nicht mehrere, sonder eine Lösung zur Verfügung. Er enthält minimale Abhängigkeiten, die ausdrücklich definiert sind, und stellt ein klares und minimales API zur Verfügung."' \cite[zit. nach: ][S. 35]{martin2009.CCH} Andere bekannte Programmierer, beschreiben sauberen Code als "`möglichst elegant und effizient"' (Bjarne Stroustrup), "`einfach und direkt [...] wie wohlgeformte Prosa"' (Grady Brooch) und erkennen ihn an der "`Reduzierung der Duplizierung, Steigerung der Ausdrucksraft und frühe[n] Formulierung von Abstraktionen"' (Ron Jeffries) oder schlicht daran, dass er \emph{erwartungsgemäß} funktioniert (Ward Cunningham) \cite[alle zit. nach: ][S. 32 ff.]{martin2009.CCH}.
 
-Dave Thomas macht Code-Qualität an folgenden Kriterien fest: "`Sauberer Code kann von anderen Entwicklern gelesen und verbessert werde. Er verfügt über Unit- und Acceptance-Tests. Er enthält bedeutungsvolle Namen. Er stellt zur Lösung einer Aufgabe nicht mehrere, sonder eine Lösung zur Verfügung. Er enthält minimale Abhängigkeiten, die ausdrücklich definiert sind, und stellt ein klares und minimales API zur Verfügung."' \cite[zit. nach: ][S. 35]{martin2009.CCH} Andere bekannte Programmierer, beschreiben sauberen Code als "`möglichst elegant und effizient"' (Bjarne Stroustrup), "`einfach und direkt"', "`wie wohlgeformte Prosa"' (Grady Brooch) oder erkennen ihn daran, dass er erwartungsgemäß funktioniert (Ward Cunningham) \cite[alle zit. nach: ][S. 32 ff.]{martin2009.CCH}.
+Das Entwickeln von Software besteht zu einem überraschend hohen Anteil im Lesen von bestehendem Code (laut Martin beträgt das Verhältnis über 10 : 1)\cite[S. 42]{martin2009.CCH}. Dadurch ist klar, welche besonders wichtige Rolle die Lesbarkeit von Code spielt. Daneben soll eine gute Wartbarkeit und Änderbarkeit, die Wiederverwendbarkeit von Code-Teilen, die Redundanzfreiheit, minimale Abhängigkeiten, die Erreichung von Testbarkeit und die Effizienz als Zielkriterien für eine hohe Code-Qualität festgehalten werden.
 
-Das Entwickeln von Software besteht zu einem überraschend hohen Anteil im Lesen von bestehendem Code (laut Martin beträgt das Verhältnis über 10 : 1)\cite[S. 42]{martin2009.CCH}.
+\MyMiniSec{Anwendersicht}
 
-Dadurch ist klar, welche wichtige Rolle die Lesbarkeit von Code spielt. Als weitere Ziele für eine hohe Code-Qualität halten wir  eine gute Wartbarkeit, die Wiederverwendbarkeit von Code-Teilen, die Freiheit von Redundanz, minimale Abhängigkeiten und die Testbarkeit fest.
+Andererseits sind auch verschiedene Kriterien zu berücksichtigen, welche die Sicht des Anwenders betreffen. Hier ist die Frage, ob Scala.js der Umsetzung von gängigen Anwendungsfällen Grenzen setzt. Neben der Machbarkeit ist es eine wichtige Grundbedingung für die Zufriedenheit der Anwender, dass sich Webseiten schnell anfühlen. Daraus resultieren verschiedene Anforderungen an die Leistungsfähigkeit von Weboberflächen. Erstens sollen Webseiten schnell laden. Hierzu muss die Datenmengen beim Laden einer Seite gering gehalten werden. Dafür sollten auch die von Scala.js erzeugten Dateien möglichst klein sein. Auch die Interaktionen, die die Webseite bietet, sollen schnell sein. Dazu müssen Reaktionen, zum Beispiel auf einen Knopfdruck oder auf das Absenden eines Formulars hin, asynchron behandelt werden. Die Oberfläche soll weiter bedienbar bleiben und nicht blockieren, wenn Daten von einem Server nachgeladen werden. Schließlich müssen für Operationen wie Berechnungen oder die Auswertung von Collections schnelle Ausführungszeiten sichergestellt sein.
 
-\minisec{Anwendersicht}
-
-Andererseits sollen auch verschiedene Kriterien berücksichtigt werden, welche die Anwendersicht betreffen. Hier ist die Frage, ob Scala.js einem bei der Umsetzung von gängigen Anwendungsfällen Grenzen setzt. Als ein weiterer wichtiger Punkt neben der Machbarkeit ist auch die Performance \TODO{(Leistungsfähigkeit)} von Weboberflächen aus der Anwendersicht wichtig. Webseiten sollen sich schnell anfühlen. Dazu müssen sie schnell laden, schnelle Interaktion bieten und gegebenenfalls nötige Operationen (zum Beispiel bei der Berechnung von Grafiken) schnell ausführen. Daraus folgen unmittelbar die folgenden Anforderungen: möglichst geringe Datenmengen beim Laden einer Seite und dazu kleine Kompilate zu liefern, bei Interaktionen nicht die Oberfläche zu blockieren und möglichst schnelle Ausführungszeiten sicherzustellen.
 
 \section{Vorgehensweise}
 
-\TODO{motivieren: warum Fallstudien? ...}
-
-Anhand konkreter kleinerer Fallbeispiele werden häufig auftretende Anforderungen im Bereich clientseitiger Web-Entwicklung besprochen und auf diese Kriterien hin untersucht. \TODOi{<noch ein Satz mehr vielleicht...>}
+Viele der herangezogenen Qualitätskriterien sind nicht leicht quantifizierbar. Um trotzdem eine qualifizierte Beurteilung vornehmen zu können, sollen häufig auftretende Anforderungen im Bereich clientseitiger Web-Entwicklung in kleineren Fallbeispielen konkret prototypisch umgesetzt werden. Die dabei gewonnenen Erfahrungen sollen anhand der aufgestellten Kriterien diskutiert werden, um anhand dessen eine Einschätzung über die Nützlichkeit von Scala.js für das Anwendungsfeld zu treffen.
 
 
-\TODO{>> >> bei den Fallstudien jeweils:}
-\TODO{	1. Ziel der Untersuchung beschrieben}
-\TODO{	2. das Beispielprogramm beschrieben}
-\TODO{	3. Ergebnisse besprochen und bewertet}
+\section{Verwendete Hard- und Software und Messverfahren}
 
-\section{Verwendete Hard- und Software}
+Es wurde Windows 8.1 Pro auf einem System mit 64-Bit Intel Core i7-3517U Prozessor und 1,9 GHz Takt, 4 GB RAM und einem SSD-Laufwerk verwendet. Bei der Enwicklung wurde vorrangig mit IntelliJ IDEA (Ultimate Edition) und dem Editor Sublime Text 2 gearbeitet. Als Terminal wurde die git-bash vewendet, die in der Windows-Distribution von git enthalten ist.
 
-Es wurde Windows 8.1 Pro auf einem System mit 64-Bit Intel Core i7-3517U Prozessor und 1,9 GHz Takt, 4 GB RAM und einem SSD-Laufwerk verwendet. Bei der Enwicklung wurde vorrangig mit IntelliJ IDEA (Ultimate Edition) und dem Editor Sublime Text 2 gearbeitet. Als Terminal wurde die git-bash vewendet, die in der Windows-Distribution von git enthalten ist. 
+Zur Zeitmessung der Compiler- und Test-Läufe wurde auf die Zeitangaben von sbt zurückgegriffen.
 
+Für die ermittelten Dateigrößen wurden die für den entsprechend Modus (\code{FastOptJS}, \code{FullOptJS} oder \code{test}) erzeugte JavaScript-Datei, die Source-Maps-Datei, die Datei mit den JavaScript-Dependencys sowie die benötigten HTML- und CSS-Dateien betrachtet. Andere Artefakte, wie der erzeugte Zwischencode wurden hierbei ignoriert.
 
-
-
-
+Zur Messung der Ausführungsgeschwindigkeit von JavaScript-Programmen kam JSLitmus\footnote{\url{http://www.broofa.com/Tools/JSLitmus/}} mit Google Chrome (46.0.2490.80) zum Einsatz.
 
 
 
@@ -1622,7 +1615,7 @@ Es wurde Windows 8.1 Pro auf einem System mit 64-Bit Intel Core i7-3517U Prozess
 
 %TODO (Abweichungen ggf. separat bei der jeweiligen Anwendung)
 
-\TODO{im Zweifel kurz und in Stichpunkten:}
+\TODO{TODO: im Zweifel kurz und in Stichpunkten:}
 Die nachfolgende Anleitung bezieht sich auf die Installation auf einem Windows-8.1-Rechner. Auf anderen Plattform können einzelne Schritte im Detail abweichen.
 
 Um die Installation erfolgreich durchführen zu können ist eine gute Internetverbindung erforderlich, da die einige Bibliotheken heruntergeladen müssen. Außerdem wird ein aktueller Browser benötigt. Für volle Source-Maps-Unterstützung in der Browser-Konsole empfiehlt sich hier Google Chrome\footnote{\url{https://www.google.de/chrome/browser/desktop/}}.
@@ -1674,7 +1667,7 @@ momentan komfortabler, sowohl Import als auch \ac{IDE}-Support
 - 3. OK
 - 4. Import project from external model > SBT
 - 5. Next
-- 6. check: Download sources and docs - wenn versucht werden soll, die Quellen der Library-Dependencies herunterzuladen
+- 6. check: Download sources and docs - wenn versucht werden soll, die Quellen der Library-Dependencys herunterzuladen
 - 7. Finish
 
 File > New > Project from Existing Sources...
@@ -1711,7 +1704,7 @@ in project/plugins.sbt hinzufügen:
 addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "4.0.0")
 \end{lstlisting}
 
-wenn sbteclipse versuchen soll, die Quellen der Library-Dependencies herunterzuladen - in build.sbt hinzufügen:
+wenn sbteclipse versuchen soll, die Quellen der Library-Dependencys herunterzuladen - in build.sbt hinzufügen:
 
 \begin{lstlisting}[language=Scala, style=snippet]
 EclipseKeys.withSource := true
@@ -1769,6 +1762,8 @@ Künftig kann der \code{node\_modules}-Ordner bedenkenlos gelöscht werden. Ein 
 
 In den folgenden Fallstudien werden anhand kleiner Beispielimplementierungen die Themen Interaktion mit dem \ac{DOM}, das Arbeiten mit Events, die Verwendung des HTML5 Canvas, asynchrone Datenübertragung mit Ajax, die Möglichkeit der Erstellung cross-kompilierender Librarys und ein Beispiel für Client-Server Interaktion mit einem clientseitigen Routing vorgestellt. Ziel ist es dabei, bestimmte Aspekte der Nützlichkeit von Scala.js am jeweiligen Anwendungsfall zu zeigen und gegebenenfalls auf dabei aufgetretene Schwierigkeiten hinzuweisen.
 
+Zuerst wird jeweils das Untersuchungsziel erläutert. Danach wird als zweites das Beispielprogramm kurz in seiner Funktionsweise beschrieben. Anschließend werden die Ergebnisse der Untersuchung besprochen und bewertet.
+
 Das Eingangsbeispiel ist bewusst einfach gehalten, um in diesem Rahmen wichtige Eigenschaften von Scala.js zu diskutieren. Es stützt sich auf das offizielle Scala.js-Tutorial \cite{scalajs.SJT}. Für alle Implementierungen lieferten die Beispiele von Li Haoyi \cite{haoyi.HOS} wichtige Anregungen.
 
 \TODO{Liste der Beispielprojekte, verlinkt auf GitHub}
@@ -1783,31 +1778,12 @@ Das Eingangsbeispiel ist bewusst einfach gehalten, um in diesem Rahmen wichtige 
 
 \TODO{Projekte: sjs-hello-scalajs, sjs-hello-scalajs2}
 
-\minisec{SO SIEHT EINE MINISEC: foo bar}
+Ziel war es hier, anhand eines Minimalbeispiels verschiedene Grundbedingungen der Entwicklung mit Scala.js zu untersuchen. Dazu sollte ein klassischen Hallo-Welt-Programms sollte zum Laufen gebracht werden. In diesem kleinen Rahmen sollte die grundlegende Handhabung und Konfiguration von Scala.js verstanden werden. Automatisierte Builds und einfache Tests sollten erprobt und auf ihre Performance hin untersucht werden. Auch die Größe der für die Auslieferung relevanten Kompilate sollte betrachtet werden.
 
-%\subsubsection{Ziel der Untersuchung}
+In einem weiteren sehr minimalen Beispiel sollten einfache \ac{DOM}-Manipulationen die Benutzerinteraktion mit Buttons und der Einsatz von jQuery ausprobiert und die Testbarkeit von Oberflächen-Elementen geklärt werden. Außerdem sollte die Source-Maps-Unterstützung zur Fehlersuche erprobt werden.
 
-Ein minimales Setup in Form eines klassischen Hallo-Welt-Programms sollte zum Laufen gebracht werden. Anhand dieses Minimalbeispiels sollten dann bestimmte Grundbedingungen der Entwicklung mit Scala.js untersucht werden. Neben der Konfiguration selbst sollte als wichtiger Faktor für die alltägliche Entwicklungsarbeit die Zeit ermittelt werden, die für einen Build-Lauf benötigt wird. Auch die Größe der für die Auslieferung relevanten Kompilate sollte betrachtet werden, schließlich besteht ein unmittelbarer Zusammenhang zwischen der Größe der zu ladenden Datenmenge und der Ladezeit im Browser, weshalb sie eine wichtige Grundbedingung für die Zufriedenheit der Benutzer ist.
 
-Anhand einer erweiterten Fassung des Minimalbeispiel sollten Benutzerinteraktion und der Einsatz von jQuery ausprobiert und die Testbarkeit von Oberflächen-Elementen geklärt werden. Außerdem sollte die Source-Maps-Unterstützung erprobt werden.
-
-\minisec{Kriterien}
-
-\begin{enumerate}
-	\item Konfigurationsaufwand
-	\item Performance
-	\begin{enumerate}
-		\item Compiler-Geschwindigkeit
-		\item Größe der Kompilate
-	\end{enumerate}
-	\item Wartbarkeit
-		\begin{enumerate}
-			\item Debugging-Qualitäten
-			\item Testbarkeit
-		\end{enumerate}
-\end{enumerate}
-
-\minisec{Kurzbeschreibung des Beispielprogramms}
+\MyMiniSec{Kurzbeschreibung des Beispielprogramms}
 
 Das minimale Programm erzeugt die Ausgabe "`Hello world!"' in der Konsole des Browsers, wenn die entsprechende Webseite geöffnet wird. Der Aufruf \code{sbt run} erzeugt die gleiche Ausgabe in der sbt-\ac{REPL}.
 
@@ -1845,7 +1821,7 @@ Das erweiterte Minimalbeispiel reagiert auf Betätigung eines Buttons mit einer 
 
 %\subsubsection{Ergebnisse der Untersuchung und Bewertung}
 
-\minisec{Konfigurationsaufwand}
+\MyMiniSec{Konfigurationsaufwand}
 
 Im direkten Vergleich mit einem Programm in reinem JavaScript und HTML (Listing \ref{code:hello-js.html}):
 
@@ -1859,7 +1835,7 @@ libraryDependencies += "be.doeraene" %%% "scalajs-jquery" % "0.8.0"
 \end{lstlisting}
 in der \code{build.sbt} hinzugefügt werden.
 
-Etwas schwieriger war aber, zu verstehen wie sich hier und generell minifizierte Versionen für die im \code{target/}-Ordner erzeugten JavaScript-Dependencies erzwingen lassen \TODOi{(siehe Abschnitt ???)}.
+Etwas schwieriger war aber, zu verstehen wie sich hier und generell minifizierte Versionen für die im \code{target/}-Ordner erzeugten JavaScript-Dependencys erzwingen lassen \TODOi{(siehe Abschnitt ???)}.
 
 Für Tests wurde \code{uTest} verwendet und ensprechend den \code{libraryDependencies} hinzugefügt. Um das \ac{DOM} für Tests verwenden zu können, muss wie in \TODOi{Kapitel sbt-Integration ???} beschrieben, der Eintrag
 \begin{lstlisting}[style=snippet]
@@ -1869,7 +1845,7 @@ in der Build-Definition ergänzt werden.
 
 Um Source-Maps-Unterstützung im Browser zu bekommen, muss eine nicht allzu aufwendige Installation vorgenommen werden, wie in \TODOi{Abschnitt Source Maps ???} beschrieben. \TODOi{besser auslagern in eigenes Kapitel}
 
-\minisec{Performance von Build und Tests}
+\MyMiniSec{Performance von Build und Tests}
 
 Hier wurde die Geschwindigkeit des Build-Laufs und die Größe der Kompilate untersucht.
 
@@ -1919,7 +1895,7 @@ Die verwendeten Abkürzungen sind in der Legende \ref{table:compiler-performance
 \hline s0 & Größe der erzeugten Dateien ohne Source Maps \\ 
 \hline s1 & Größe der erzeugten Dateien mit Source Maps \\ 
 \hline sm & Größe der erzeugten Source-Maps-Datei \\ 
-\hline sd & Größe der erzeugten Datei, die die JavaScript-Dependencies enthält \\ 
+\hline sd & Größe der erzeugten Datei, die die JavaScript-Dependencys enthält \\ 
 \hline 
 \end{tabular} 
 \caption{Legende zu \ref{table:compiler-performance1} und \ref{table:compiler-performance2}.}
@@ -1941,17 +1917,17 @@ Der Optimierer und der Google Closure Compiler reduzieren die Code-Menge (durch 
 
 Seit Bestehen des Projekts wurden bei der Verringerung der erzeugten Dateigröße schon erhebliche Fortschritte erzielt. Generierte der Prototyp des Compilers für ein Hallo-Welt-Programm noch 16 MB, so reduzierte sich dies bald darauf mit der Einführung des Google Closure Compilers ins Projekt im August 2013 schon auf 900 kB \cite[Folie 5 f., Min. 6]{doeraene2014.WHB}. Der aktuelle Stand mit 20 kB (siehe \ref{table:compiler-performance1}) ist somit schon erstaunlich gut und lässt auf weitere Verbesserung in der Zukunft hoffen.
 
-\minisec{Debugging-Qualitäten}
+\MyMiniSec{Debugging-Qualitäten}
 
 %TODO$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 Eine einfache Art des Debuggings besteht im Schreiben in die Konsole. Nun funktioniert es mit Scala.js hervorragend, mit \scala{println} einfache Ausgaben auf die Browser-Konsole zu machen. Möchte man allerdings den Inhalt von Objekten inspizieren, so genügt das häufig nicht. 
 
-Angenommen wir, haben eine Klasse \scala{class A(foo: Int, bar: String)} von der wir eine Instanz \scala{foo(123, "baz")} erzeugen. \scala{println(foo)} --> --> --> \scala{println(foo.toString)}
+Angenommen sei eine Klasse \scala{class A(foo: Int, bar: String)} von der eine Instanz \scala{foo(123, "baz")} existiert. \scala{println(foo)} --> --> --> \scala{println(foo.toString)}
 Da verwendet \scala{toString}, wenn nicht überschrieben -> manchmal \js{[object Object]}
 aber mit dom.console.log kann man ohne toString-Methode direkt das Objekt inspizieren -> \js{Object {foo: 123, bar: "baz"}}
 
-Der Einsatz von Source Maps erhöht den Komfort beim Debugging in der Browser-Konsole\footnote{Erprobt wurde hierbei Chrome.} erheblich. Wie der Vergleich in den Abbildungen \ref{fig:no-sourcemaps} und \ref{fig:sourcemaps} zeigt, macht es selbst beim nicht-minifizierten Entwicklungs-Code einen großen Unterschied, ob man zur originalen Scala-Code springen kann, oder ob man gezwungen ist, compilergeneriertes JavaScript zu verstehen. Selbst im \code{FullOpt}-Modus funktioniert übrigens die Auflösung der Referenzen zum Scala-Code.
+Der Einsatz von Source Maps erhöht den Komfort beim Debugging in der Browser-Konsole\footnote{Erprobt wurde hierbei Chrome.} erheblich. Wie der Vergleich in den Abbildungen \ref{fig:no-sourcemaps} und \ref{fig:sourcemaps} zeigt, macht es selbst beim nicht-minifizierten Entwicklungs-Code einen großen Unterschied, ob man zur originalen Scala-Code springen kann, oder ob man gezwungen ist, compilergeneriertes JavaScript zu verstehen. Selbst im \code{FullOptJS}-Modus funktioniert übrigens die Auflösung der Referenzen zum Scala-Code.
 \url{http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/}
 	- sinvoller Stacktrace in der Browserkonsole durch ...
 	
@@ -1986,7 +1962,7 @@ Der Einsatz von Source Maps erhöht den Komfort beim Debugging in der Browser-Ko
 \end{figure}
 
 
-\minisec{Testbarkeit}
+\MyMiniSec{Testbarkeit}
 
 Mit der verwendeten Test-Biliothek uTest lassen sich Tests formulieren, um zu prüfen, dass HTML-Elemente wie erwartet existieren oder dass Buttons erwartungsgemäß reagieren. Allerdings ist es hierfür nötig, die betreffenden HTML-Elemente mit eindeutigen IDs zu versehen, was einen zusätzlichen Overhead darstellt. Für eine leichtere Selektion von HTML-Elementen in Tests erweist sich darüber hinaus der Einsatz von jQuery als nützlich. Was hier fehlt, ist die Möglichkeit, wie im JavaScript-Test-Framework Jasmine, mithilfe sogenannter \emph{Spies} prüfen zu können, ob und mit welchen Argumenten eine Methode aufgerufen wurde.\footnote{\url{http://jasmine.github.io/2.0/introduction.html\#section-Spies}} Für Scala.js existiert zwar ein Wrapper für Jasmine. In einer Ankündigung auf der offiziellen Scala.js-Webseite\cite{scalajs.ASJ} wird aber explizit von dessen Verwendung abgeraten. Grundsätzlich lässt sich mit uTest gut arbeiten, allerdings erhält man beim Fehlschlagen von Tests häufig einen sehr langen Stacktrace. Für einen größeren Komfort wäre hier für die Zukunft ein IDE-Plugin mit navigierbarem Stacktrace wünschenswert.
 
@@ -2023,7 +1999,7 @@ Verschiedene valide HTML-Tags werden mit Scala.js erzeugt.
 minisec{Ergebnisse der Untersuchung und Bewertung}
 
 Betrachtet wurden vier Möglichkeiten, in Scala.js HTML zu generieren. Dazu sei in der \code{index.html} ein
-\html{<div>} mit der ID "`container"' definiert. Ferner gehen wir davon aus, dass die Referenz darauf im Scala.js-Programm bekannt ist durch
+\html{<div>} mit der ID "`container"' definiert. Die Referenz darauf wird im Scala.js-Programm bekannt gemacht durch:
 
 \begin{lstlisting}[language=Scala, style=snippet]
 val container: org.scalajs.dom.raw.Element = document.getElementById("container")
@@ -2109,7 +2085,7 @@ Gleichzeitig wurde die Scala.js Workbench im produktiven Einsatz ausprobiert und
 	\item Nützlichkeit
 \end{enumerate}
 
-\minisec{Kurzbeschreibung des Beispielprogramms}
+\MyMiniSec{Kurzbeschreibung des Beispielprogramms}
 
 Die Anwendung erzeugt automatisch einfache Bilder, indem sie zufällig Rechtecke oder Kreise von zeichnet. Auch Position, Abmessungen, Farbe und Transparenz der Elemente sind zufallsgeneriert. Bei den Abmessungen sorgt ein Mechanismus dafür, dass die Werte nicht zu abrupt variieren, sondern sich ein etwas ruhigerer Eindruck ergibt. Dazu werden die Zufallswerte jeweils durch lineare Interpolation mit dem letzten Wert geglättet. Das Ergebnis ist beispielhaft in den Abbildungen \ref{fig:frenzy1} und \ref{fig:frenzy2} zu sehen.
 
@@ -2180,7 +2156,7 @@ val canvas = dom.document.createElement("canvas").
 \end{lstlisting}
 
 Zu beachten ist hier der Cast mit \scala{asInstanceOf[T]}. Die Methoden \scala{getElementById} und \scala{createElement}
-geben nämlich ein Objekt vom Typ \scala{org.scalajs.dom.raw.Element} zurück. Der Cast ist also notwendig, um auf die Canvas-Methoden zuzugreifen. Er ist auch legitim, denn wir wissen hier, dass es sich um ein Canvas-Objekt handeln muss.
+geben nämlich ein Objekt vom Typ \scala{org.scalajs.dom.raw.Element} zurück. Der Cast ist also notwendig, um auf die Canvas-Methoden zuzugreifen. Er ist auch legitim, denn hier ist bekannt, dass es sich um ein Canvas-Objekt handeln muss.
 
 Zum Zeichnen wird nun der 2D-Kontext benötigt. Auch hier ist aus den genannten Gründen ein Cast notwending. Danach kann der Kontext wie gewohnt verwendet werden.\footnote{Zum Zeichnen auf den Canvas siehe: \url{https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D}}
 
@@ -2205,7 +2181,7 @@ In Scala.js lässt sich das nun recht ähnlich ausdrücken:
 dom.setInterval(() => println("hi"), 1000)
 \end{lstlisting}
 
-Hier ist also nichts neu zu lernen, die JavaScript-\ac{DOM}-\ac{API} wird mithilfe der Fassade einfach verwendet. Zusätzlich profitieren wir hier von der prägnanten Scala-Syntax, mit der sich Lambas knapper schreiben lassen.
+Hier ist also nichts neu zu lernen, die JavaScript-\ac{DOM}-\ac{API} wird mithilfe der Fassade einfach verwendet. Zusätzlich profitiert man hier von der prägnanten Scala-Syntax, mit der sich Lambas knapper schreiben lassen.
 
 Zur Veranschaulichung der Verwendung von Event-Handler sei hier folgendes Beispiel herausgegriffen:
 
@@ -2382,8 +2358,8 @@ Das Workbench-Plugin funktioniert nicht immer ganz zuverlässig, und manchmal mu
 
 %\subsection{Ziel der Untersuchung}
 %\subsection{Kriterien}
-\minisec{Kurzbeschreibung des Beispielprogramms}
-\minisec{Ergebnisse der Untersuchung und Bewertung}
+\MyMiniSec{Kurzbeschreibung des Beispielprogramms}
+\MyMiniSec{Ergebnisse der Untersuchung und Bewertung}
 
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
@@ -2406,7 +2382,7 @@ Die Kommunikation mit Objekten ((?)) außerhalb des Web-Clients, wie zum Beispie
 	\item Code-Qualität (Typsicherheit, Lesbarkeit, Wartbarkeit)
 \end{enumerate}
 
-\minisec{Kurzbeschreibung des Beispielprogramms}
+\MyMiniSec{Kurzbeschreibung des Beispielprogramms}
 
 Beispielhaft wurde ein Währungsumrechner umgesetzt, der dem Benutzer die Eingabe des Betrags und die Auswahl von Quell- und Zielwährung per Auswahlliste anbietet, und auf Knopfdruck oder Betätigung der Entertaste hin die Umrechnung auf der Basis tagesaktueller Kurse durchführt. Beträge werden bis auf vier Nachkommastellen hin genau dargestellt. Die Eingabe ist fehlertolerant gegenüber ungültigen Beträgen. Als kleiner Komfort kann der Betrag mit der Escape-Taste auf 1.0000 zurückgesetzt werden.
 
@@ -2422,11 +2398,11 @@ Beispielhaft wurde ein Währungsumrechner umgesetzt, der dem Benutzer die Eingab
     \label{fig:converter}
 \end{figure}
 
-\minisec{Ergebnisse der Untersuchung und Bewertung}
+\MyMiniSec{Ergebnisse der Untersuchung und Bewertung}
 
 Ist das Setup einer einfachen Scala.js-Anwendung einmal erprobt, bleibt der weitere Konfigurationsaufwand für diese Anwendung gering: die benötigten Bibliotheken müssen lediglich als \code{libraryDependencies} in der Build-Definition hinzugefügt werden.
 
-Das Umrechnungsformular lässt sich mit ScalaTags sehr übersichtlich und deklarativ schreiben. Es werden zwei nahezu identische Währungsauswahllisten benötigt, mit einem Unterschied: Der Auswahlwert soll einmal als Quell-, das andere Mal als Zielwährung behandelt werden. Wir formulieren eine Methode \scala{setupCurrencySelect}, die Auswahllisten erzeugt (Listing \ref{code:setupCurrencySelect}).
+Das Umrechnungsformular lässt sich mit ScalaTags sehr übersichtlich und deklarativ schreiben. Es werden zwei nahezu identische Währungsauswahllisten benötigt, mit einem Unterschied: Der Auswahlwert soll einmal als Quell-, das andere Mal als Zielwährung behandelt werden. Es wird eine Methode \scala{setupCurrencySelect} formuliert, die Auswahllisten erzeugt (Listing \ref{code:setupCurrencySelect}).
 
 \begin{lstlisting}[language=Scala, caption={Methode zur Erzeugung eines \html{<select>}-Elements.}, label={code:setupCurrencySelect}]
 def setupCurrencySelect(theId: String,
@@ -2445,7 +2421,7 @@ def setupCurrencySelect(theId: String,
 }
 \end{lstlisting}
 
-Dieser Methode muss eine Funktion \scala{String => Unit} übergeben werden, die den Auswahlwert entgegennimmt, so dass der Umrechner passend aktualisiert werden kann. Die Liste der möglichen \html{<option>}s lässt sich prägnant mithilfe einer \scala{for}-Comprehension ausdrücken. Das Auswahllisten-Elemente, bei dem es sich um ein \scala{scalatags.JsDom.TypedTag[html.Select]} handelt, muss durch Aufruf der Methode \scala{render} in den Fassadentyp \scala{html.Select} der Scala-js-dom-Bibliothek umgewandelt werden. Dadurch haben wir vollen, typsicheren Zugriff auf die Methoden und Attribute ((die in der \ac{DOM}-\ac{API} spezifiziert sind)). Ein \scala{onchange}-Handler ließe sich eigentlich auch innerhalb des \scala{select()}-Tags schreiben, allerdings ließe sich so nicht auf das \scala{value}-Attribut zugreifen.
+Dieser Methode muss eine Funktion \scala{String => Unit} übergeben werden, die den Auswahlwert entgegennimmt, so dass der Umrechner passend aktualisiert werden kann. Die Liste der möglichen \html{<option>}s lässt sich prägnant mithilfe einer \scala{for}-Comprehension ausdrücken. Das Auswahllisten-Elemente, bei dem es sich um ein \scala{scalatags.JsDom.TypedTag[html.Select]} handelt, muss durch Aufruf der Methode \scala{render} in den Fassadentyp \scala{html.Select} der Scala-js-dom-Bibliothek umgewandelt werden. Dadurch ist voller, typsicherer Zugriff auf die Methoden und Attribute möglich, die in der \ac{DOM}-\ac{API} spezifiziert sind. Ein \scala{onchange}-Handler ließe sich eigentlich auch innerhalb des \scala{select()}-Tags schreiben, allerdings ließe sich so nicht auf das \scala{value}-Attribut zugreifen.
 
 Nach dieser Vorbereitung kann das Umrechnungsformular sehr übersichtlich und deklarativ geschrieben werden (Listing \ref{code:currency-converter-gui}).
 
@@ -2529,7 +2505,7 @@ import scalajs.concurrent.JSExecutionContext.Implicits.runNow
 Ajax.get(url).onSuccess{ case xhr => handleXhrResponse(xhr) }
 \end{lstlisting}
 
-So definieren wir eine \scala{Converter}-Klasse, die immutable ist. Für jedes Währungspaar soll ein neue Instanz erzeugt werden.
+So wird eine \scala{Converter}-Klasse definiert, die immutable ist. Für jedes Währungspaar soll ein neue Instanz erzeugt werden.
 
 \begin{lstlisting}[language=Scala, caption={Der Währungsumrechner.}]
 case class Converter(
@@ -2549,9 +2525,9 @@ case class Converter(
 }
 \end{lstlisting}
 
-Durch den Aufruf von \scala{JSON.parse} wird der Antworttext deserialisiert. Dabei erhalten wir ein dynamisch getyptes Objekt. Hier muss nun besonders sorgfältig vorgegangen werden, da der Compiler uns nicht vor Tippfehlern schützt. Die Rate muss zur sinnvollen Verwendung zuerst in einen String, und dieser dann in einen \scala{Double}-Wert umgewandelt werden.
+Durch den Aufruf von \scala{JSON.parse} wird der Antworttext deserialisiert. Dabei erhält man ein dynamisch getyptes Objekt. Hier muss nun besonders sorgfältig vorgegangen werden, da der Compiler uns nicht vor Tippfehlern schützt. Die Rate muss zur sinnvollen Verwendung zuerst in einen String, und dieser dann in einen \scala{Double}-Wert umgewandelt werden.
 
-Nun können wir eine Methode schreiben, die auf Knopfdruck hin eine HTTP-Anfrage beim Webservice stellt und beim Eintreffen der Antwort dafür sorgt, dass der umgerechnete Betrag auf der Webseite angezeigt wird.
+Nun kann eine Methode geschrieben werden, die auf Knopfdruck hin eine HTTP-Anfrage beim Webservice stellt und beim Eintreffen der Antwort dafür sorgt, dass der umgerechnete Betrag auf der Webseite angezeigt wird.
 
 \begin{lstlisting}[language=Scala, style=snippet]
 def updateDstAmount(): Unit = converter.convert(srcAmount).onSuccess{
@@ -2603,14 +2579,14 @@ BILD -> \cite[Folie 52, Min. ???]{doeraene2015.SSP} % -->  Doeraene2015-Scalajs-
 
 TODO
 
-\minisec{Kurzbeschreibung des Beispielprogramms}
+\MyMiniSec{Kurzbeschreibung des Beispielprogramms}
 
 Mittelwert, Median, Varianz und Standardabweichung als Bibliotheksfunktionen
 - in Scala.js, cross-kompilierendes Projekt (nach JVM und JS), Unit-Tests (uTest), kleines JS-Frontend zur Benutzung (fehlertolerante Eingabe)
 - Portierung in natives JavaScript zum Vergleich, Unit-Tests (Jasmine)
 - Benchmark (JSLitmus) -> \url{http://www.broofa.com/Tools/JSLitmus/}
 
-\minisec{Ergebnisse der Untersuchung und Bewertung}
+\MyMiniSec{Ergebnisse der Untersuchung und Bewertung}
 
 einfache GUI in klassischem HTML/JavaScript, die Scala.js-generierte Statistik-Lib verwendet (siehe Abb. \ref{fig:stat-lib-gui}) - funktioniert sehr gut
 
@@ -2751,7 +2727,7 @@ geteilte Schnittstelle ausprobieren
 Clientseitiges Routing verwenden, ggf. selbst schreiben
 
 %\subsection{Kriterien}
-\minisec{Kurzbeschreibung des Beispielprogramms}
+\MyMiniSec{Kurzbeschreibung des Beispielprogramms}
 
 Clientseitiges Routing
 
@@ -2761,7 +2737,7 @@ Client-Server und RPCs entsprechend Code-Vorschlägen von Li Haoy\cite[]{haoyi.H
 
 verwendet: spray - Sammlung von Librarys zur Entwicklung von REST/HTTP-basierten Webservices auf der Basis von Akka; beinhaltet spray-can, einen schnellen HTTP-Server)
 
-\minisec{Ergebnisse der Untersuchung und Bewertung}
+\MyMiniSec{Ergebnisse der Untersuchung und Bewertung}
 
 
 ggf. diskutieren: Verwendung vieler objects
@@ -2794,7 +2770,7 @@ Schnittstelle in einer Sprache
 ) auf die Client-Seite:}
 
 
-Dependencies bequem gemanagt mit sbt, wenig muss in die html eingetragen werden, das meißte zentral in der build.sbt
+Dependencys bequem gemanagt mit sbt, wenig muss in die html eingetragen werden, das meißte zentral in der build.sbt
 
 
    Korrektheit \\
