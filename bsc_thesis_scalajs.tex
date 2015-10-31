@@ -187,6 +187,8 @@
 	\titleformat{\subsection}[hang]{\bfseries}{\thesubsection\quad}{0pt}{}
 	% 4. Ebene -- subsubsection
 	\titleformat{\subsubsection}[hang]{\bfseries}{\thesubsubsection\quad}{0pt}{}
+	% 5. Ebene -- subsubsection
+	\titleformat{\minisec}[hang]{\bfseries}{\theminisec\quad}{0pt}{}
 
 	% Platz um die Überschriften
 	% Erklärung: \titlespacing{Überschriftenklasse}{Linker Einzug}{Platz oberhalb}{Platz unterhalb}[rechter Einzug]
@@ -293,7 +295,7 @@ Die Sprache JavaScript ist aus verschiedenen Gründen problematisch. So existier
 
 % siehe jeweils Einleitung von Doeraene 2013 und Haoyi 2015
 
-Hier setzen nun verschiedene Projekte an, die es erlauben, in einer konsistenteren und bequemeren Sprache zu programmieren, um den Code schließlich nach JavaScript zu kompilieren, das heißt: automatisch zu übersetzen. Dabei wird JavaScript als Plattform betrachtet, oder auch als "`Maschinensprache des Webs"' \cite{meijer2011.JLA}. Viele dieser transkompilierenden Sprachen bieten dabei eine statische Typisierung. Sébastien Doeraene, Kopf des Scala.js-Projekts, kritisiert allerdings diese bisherigen Versuche als unzulänglich. Dabei macht er zwei vollkommen unterschiedliche Ansätze aus. Dem einen Ansatz, bei dem von \mbox{JavaScript} ausgegangen und dieses um \emph{syntaktischen Zucker}\footnote{engl. \emph{syntactic sugar}, Syntaxerweiterungen zur Vereinfachung der Schreibweise} (CoffeeScript) oder ein Typsystem (TypeScript) erweitert wird, attestiert er zwar einen gewissen Nutzen, moniert aber, dass die Sprache dadurch nur wenig an Ausdruckskraft gewinnt. Bei der anderen Gruppe, handelt es sich um völlig neue (Dart) oder schon existierende Sprachen (Java mit GWT). Diese Sprachen erlauben zwar ein höheres Abstraktionslevel und vermeiden alle Probleme von JavaScript, doch mangelt es ihnen an echter Interoperabilität mit \mbox{JavaScript}, was insbesondere die Interaktion mit dem \ac{DOM}, aber auch mit JavaScript-Librarys erschwert oder sogar unmöglich macht. Der Grund hierfür liegt darin, dass JavaScript-Werte nicht in das strengere Typsystem überführt werden können und daher keine \emph{First-Class-Citizens} der Sprache sind.\cite[S. 1]{doeraene2013.TDI}
+Hier setzen nun verschiedene Projekte an, die es erlauben, in einer konsistenteren und bequemeren Sprache zu programmieren, um den Code schließlich nach JavaScript zu kompilieren, das heißt: automatisch zu übersetzen. Dabei wird JavaScript als Plattform betrachtet, oder auch als "`Assemblersprache des Webs"' \cite{meijer2011.JLA}. Viele dieser transkompilierenden Sprachen bieten dabei eine statische Typisierung. Sébastien Doeraene, Kopf des Scala.js-Projekts, kritisiert allerdings diese bisherigen Versuche als unzulänglich. Dabei macht er zwei vollkommen unterschiedliche Ansätze aus. Dem einen Ansatz, bei dem von \mbox{JavaScript} ausgegangen und dieses um \emph{syntaktischen Zucker}\footnote{engl. \emph{syntactic sugar}, Syntaxerweiterungen zur Vereinfachung der Schreibweise} (CoffeeScript) oder ein Typsystem (TypeScript) erweitert wird, attestiert er zwar einen gewissen Nutzen, moniert aber, dass die Sprache dadurch nur wenig an Ausdruckskraft gewinnt. Bei der anderen Gruppe, handelt es sich um völlig neue (Dart) oder schon existierende Sprachen (Java mit GWT). Diese Sprachen erlauben zwar ein höheres Abstraktionslevel und vermeiden alle Probleme von JavaScript, doch mangelt es ihnen an echter Interoperabilität mit \mbox{JavaScript}, was insbesondere die Interaktion mit dem \ac{DOM}, aber auch mit JavaScript-Librarys erschwert oder sogar unmöglich macht. Der Grund hierfür liegt darin, dass JavaScript-Werte nicht in das strengere Typsystem überführt werden können und daher keine \emph{First-Class-Citizens} der Sprache sind.\cite[S. 1]{doeraene2013.TDI}
 
 Ein weiteres großes Problem der Web-Entwicklung stellt traditionell die Schnittstelle zwischen Client und Server dar. Hier existiert eine Sprachgrenze, wobei auf Serverseite verschiedene Sprachen im Einsatz sind (hier dominiert PHP, gefolgt von unter anderem Java \cite{w3techs.SRV}).. Die Wiederverwendung von Code über diese Grenze hinweg ist nicht möglich, weshalb Algorithmen mehrfach implementiert werden müssen, oder mühsam durch Ajax-Aufrufe an einem Ort gehalten werden. Auch die Einhaltung gemeinsamer Schnittstellen ist so schwierig und fehlerträchtig. Eine Sprache für beide Seiten, Client und Server, ist demnach äußerst wünschenswert, würde sie doch genau dies erlauben: die Wiederverwendbarkeit von Code und die Definition gemeinsamer Schnittstellen. \cite[\#SharingCode]{haoyi.HOS}
 
@@ -1149,7 +1151,53 @@ Scala.js garantiert ab Version 0.6.0 Rückwärtskompatibilität, und zwar sowohl
 Die Scala Test-Suite läuft für knapp 2000 Tests, die das erwartungsgemäße Kompilieren beziehungsweise Nicht-Kompilieren prüfen, zu 99\% erfolgreich durch. Von über 1000 Tests, die die korrekte Ausführung überprüfen, sind nur 51 \% erfolgreich \cite[Folie 36, Min. 35]{doeraene2014.WHB}. Bei den wenigsten der Fehlschläge handelt es sich laut Doeraene allerdings tatsächlich um Bugs. Der Grund hierfür liegt darin, dass Scala.js bestimmte Spracheigenschaften wie Laufzeit-Reflections und die Java Collections nicht unterstützt \cite[S. 7]{doeraene2013.TDI}. Zusätzlich gibt es eine eigene Test-Suite mit über 400 Tests \cite[Folie 36, Min. 35]{doeraene2014.WHB}.
 
 
-\section{sbt-Integration}
+
+\section{Dokumentation}
+
+\TODO{TODO - aber kurz}
+
+- offizielle Referenzseite
+- \ac{API}-Docs
+- Tutorial
+- News Group / Forum
+- Versionsgeschichte
+- Hands-on Scala.js
+- Scala-Js-Fiddle
+
+
+
+\section{Unterstützung von Source Maps}
+
+\TODO{nur kurze Erklärung, dass existent und wozu; dann in Fallstudien besprechen}
+
+Source Maps (zum Debuggen im Browser)  -->  http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/
+
+Source Maps
+  - Debugging im Browser
+  http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/
+
+Dokumentation
+  - Website
+  - \ac{API}-Docs
+  - Einstieg
+    - Tutorial
+    - E-Book: Hands-on Scala.js
+    - Scala.jsFiddle
+
+--> Bsp. helloscalajs in Fallstudien
+
+
+
+
+\section{Ökosystem: Tools und Librarys}\label{sec:sjs-libs}
+
+Obwohl das Projekt Scala.js noch ziemlich jung ist, existiert schon eine beachtliche Auswahl an verwendbaren Librarys. Einige davon sind JavaScript-spezifisch (zum Beispiel Scala-js-dom), aber die meisten laufen auf beiden Plattformen, JavaScript und \ac{JVM}. Hier sollen nur die Librarys kurz angesprochen werden, die im Rahmen dieser Arbeit zur Anwendung kamen.
+
+
+
+
+
+\subsection{sbt-Integration}
 
 %TODO % % % %
 
@@ -1384,7 +1432,7 @@ dann in der HTML:
 
 
 
-\section{IDE-Support}
+\subsection{IDE-Support}
 (http://www.scala-lang.org/news/2015/02/05/scala-js-no-longer-experimental.html)
 
 \ac{IDE}-Supports
@@ -1403,47 +1451,22 @@ dann in der HTML:
       - intelligentes Namens-Refactoring (zumindest innerhalb einer Datei)
 
 
-\section{Source Maps}
-
-Source Maps (zum Debuggen im Browser)  -->  http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/
-
-Source Maps
-  - Debugging im Browser
-  http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/
-
-Dokumentation
-  - Website
-  - \ac{API}-Docs
-  - Einstieg
-    - Tutorial
-    - E-Book: Hands-on Scala.js
-    - Scala.jsFiddle
-
---> Bsp. helloscalajs in Fallstudien
-
-
-\section{Dokumentation}
-
-\TODO{TODO}
-
-- offizielle Referenzseite
-- \ac{API}-Docs
-- Tutorial
-- News Group / Forum
-- Versionsgeschichte
-- Hands-on Scala.js
-- Scala-Js-Fiddle
 
 
 
-\section{Ökosystem: Librarys und Tools}\label{sec:sjs-libs}
-
-Obwohl das Projekt Scala.js noch ziemlich jung ist, existiert schon eine beachtliche Auswahl an verwendbaren Librarys. Einige davon sind JavaScript-spezifisch (zum Beispiel Scala-js-dom), aber die meisten laufen auf beiden Plattformen, JavaScript und \ac{JVM}. Hier sollen nur die Librarys kurz angesprochen werden, die im Rahmen dieser Arbeit zur Anwendung kamen.
-
-
-\subsubsection{Scala.js workbench}
+\subsection{Scala.js workbench}
 
 - sbt-Plugin zum automatischen Live-Neuladen des Browsers
+
+
+
+
+
+
+\subsection{Librarys}
+
+
+\TODO{...}
 
 
 \subsubsection{Scala-js-dom}
@@ -1501,6 +1524,7 @@ Vertiefung
 
 - minimale cross-kompilierende Test-Library
 
+\TODO{asserts usw. verschieben nach Hallo-Welt-Tests}
 mögliche Macros:
 \begin{lstlisting}[language=Scala]
 object MyTest extends TestSuite {
@@ -1531,13 +1555,9 @@ Die bekannten Test-Bibliotheken ScalaTest und Specs2 können nicht verwendet wer
 
 - cross-kompilierende Library für statisch getypte Ajax-Aufrufe und RPCs
 
-\subsubsection{(uPickle)}
+\subsubsection{(uPickle) (?)}
 
 - cross-kompilierende Library zur Serialisierung)
-
-\subsubsection{(Scala.Rx)}
-
-- cross-kompilierende Change-Propagation-Library ("Änderungsausbreitung"))
 
 
 
@@ -1547,24 +1567,36 @@ Die bekannten Test-Bibliotheken ScalaTest und Specs2 können nicht verwendet wer
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 \chapter{Methodik}\label{chap:methods}
 
-\TODO{ggf. Zwischentitel}
+An dieser Stelle soll die Vorgehensweise der Untersuchung erläutert werden. Zunächst müssen einige Kriterien aufgestellt werden, die bei der Einschätzung des Nutzens, den Scalaj.js bietet, helfen sollen. Dann soll das weitere Vorgehen erklärt werden. Schließlich wird kurz festgehalten, welche spezifischen Werkzeuge bei der Untersuchung konkret zum Einsatz kamen.
 
-\TODO{motivieren: warum Fallstudien? ...}
+\section{Kriterien der Untersuchung}
 
-An dieser Stelle soll kurz die Vorgehensweise der Untersuchung erklärt werden. Zuächst müssen einige Kriterien aufgestellt werden, die bei der Einschätzung des Nutzens, den Scalaj.js bietet, helfen sollen. Hierbei sind zwei Blickwinkel zu berücksichtigen: der des Entwicklers, aber auch der des Anwenders einer zu entwickelnden Software.
+Bei der Einschätzung des Gebrauchswerts von Scala.js sind zwei Blickwinkel zu berücksichtigen: einerseits der des Entwicklers, der Scala.js verwendet, andererseits der des Anwenders, für den eine Software mit Scala.js entwickelt wird.
 
-\TODO{alle vier Aspekte in einem Absatz; nacheinander jeweils erklären, nicht am Anfang alle aufzählen:}
-Aus Entwicklersicht sind vier Hauptaspekte interessant: die Verwendungsweise, die Bequemlichkeit in der Anwendung, die Leistungsfähigkeit und die Qualität des entwickelten Codes. 
+\minisec{Entwicklersicht}
 
-Zunächst ist es wichtig zu verstehen, wie Scala.js zu handhaben ist. Dabei gilt es herauszufinden, auf welche Feinheiten zu achten ist, ob an bestehendes Wissen angeknüpft werden kann, kurz: wie hoch der Lernaufwand ist. 
+%Aus Entwicklersicht sind vier Hauptaspekte interessant: die Verwendungsweise, die Bequemlichkeit in der Anwendung, die Leistungsfähigkeit und die Qualität des entwickelten Codes. 
 
-Beim Aspekt der Performance steht die Geschwindigkeit der Compiler-Läufe und Tests eine Rolle. Besonders Frontend-Entwickler sind hier schnelle Builds und ein inkrementelles Arbeiten gewohnt.
+Für den Entwickler steht die Frage im Vordergrund, wie das Werkzeug Scala.js produktiv eingesetzt werden kann. Hierfür ist es zunächst wichtig zu verstehen, wie Scala.js zu handhaben ist. Dabei gilt es herauszufinden, auf welche Feinheiten zu achten ist, aber auch ob an bestehendes Wissen angeknüpft werden kann, kurz: wie hoch der Lernaufwand ist.
 
-Für die Bequemlichkeit in der Handhabung und allgemeinen Entwicklerfreundlichkeit spielt der Aufwand, der für die Konfiguration getrieben werden muss, ebenso eine Rolle wie die erreichbare Leichtigkeit der Implementierung und Entwicklungsgeschwindigkeit. Schließlich ist eine gute Dokumentation von Bedeutung.
+Für eine hohe Produktivität bei der Entwicklung ist der Komfort in der Handhabung von nicht zu unterschätzender Bedeutung. Dazu zählen die Unterstützung durch Programmierwerkzeuge und die Automatisierbarkeit von häufig wiederholten Entwicklungsschritten (zum Beispiel durch Buildtools). Hierbei spielt auch der Aspekt der Schnelligkeit der Compiler-Läufe und Tests eine Rolle. Besonders Frontend-Entwickler sind hier schnelle Builds und ein inkrementelles Arbeiten gewohnt. Beim komplexen Prozess der Softwareentwicklung ist es wichtig, die Frustration der Entwickler niedrig zu halten. Der Aufwand, der für die Konfiguration eines Projekts getrieben werden muss, ist hierfür ebenso relevant wie eine gute Dokumentation.
 
-Zur Code-Qualität zählen die Lesbarkeit, Redundanzfreiheit und Wiederverwendbarkeit von Code-Teilen. Die gute Wartbarkeit von Code ist ebenfalls ein wichtiges Ziel, wozu Debugging-Qualitäten \REDOi und Testbarkeit zählen.
+Ganz entscheidend für die Qualität der Software aber auch für die Produktivität der Entwicklung ist die Code-Qualität. 
+Robert C. Martin bezeichnet guten Code als eine der "`robustesten, am besten unterstützten und meistdiskutierten Prämissen unserer Zunft"' \cite[S. 27]{martin2009.CCH}. In einer Negativ-Definition beschreibt Martin schlechten Code als schwer zu durchschauendes und Chaos. Schlechter Code lässt sich nur schwer ändern und führt zu mehr schlechtem Code und einer asymptotisch abnehmenden Produktivität. \cite[S. 27 f.]{martin2009.CCH}
+
+Dave Thomas macht Code-Qualität an folgenden Kriterien fest: "`Sauberer Code kann von anderen Entwicklern gelesen und verbessert werde. Er verfügt über Unit- und Acceptance-Tests. Er enthält bedeutungsvolle Namen. Er stellt zur Lösung einer Aufgabe nicht mehrere, sonder eine Lösung zur Verfügung. Er enthält minimale Abhängigkeiten, die ausdrücklich definiert sind, und stellt ein klares und minimales API zur Verfügung."' \cite[zit. nach: ][S. 35]{martin2009.CCH} Andere bekannte Programmierer, beschreiben sauberen Code als "`möglichst elegant und effizient"' (Bjarne Stroustrup), "`einfach und direkt"', "`wie wohlgeformte Prosa"' (Grady Brooch) oder erkennen ihn daran, dass er erwartungsgemäß funktioniert (Ward Cunningham) \cite[alle zit. nach: ][S. 32 ff.]{martin2009.CCH}.
+
+Das Entwickeln von Software besteht zu einem überraschend hohen Anteil im Lesen von bestehendem Code (laut Martin beträgt das Verhältnis über 10 : 1)\cite[S. 42]{martin2009.CCH}.
+
+Dadurch ist klar, welche wichtige Rolle die Lesbarkeit von Code spielt. Als weitere Ziele für eine hohe Code-Qualität halten wir  eine gute Wartbarkeit, die Wiederverwendbarkeit von Code-Teilen, die Freiheit von Redundanz, minimale Abhängigkeiten und die Testbarkeit fest.
+
+\minisec{Anwendersicht}
 
 Andererseits sollen auch verschiedene Kriterien berücksichtigt werden, welche die Anwendersicht betreffen. Hier ist die Frage, ob Scala.js einem bei der Umsetzung von gängigen Anwendungsfällen Grenzen setzt. Als ein weiterer wichtiger Punkt neben der Machbarkeit ist auch die Performance \TODO{(Leistungsfähigkeit)} von Weboberflächen aus der Anwendersicht wichtig. Webseiten sollen sich schnell anfühlen. Dazu müssen sie schnell laden, schnelle Interaktion bieten und gegebenenfalls nötige Operationen (zum Beispiel bei der Berechnung von Grafiken) schnell ausführen. Daraus folgen unmittelbar die folgenden Anforderungen: möglichst geringe Datenmengen beim Laden einer Seite und dazu kleine Kompilate zu liefern, bei Interaktionen nicht die Oberfläche zu blockieren und möglichst schnelle Ausführungszeiten sicherzustellen.
+
+\section{Vorgehensweise}
+
+\TODO{motivieren: warum Fallstudien? ...}
 
 Anhand konkreter kleinerer Fallbeispiele werden häufig auftretende Anforderungen im Bereich clientseitiger Web-Entwicklung besprochen und auf diese Kriterien hin untersucht. \TODOi{<noch ein Satz mehr vielleicht...>}
 
@@ -1574,7 +1606,14 @@ Anhand konkreter kleinerer Fallbeispiele werden häufig auftretende Anforderunge
 \TODO{	2. das Beispielprogramm beschrieben}
 \TODO{	3. Ergebnisse besprochen und bewertet}
 
-\TODO{verwendete Programme, Rechner usw. (-> bei Hallo-Compiler-Untersucung und Benchmark extrahieren)}
+\section{Verwendete Hard- und Software}
+
+Es wurde Windows 8.1 Pro auf einem System mit 64-Bit Intel Core i7-3517U Prozessor und 1,9 GHz Takt, 4 GB RAM und einem SSD-Laufwerk verwendet. Bei der Enwicklung wurde vorrangig mit IntelliJ IDEA (Ultimate Edition) und dem Editor Sublime Text 2 gearbeitet. Als Terminal wurde die git-bash vewendet, die in der Windows-Distribution von git enthalten ist. 
+
+
+
+
+
 
 
 
@@ -1605,14 +1644,14 @@ Alle benötigten Programme sind auf dem beigefügten Datenträger enthalten, las
 
 Für alle Programme mit Ausnahme von git ist es unter Windows nötig, dem System den Installationspfad bekannt zu machen. Dies geschieht durch Setzen einer entsprechenden Umgebungsvariablen. Dazu muss der "`System"'-Dialog geöffnet werden, zum Beispiel durch die Tastenkombination \code{Windows-Taste + x}. Hier "`Erweiterte Systemeigenschaften"' mit Administrator-Rechten öffnen und die folgende Frage, ob Änderungen am System zugelassen werden sollen mit "`Ja"' bestätigen. Nun den Knopf "`Umgebungsvariablen"' betätigen, die Variable "`Path"' auswählen und auf "`Bearbeiten..."' klicken. Hier muss nun der Pfad der die ausführbare Datei für das entsprechende Programm enthält angegeben werden. Das ist für alle benötigten Programme mit Ausnahme von Node.js der Ordner \code{bin} im jeweiligen Programmverzeichnis. Dieser Pfad muss nun mit getrennt durch ein vorangestelltes Semikolon hinten an den ursprünglichen Wert angehängt werden. Für Java muss zum Beispiel \code{;C:\\Program Files\\Java\\jdk1.8.0\_51\\bin} angehängt werden. \TODOi{ <-- KNAPPER! }
 
-Als Terminal wurde die git-bash vewendet, die in der Windows-Distribution von git enthalten ist. Alternativ kann auch die bash-Emulation von cygwin verwendet werden. Wenn IntelliJ IDEA verwendet wird, kann auch direkt von dort aus mit dem Terminal gearbeitet werden\footnote{\url{https://www.jetbrains.com/idea/help/working-with-embedded-local-terminal.html}}.
-
 Scala.js muss nicht installiert werden sondern wird per Build-Definition als sbt-Plugin gestartet.
 
 Für die bequemere Navigation im Projekt bietet sich der Einsatz \ac{IDE} an. Infrage kommen:
 
 \begin{description}
-	\item[IntelliJ IDEA] liefert am meisten Komfort, unterstützt sbt schon am besten und ist deshalb klar die erste Wahl. Scala wird bei der aktuellen Version von Hause aus unterstützt, ältere Versionen lassen sich mit einem Plugin nachrüsten.
+	\item[IntelliJ IDEA] liefert am meisten Komfort, unterstützt sbt schon am besten und ist deshalb klar die erste Wahl. Scala wird bei der aktuellen Version von Hause aus unterstützt, ältere Versionen lassen sich mit einem Plugin nachrüsten. Zusätzlich kann direkt aus IntelliJ heraus mit dem Terminal gearbeitet werden\footnote{\url{https://www.jetbrains.com/idea/help/working-with-embedded-local-terminal.html}}.
+	
+	
 	\item[Scala IDE / Eclipse] funktioniert recht gut. Allerdings fehlt sbt-Unterstützung.
 	\item[Netbeans] kommt ebenfalls in Betracht, wurde allerdings nicht erprobt. Hierfür existiert ein Scala-Plugin.
 \end{description}
@@ -1728,9 +1767,9 @@ Künftig kann der \code{node\_modules}-Ordner bedenkenlos gelöscht werden. Ein 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 \chapter{Fallstudien}\label{chap:case-studies}
 
-In den folgenden Fallstudien werden anhand kleiner Beispielimplementierungen die Themen Interaktion mit dem \ac{DOM}, das Arbeiten mit Events, die Verwendung des Canvas, asynchrone Datenübertragung mit Ajax, die Möglichkeit der Erstellung cross-kompilierender Librarys und ein Beispiel für Client-Server Interaktion mit einem clientseitigen Routing vorgestellt. Ziel ist es dabei, bestimmte Aspekte der Nützlichkeit von Scala.js am jeweiligen Anwendungsfall zu zeigen und gegebenenfalls auf dabei aufgetretene Schwierigkeiten hinzuweisen.
+In den folgenden Fallstudien werden anhand kleiner Beispielimplementierungen die Themen Interaktion mit dem \ac{DOM}, das Arbeiten mit Events, die Verwendung des HTML5 Canvas, asynchrone Datenübertragung mit Ajax, die Möglichkeit der Erstellung cross-kompilierender Librarys und ein Beispiel für Client-Server Interaktion mit einem clientseitigen Routing vorgestellt. Ziel ist es dabei, bestimmte Aspekte der Nützlichkeit von Scala.js am jeweiligen Anwendungsfall zu zeigen und gegebenenfalls auf dabei aufgetretene Schwierigkeiten hinzuweisen.
 
-Das Eingangsbeispiel stützt sich auf das offizielle Scala.js-Tutorial \cite{scalajs.SJT}. Für alle Implementierungen lieferten die Beispiele von Li Haoyi \cite{haoyi.HOS} wichtige Anregungen.
+Das Eingangsbeispiel ist bewusst einfach gehalten, um in diesem Rahmen wichtige Eigenschaften von Scala.js zu diskutieren. Es stützt sich auf das offizielle Scala.js-Tutorial \cite{scalajs.SJT}. Für alle Implementierungen lieferten die Beispiele von Li Haoyi \cite{haoyi.HOS} wichtige Anregungen.
 
 \TODO{Liste der Beispielprojekte, verlinkt auf GitHub}
 
@@ -1746,13 +1785,13 @@ Das Eingangsbeispiel stützt sich auf das offizielle Scala.js-Tutorial \cite{sca
 
 \minisec{SO SIEHT EINE MINISEC: foo bar}
 
-\subsection{Ziel der Untersuchung}
+%\subsubsection{Ziel der Untersuchung}
 
 Ein minimales Setup in Form eines klassischen Hallo-Welt-Programms sollte zum Laufen gebracht werden. Anhand dieses Minimalbeispiels sollten dann bestimmte Grundbedingungen der Entwicklung mit Scala.js untersucht werden. Neben der Konfiguration selbst sollte als wichtiger Faktor für die alltägliche Entwicklungsarbeit die Zeit ermittelt werden, die für einen Build-Lauf benötigt wird. Auch die Größe der für die Auslieferung relevanten Kompilate sollte betrachtet werden, schließlich besteht ein unmittelbarer Zusammenhang zwischen der Größe der zu ladenden Datenmenge und der Ladezeit im Browser, weshalb sie eine wichtige Grundbedingung für die Zufriedenheit der Benutzer ist.
 
 Anhand einer erweiterten Fassung des Minimalbeispiel sollten Benutzerinteraktion und der Einsatz von jQuery ausprobiert und die Testbarkeit von Oberflächen-Elementen geklärt werden. Außerdem sollte die Source-Maps-Unterstützung erprobt werden.
 
-\subsection{Kriterien}
+\minisec{Kriterien}
 
 \begin{enumerate}
 	\item Konfigurationsaufwand
@@ -1768,7 +1807,7 @@ Anhand einer erweiterten Fassung des Minimalbeispiel sollten Benutzerinteraktion
 		\end{enumerate}
 \end{enumerate}
 
-\subsection{Kurzbeschreibung des Beispielprogramms}
+\minisec{Kurzbeschreibung des Beispielprogramms}
 
 Das minimale Programm erzeugt die Ausgabe "`Hello world!"' in der Konsole des Browsers, wenn die entsprechende Webseite geöffnet wird. Der Aufruf \code{sbt run} erzeugt die gleiche Ausgabe in der sbt-\ac{REPL}.
 
@@ -1804,9 +1843,9 @@ Hierbei empfehlen sich zwei getrennte HTML-Dateien, eine zur Entwicklung und ein
 
 Das erweiterte Minimalbeispiel reagiert auf Betätigung eines Buttons mit einer Text-Ausgabe sowohl auf die Browser-Konsole als auch in die Webseite.
 
-\subsection{Ergebnisse der Untersuchung und Bewertung}
+%\subsubsection{Ergebnisse der Untersuchung und Bewertung}
 
-\subsubsection{Konfigurationsaufwand}
+\minisec{Konfigurationsaufwand}
 
 Im direkten Vergleich mit einem Programm in reinem JavaScript und HTML (Listing \ref{code:hello-js.html}):
 
@@ -1830,11 +1869,9 @@ in der Build-Definition ergänzt werden.
 
 Um Source-Maps-Unterstützung im Browser zu bekommen, muss eine nicht allzu aufwendige Installation vorgenommen werden, wie in \TODOi{Abschnitt Source Maps ???} beschrieben. \TODOi{besser auslagern in eigenes Kapitel}
 
-\subsubsection{Performance}
+\minisec{Performance von Build und Tests}
 
 Hier wurde die Geschwindigkeit des Build-Laufs und die Größe der Kompilate untersucht.
-
-Es wurde Windows 8.1 Pro auf einem System mit 64-Bit Intel Core i7-3517U Prozessor mit einem Takt von 1,9 GHz, 4 GB RAM und einem SSD-Laufwerk verwendet.
 
 Die Ergebnisse der Untersuchung sind in den Tabellen \ref{table:compiler-performance1} und \ref{table:compiler-performance2} dargestellt.
 
@@ -1904,7 +1941,7 @@ Der Optimierer und der Google Closure Compiler reduzieren die Code-Menge (durch 
 
 Seit Bestehen des Projekts wurden bei der Verringerung der erzeugten Dateigröße schon erhebliche Fortschritte erzielt. Generierte der Prototyp des Compilers für ein Hallo-Welt-Programm noch 16 MB, so reduzierte sich dies bald darauf mit der Einführung des Google Closure Compilers ins Projekt im August 2013 schon auf 900 kB \cite[Folie 5 f., Min. 6]{doeraene2014.WHB}. Der aktuelle Stand mit 20 kB (siehe \ref{table:compiler-performance1}) ist somit schon erstaunlich gut und lässt auf weitere Verbesserung in der Zukunft hoffen.
 
-\subsubsection{Debugging-Qualitäten}
+\minisec{Debugging-Qualitäten}
 
 %TODO$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
@@ -1949,11 +1986,11 @@ Der Einsatz von Source Maps erhöht den Komfort beim Debugging in der Browser-Ko
 \end{figure}
 
 
-\subsubsection{Testbarkeit}
+\minisec{Testbarkeit}
 
 Mit der verwendeten Test-Biliothek uTest lassen sich Tests formulieren, um zu prüfen, dass HTML-Elemente wie erwartet existieren oder dass Buttons erwartungsgemäß reagieren. Allerdings ist es hierfür nötig, die betreffenden HTML-Elemente mit eindeutigen IDs zu versehen, was einen zusätzlichen Overhead darstellt. Für eine leichtere Selektion von HTML-Elementen in Tests erweist sich darüber hinaus der Einsatz von jQuery als nützlich. Was hier fehlt, ist die Möglichkeit, wie im JavaScript-Test-Framework Jasmine, mithilfe sogenannter \emph{Spies} prüfen zu können, ob und mit welchen Argumenten eine Methode aufgerufen wurde.\footnote{\url{http://jasmine.github.io/2.0/introduction.html\#section-Spies}} Für Scala.js existiert zwar ein Wrapper für Jasmine. In einer Ankündigung auf der offiziellen Scala.js-Webseite\cite{scalajs.ASJ} wird aber explizit von dessen Verwendung abgeraten. Grundsätzlich lässt sich mit uTest gut arbeiten, allerdings erhält man beim Fehlschlagen von Tests häufig einen sehr langen Stacktrace. Für einen größeren Komfort wäre hier für die Zukunft ein IDE-Plugin mit navigierbarem Stacktrace wünschenswert.
 
-
+\TODO{HIER einfügen asserts -> 3.10 uTest}
 
 
 
@@ -1964,24 +2001,26 @@ Mit der verwendeten Test-Biliothek uTest lassen sich Tests formulieren, um zu pr
 
 \TODO{Projekte: sjs-hello-scalatags (+ extract: string-analyzer}
 
-\subsection{Ziel der Untersuchung}
+%\subsection{Ziel der Untersuchung}
+
+\TODO{Ziel formulieren}
 
 Typsicheres HTML-Templating 
 
 TODO: Einleitungssatz
 
-\subsection{Kriterien}
+%\subsection{Kriterien}
 
 \begin{itemize}
 	\item Machbarkeit
 	\item Lesbarkeit
 \end{itemize}
 
-\subsection{Kurzbeschreibung des Beispielprogramms}
+minisec{Kurzbeschreibung des Beispielprogramms}
 
 Verschiedene valide HTML-Tags werden mit Scala.js erzeugt.
 
-\subsection{Ergebnisse der Untersuchung und Bewertung}
+minisec{Ergebnisse der Untersuchung und Bewertung}
 
 Betrachtet wurden vier Möglichkeiten, in Scala.js HTML zu generieren. Dazu sei in der \code{index.html} ein
 \html{<div>} mit der ID "`container"' definiert. Ferner gehen wir davon aus, dass die Referenz darauf im Scala.js-Programm bekannt ist durch
@@ -2056,13 +2095,13 @@ Damit ist es möglich typsicher, deklarativ und nahe an HTML, gleichzeitig (scho
 
 \TODO{>> Workbench ausgliedern!!!}
 
-\subsection{Ziel der Untersuchung}
+%\subsection{Ziel der Untersuchung}
 
 Bei diesem Beispiel ging es um die Erprobung des HTML5-Canvas und der \ac{DOM}-\ac{API} mit Scala.js. Es sollten Timer-gesteuerte Aktionen mithilfe der Methoden des \code{WindowTimers}-Interface und das Arbeiten mit Event-Handlern für Maus- und Keyboard-Events ausprobiert werden. Hierbei sollte einerseits geklärt werden, ob und wie solche Standardtechniken der Oberfächenprogrammierung mit Scala.js machbar sind, andererseits sollte untersucht werden, ob die Entwicklung durch die Arbeit mit Scala.js sogar erleichtert wird, oder ob das Gegenteil der Fall ist.
 
 Gleichzeitig wurde die Scala.js Workbench im produktiven Einsatz ausprobiert und dabei auf ihre Nützlichkeit hin geprüft.
 
-\subsection{Kriterien}
+%\subsection{Kriterien}
 
 \begin{enumerate}
 	\item Umsetzbarkeit aller Anforderungen
@@ -2070,7 +2109,7 @@ Gleichzeitig wurde die Scala.js Workbench im produktiven Einsatz ausprobiert und
 	\item Nützlichkeit
 \end{enumerate}
 
-\subsection{Kurzbeschreibung des Beispielprogramms}
+\minisec{Kurzbeschreibung des Beispielprogramms}
 
 Die Anwendung erzeugt automatisch einfache Bilder, indem sie zufällig Rechtecke oder Kreise von zeichnet. Auch Position, Abmessungen, Farbe und Transparenz der Elemente sind zufallsgeneriert. Bei den Abmessungen sorgt ein Mechanismus dafür, dass die Werte nicht zu abrupt variieren, sondern sich ein etwas ruhigerer Eindruck ergibt. Dazu werden die Zufallswerte jeweils durch lineare Interpolation mit dem letzten Wert geglättet. Das Ergebnis ist beispielhaft in den Abbildungen \ref{fig:frenzy1} und \ref{fig:frenzy2} zu sehen.
 
@@ -2110,7 +2149,7 @@ Eine Schwäche der aktuellen Implementierung ist es, dass die beim Zeichnen mit 
 Ein anderer bekannter Fehler ist das ungewöhnliche Verhalten der Zeichenfläche beim Zoomen im Browser. \REDOi \TODOi{raffen und in einen Absatz}
 
 
-\subsection{Ergebnisse der Untersuchung und Bewertung}
+%\subsection{Ergebnisse der Untersuchung und Bewertung}
 
 Alle geplanten Anforderungen ließen sich umsetzen: der Zugriff auf die \ac{DOM}-\ac{API}, das Zeichnen auf den Canvas, timergesteuerte Ausführung und die Verwendung von Event-Handlern.
 
@@ -2239,7 +2278,9 @@ Die Typsicherheit hat hier beim Editieren den unmittelbaren Vorteil, dass die \a
 
 
 
-\subsubsection{Workbench-Plugin}
+\subsection{Workbench-Plugin <- AUSLAGERN}
+
+\TODO{EIGENES MINI-KAPITEL}
 
 Damit das Workbench-Plugin von sbt auch geladen wird, muss es in der \code{plugins.sbt} hinzugefügt werden:
 
@@ -2339,10 +2380,10 @@ Das Workbench-Plugin funktioniert nicht immer ganz zuverlässig, und manchmal mu
 
 \TODO{>> zusammenlegen mit HTML-Templating (s.o.)}
 
-\subsection{Ziel der Untersuchung}
-\subsection{Kriterien}
-\subsection{Kurzbeschreibung des Beispielprogramms}
-\subsection{Ergebnisse der Untersuchung und Bewertung}
+%\subsection{Ziel der Untersuchung}
+%\subsection{Kriterien}
+\minisec{Kurzbeschreibung des Beispielprogramms}
+\minisec{Ergebnisse der Untersuchung und Bewertung}
 
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
@@ -2352,11 +2393,11 @@ Das Workbench-Plugin funktioniert nicht immer ganz zuverlässig, und manchmal mu
 
 \TODO{Projekt: sjs-currency-converter}
 
-\subsection{Ziel der Untersuchung}
+%\subsection{Ziel der Untersuchung}
 
 Die Kommunikation mit Objekten ((?)) außerhalb des Web-Clients, wie zum Beispiel mit Webservices, ist ein wichtiger Bestandteil der allermeisten interaktiven Web-Anwendungen. Dazu wird standardmäßig eine als \emph{Ajax} bezeichnete Technik verwendet. Dabei werden aus der Web-Anwendung heraus über das HTTP-Protokoll Daten von einem Server angefragt, um auf Grundlage der Antwort Teile der HTML-Seite zu aktualisieren. Diese Standardtechnik und die Behandlung von Asynchronität mit Scala.js sollte erprobt werden.
 
-\subsection{Kriterien}
+%\subsection{Kriterien}
 
 \begin{enumerate}
 	\item Konfigurationsaufwand
@@ -2365,7 +2406,7 @@ Die Kommunikation mit Objekten ((?)) außerhalb des Web-Clients, wie zum Beispie
 	\item Code-Qualität (Typsicherheit, Lesbarkeit, Wartbarkeit)
 \end{enumerate}
 
-\subsection{Kurzbeschreibung des Beispielprogramms}
+\minisec{Kurzbeschreibung des Beispielprogramms}
 
 Beispielhaft wurde ein Währungsumrechner umgesetzt, der dem Benutzer die Eingabe des Betrags und die Auswahl von Quell- und Zielwährung per Auswahlliste anbietet, und auf Knopfdruck oder Betätigung der Entertaste hin die Umrechnung auf der Basis tagesaktueller Kurse durchführt. Beträge werden bis auf vier Nachkommastellen hin genau dargestellt. Die Eingabe ist fehlertolerant gegenüber ungültigen Beträgen. Als kleiner Komfort kann der Betrag mit der Escape-Taste auf 1.0000 zurückgesetzt werden.
 
@@ -2381,7 +2422,7 @@ Beispielhaft wurde ein Währungsumrechner umgesetzt, der dem Benutzer die Eingab
     \label{fig:converter}
 \end{figure}
 
-\subsection{Ergebnisse der Untersuchung und Bewertung}
+\minisec{Ergebnisse der Untersuchung und Bewertung}
 
 Ist das Setup einer einfachen Scala.js-Anwendung einmal erprobt, bleibt der weitere Konfigurationsaufwand für diese Anwendung gering: die benötigten Bibliotheken müssen lediglich als \code{libraryDependencies} in der Build-Definition hinzugefügt werden.
 
@@ -2548,7 +2589,9 @@ auf native JavaScript-Methoden zurückzugreifen und \scala{dstAmount.toFixed(4)}
 
 \TODO{Projekte: sjs-crosscompiling-statistics-lib, js-port-of-statistics-lib, benchmark-statistics-libs}
 
-\subsection{Ziel der Untersuchung}
+%\subsection{Ziel der Untersuchung}
+
+\TODO{ZIEL formulieren}
 
 Cross-compiling lib
 
@@ -2556,18 +2599,18 @@ Performance-Vergleich zu reinem JS - Micro-Benchmark
 
 BILD -> \cite[Folie 52, Min. ???]{doeraene2015.SSP} % -->  Doeraene2015-Scalajs-p52.jpg
 
-\subsection{Kriterien}
+%\subsection{Kriterien}
 
 TODO
 
-\subsection{Kurzbeschreibung des Beispielprogramms}
+\minisec{Kurzbeschreibung des Beispielprogramms}
 
 Mittelwert, Median, Varianz und Standardabweichung als Bibliotheksfunktionen
 - in Scala.js, cross-kompilierendes Projekt (nach JVM und JS), Unit-Tests (uTest), kleines JS-Frontend zur Benutzung (fehlertolerante Eingabe)
 - Portierung in natives JavaScript zum Vergleich, Unit-Tests (Jasmine)
 - Benchmark (JSLitmus) -> \url{http://www.broofa.com/Tools/JSLitmus/}
 
-\subsection{Ergebnisse der Untersuchung und Bewertung}
+\minisec{Ergebnisse der Untersuchung und Bewertung}
 
 einfache GUI in klassischem HTML/JavaScript, die Scala.js-generierte Statistik-Lib verwendet (siehe Abb. \ref{fig:stat-lib-gui}) - funktioniert sehr gut
 
@@ -2697,7 +2740,9 @@ also recht nahe beieinander
 
 \TODO{Projekt: clientserver}
 
-\subsection{Ziel der Untersuchung}
+%\subsection{Ziel der Untersuchung}
+
+\TODO{Ziel formulieren}
 
 Cient/Server-Setup zum Laufen bringen, ausprobieren
 
@@ -2705,8 +2750,8 @@ geteilte Schnittstelle ausprobieren
 
 Clientseitiges Routing verwenden, ggf. selbst schreiben
 
-\subsection{Kriterien}
-\subsection{Kurzbeschreibung des Beispielprogramms}
+%\subsection{Kriterien}
+\minisec{Kurzbeschreibung des Beispielprogramms}
 
 Clientseitiges Routing
 
@@ -2716,7 +2761,7 @@ Client-Server und RPCs entsprechend Code-Vorschlägen von Li Haoy\cite[]{haoyi.H
 
 verwendet: spray - Sammlung von Librarys zur Entwicklung von REST/HTTP-basierten Webservices auf der Basis von Akka; beinhaltet spray-can, einen schnellen HTTP-Server)
 
-\subsection{Ergebnisse der Untersuchung und Bewertung}
+\minisec{Ergebnisse der Untersuchung und Bewertung}
 
 
 ggf. diskutieren: Verwendung vieler objects
@@ -2747,6 +2792,9 @@ Schnittstelle in einer Sprache
 
 \TODO{- Scala.js bringt Scala (bisher auf Basis der jvm -> %\ac{JVM}
 ) auf die Client-Seite:}
+
+
+Dependencies bequem gemanagt mit sbt, wenig muss in die html eingetragen werden, das meißte zentral in der build.sbt
 
 
    Korrektheit \\
@@ -2902,6 +2950,9 @@ Blick über den Tellerrand: \\
 	- hat \ac{REPL}, package manager, debugger \\
 	- librarys \\
 	- Alternative zu Scala.js? - kein Scala, nur Client... \\
+
+interessante FRP-Lib: Scala.Rx
+- cross-kompilierende Change-Propagation-Library ("Änderungsausbreitung"))
 
 
 
