@@ -287,7 +287,7 @@ Von modernen Weboberflächen wird Interaktivität in einem Maße erwartet, wie e
 
 %steigen auch die Erwartungen der Web-Anwender Interaktion selbstverständlich
 
-Um Interaktivität im Browser zu ermöglichen, reicht HTML allein nicht aus. Eine zusätzliche Technologie ist nötig: JavaScript. Moderne Browser enthalten deshalb eine JavaScipt-Engine, mit deren Hilfe JavaScipt-Programme ausgeführt werden können. Daneben existieren zwar auch Plugin-basierte Alternativen (Flash, Java Applets, MS Silverlight), doch diese verlieren rapide an Bedeutung, unter anderem durch die verbesserte Browser-Unterstützung für den neuen HTML5-Standard. JavaScript dominiert hier bei weitem und kann als De-facto-Standard betrachtet werden\footnote{90 \% aller Websites verwenden JavaScript\cite{w3techs.CLI}}.
+Um Interaktivität im Browser zu ermöglichen, reicht HTML\footnote{\ac{HTML}} allein nicht aus. Eine zusätzliche Technologie ist nötig: JavaScript. Moderne Browser enthalten deshalb eine JavaScipt-Engine, mit deren Hilfe JavaScipt-Programme ausgeführt werden können. Daneben existieren zwar auch Plugin-basierte Alternativen (Flash, Java Applets, MS Silverlight), doch diese verlieren rapide an Bedeutung, unter anderem durch die verbesserte Browser-Unterstützung für den neuen HTML5-Standard. JavaScript dominiert hier bei weitem und kann als De-facto-Standard betrachtet werden\footnote{90 \% aller Websites verwenden JavaScript\cite{w3techs.CLI}}.
 
 
 \section{Motivation}
@@ -316,7 +316,7 @@ Hierfür sind verschiedene Fragen zu klären. Es gilt die grundlegenden Mechanis
 
 Um diesen Fragen nachzugehen, werden in einigen Fallstudien verschiedene kleinere Beispielprogramme besprochen. Basierend auf diesen Erfahrung soll die Nützlichkeit und Einsatzfähigkeit von Scala.js eingeschätzt werden.
 
-Einige Probleme können in dieser Arbeit nicht behandelt werden. Dazu zählt als erstes die Kompatibilität von Webseiten mit älteren Browsern. Ebenfalls nicht diskutiert wird die Frage, ob HTML-Dokumente besser auf Client- oder Serverseite generiert werden sollten. In einem praktischen Client-Server-Beispiel \TODOi{oder fliegt das aus Zeitnot raus?} wird die Serverseite bewusst einfach gehalten. Insbesondere wird auf den Einsatz einer Datenbank verzichtet und die Themen Authentifizierung und Sitzungsverwaltung bewusst ausgeblendet. \REDOi
+Einige Probleme können in dieser Arbeit nicht behandelt werden. Dazu zählt als erstes die Kompatibilität von Webseiten mit älteren Browsern. Ebenfalls nicht diskutiert wird die Frage, ob \ac{HTML}-Dokumente besser auf Client- oder Serverseite generiert werden sollten. In einem praktischen Client-Server-Beispiel \TODOi{oder fliegt das aus Zeitnot raus?} wird die Serverseite bewusst einfach gehalten. Insbesondere wird auf den Einsatz einer Datenbank verzichtet und die Themen Authentifizierung und Sitzungsverwaltung bewusst ausgeblendet. \REDOi
 
 
 \section{Aufbau der Arbeit}
@@ -336,13 +336,13 @@ In Kapitel \ref{chap:conclusion} werden die Ergebnisse der Arbeit zusammengefass
 
 \section{Anmerkung zur Zitierweise}
 
-Um die Fundstellen in Internetquellen präziser zu bezeichnen, wird in geeigneten Fällen statt einer Seitenzahl die Sprungmarke im HTML-Dokument, erkennbar am vorangestellten \code{\#} verwendet. Diese muss in der Adresszeile des Browsers lediglich an die URL angehängt werden. Für Videoquellen wird eine Zeitangabe in Minuten gemacht.
+Um die Fundstellen in Internetquellen präziser zu bezeichnen, wird in geeigneten Fällen statt einer Seitenzahl die Sprungmarke im \ac{HTML}-Dokument, erkennbar am vorangestellten \code{\#} verwendet. Diese muss in der Adresszeile des Browsers lediglich an die URL angehängt werden. Für Videoquellen wird eine Zeitangabe in Minuten gemacht.
 
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 \chapter{Technisches Umfeld und Grundbegriffe}\label{chap:basics}
 
-Der hauptsächliche Zweck von Scala.js besteht darin, bestimmten Mängeln der Sprache JavaScript dadurch zu begegnen, dass sie als eine Ziel-Plattform der Sprache Scala betrachtet wird. \REDOi Für ein besseres Verständnis sollen hier deshalb zunächst beide Sprachen, Scala und JavaScript, besprochen werden. Im Anschluss folgt zur \TODO{besseren} Einordnung ein knapper Überblick über die Web-Kerntechnologien HTML und CSS und sowie eine kurze Vorstellung des Buildtools sbt.
+Der hauptsächliche Zweck von Scala.js besteht darin, bestimmten Mängeln der Sprache JavaScript dadurch zu begegnen, dass sie als eine Ziel-Plattform der Sprache Scala betrachtet wird. \REDOi Für ein besseres Verständnis sollen hier deshalb zunächst beide Sprachen, Scala und JavaScript, besprochen werden. Im Anschluss folgt zur \TODO{besseren} Einordnung ein knapper Überblick über die Web-Kerntechnologien \ac{HTML} und CSS und sowie eine kurze Vorstellung des Buildtools sbt.
 
 \section{Scala}
 
@@ -408,20 +408,11 @@ Außerdem erlaubt Scala generische Klassen, innere Klassen, abstrakte Typen als 
 
 Scala trägt die Erweiterbarkeit im Namen ("`scalable language"').
 %"eine Sprache die mitwächst" ("a language that grows on you")
-Die Sprache hat einen relativ kompakten Kern und liefert einen großen Umfang an Funktionalität in Form einer Standardbibliothek. Diese enthält unter anderem ein äußerst unfangreiches Collections-Framework, eine Mathematik-Bibliothek, Bibliotheken für reguläre Ausdrücke, zur XML-Manipulation, zur nebenläufigen Programmierung mit Futures und Promises und eine Aktoren-Bibliothek, welche Nebenläufigkeit durch Nachrichtenaustausch realisiert.\footnote{Einen guten Überblick über die Standardbibliothek bietet die Dokumentation: \url{http://www.scala-lang.org/api/current/\#package}} Die Sprache stellt aber auch mächtige Mittel zur Verfügung, um flexible Librarys und DSLs\footnote{Domänenenspezifische Sprache, engl. \ac{DSL}} zu entwickeln. Zum Beispiel kann die Vererbung durch die Kombination beliebig vieler Traits sehr flexibel gehandhabt werden. Es ist ferner möglich, implizite Konvertierungen zu definieren. Die Infix- und Postfix-Notation in Verbindung mit der erlaubten Verwendung von Sonderzeichen für Methodennamen erlaubt es, eigene Operatoren zu schreiben \linebreak(\mbox{\scala{1 + 2}} ist die Infix-Notation für \scala{1.+(2)}). Es ist sogar möglich eigene Kontrollstrukturen zu erzeugen, indem man Methoden mit Operationen parametrisiert\footnote{durch \emph{by-name evaluation}}.\cite[S. 4 ff.]{odersky2008.PIS}
+Die Sprache hat einen relativ kompakten Kern und liefert einen großen Umfang an Funktionalität in Form einer Standardbibliothek. Diese enthält unter anderem ein äußerst unfangreiches Collections-Framework, eine Mathematik-Bibliothek, Bibliotheken für reguläre Ausdrücke, zur XML-Manipulation\footnote{\ac{XML}}, zur nebenläufigen Programmierung mit Futures und Promises und eine Aktoren-Bibliothek, welche Nebenläufigkeit durch Nachrichtenaustausch realisiert.\footnote{Einen guten Überblick über die Standardbibliothek bietet die Dokumentation: \url{http://www.scala-lang.org/api/current/\#package}} Die Sprache stellt aber auch mächtige Mittel zur Verfügung, um flexible Librarys und DSLs\footnote{Domänenenspezifische Sprache, engl. \ac{DSL}} zu entwickeln. Zum Beispiel kann die Vererbung durch die Kombination beliebig vieler Traits sehr flexibel gehandhabt werden. Es ist ferner möglich, implizite Konvertierungen zu definieren. Die Infix- und Postfix-Notation in Verbindung mit der erlaubten Verwendung von Sonderzeichen für Methodennamen erlaubt es, eigene Operatoren zu schreiben \linebreak(\mbox{\scala{1 + 2}} ist die Infix-Notation für \scala{1.+(2)}). Es ist sogar möglich eigene Kontrollstrukturen zu erzeugen, indem man Methoden mit Operationen parametrisiert\footnote{durch \emph{by-name evaluation}}.\cite[S. 4 ff.]{odersky2008.PIS}
 
 \subsection{Tools und Ökosystem}
 
-\TODO{zu einem Absatz zusammenfassen:}
-Scala wird mit einem sehr nützlichen interaktiven Kommandozeilen-Interpreter ausgeliefert (auch: \ac{REPL}).
-
-Zur IDE-Integration existieren Plugins für Eclipse\footnote{Es existiert auch eine komplette Eclipse-basierte Scala IDE.}, IntelliJ IDEA und NetBeans.
-
-Für Tests eignet sich ScalaTest, das viele unterschiedliche Teststile unterstützt. Auch die in der Java-Welt etablierten Frameworks JUnit und TestNG können verwendet werden.
-
-Mit \emph{sbt} existiert ein Buildtool, das Scala-Projekte der De-facto-Standard ist. Aber auch mit Ant und Maven sind Builds möglich.
-
-Auf der Scala-Website finden sich neben der Dokumentation der API\footnote{Programmierschnittstelle, engl. \ac{API}} auch offizielle Tutorials und ein Style Guide.\footnote{\url{http://docs.scala-lang.org/}}
+Scala wird mit einem sehr nützlichen interaktiven Kommandozeilen-Interpreter ausgeliefert (auch: \ac{REPL}). Zur IDE-Integration existieren Plugins für Eclipse\footnote{Es existiert auch eine komplette Eclipse-basierte Scala IDE.}, IntelliJ IDEA und NetBeans. Für Tests eignet sich ScalaTest, das viele unterschiedliche Teststile unterstützt. Auch die in der Java-Welt etablierten Frameworks JUnit und TestNG können verwendet werden. Mit \emph{sbt} existiert ein Buildtool, das für Scala-Projekte der De-facto-Standard ist. Aber auch mit Ant und Maven sind Builds möglich. Auf der Scala-Website finden sich neben der Dokumentation der API\footnote{Programmierschnittstelle, engl. \ac{API}} auch offizielle Tutorials und ein Style Guide.\footnote{\url{http://docs.scala-lang.org/}}
 
 
 
@@ -563,7 +554,7 @@ Viele Eigenheiten der Sprache JavaScript sind nicht erwartungsgemäß sondern ü
 
 \MyMiniSec{Lösungen}
 
-In JavaScript sind viele Programmierkonstrukte unspezifiziert und die Sprache erzwingt nur wenig Struktur. Als Lösung bieten sich verschiedene Programmiermuster an, wie sie in \cite{crockford2008.JSG}, \cite{stefanov2010.JSP} und \cite{flanagan2011} vorgeschlagen werden. Ein weitere Möglichkeit ist hier die Verwendung von Librarys für die gewünschte Funktionalität. \footnote{So bietet zum Beispiel RequireJS (\url{http://requirejs.org/}) Lösungen zur Modularisierung und  Prototype (\url{http://prototypejs.org/}) Erweiterungen zur Umsetzung von Klassen und Vererbung.} Die Vielfalt der möglichen Wege zur Lösung von Standardproblemen stellt hier eine besondere Schwierigkeit dar.
+In JavaScript sind viele Programmierkonstrukte unspezifiziert und die Sprache erzwingt nur wenig Struktur. Als Lösung bieten sich verschiedene Programmiermuster an, wie sie von \cite{crockford2008.JSG}, \cite{stefanov2010.JSP} und \cite{flanagan2011.JDG} vorgeschlagen werden. Ein weitere Möglichkeit ist hier die Verwendung von Librarys für die gewünschte Funktionalität.\footnote{So bietet zum Beispiel RequireJS (\url{http://requirejs.org/}) Lösungen zur Modularisierung und  Prototype (\url{http://prototypejs.org/}) Erweiterungen zur Umsetzung von Klassen und Vererbung.} Aber gerade die Vielfalt der möglichen Wege zur Lösung von Standardproblemen stellt hier eine besondere Schwierigkeit dar.
 
 Der neue Standard ECMAScript 6 bringt hier viele Verbesserungen\footnote{Ein guter Überblick findet sich hier: \url{es6-features.org}}. Die wichtigsten sind:
 
@@ -576,18 +567,10 @@ Der neue Standard ECMAScript 6 bringt hier viele Verbesserungen\footnote{Ein gut
 \item neue Collections: Set, Map und auch WeakSet und WeakMap
 \end{itemize}
 
-Firefox und Chrome unterstützen schon einige Features, aber viele sind noch als experimentell gekennzeichnet.
+Firefox und Chrome unterstützen schon einige dieser Features, viele sind jedoch noch als experimentell gekennzeichnet.
 
 
-\subsection{Tools und Ökosystem}
-
-\TODO{Sublime Text - guter Text-Editor mit Syntax-Highlighting, Code-Vervollständigung (auf Grundlage aller im Dokument bekannten Worte), Code-Schnipsel für häufig verwendete Muster, Doku JSDoc mit Plugin}
-\TODO{IntelliJ - in der Ultimate Edition: JavaScript-Support: Code-Vervollständigung, Navigation (Go to definition, Find usages), Refactoring-Unterstützung, Doku JSDoc}
-
-\TODO{(VIM)}
-
-
-\section{HTML(0.5)}
+\section{HTML}
 
 %-->  https://de.wikipedia.org/wiki/Hypertext_Markup_Language
 %-->  https://en.wikipedia.org/wiki/HTML
@@ -595,9 +578,9 @@ Firefox und Chrome unterstützen schon einige Features, aber viele sind noch als
 %-->  https://en.wikipedia.org/wiki/HTML5
 %-->  http://www.w3.org/2014/10/html5-rec.html.en
 
-\TODO{>>Was ist HTML?
-	- Kernsprache des Webs (bei erster Nennung: World Wide Web)
-	- HTML (Hypertext Markup Language)
+\TODO{>>Was ist \ac{HTML}?
+	- Kernsprache des World Wide Web)
+	- \ac{HTML} (Hypertext Markup Language)
 	- Auszeichnungssprache zur Erstellung von Webseiten
 	- Browser können sie lesen und darstellen
 	- strukturiert durch verschachtelte HTML-Elemente, repräsentiert durch Tags, geschrieben mit spitzen Klammern
@@ -649,7 +632,7 @@ Firefox und Chrome unterstützen schon einige Features, aber viele sind noch als
 	- durch W3C standardisierte Schnittstellenspezifikation ...
 	- Standard seit 1998
 	- aktuelle Version: \ac{DOM} Level 3 (von 2004) von allen gängigen Browsern unterstützt
-	- Baumstruktur für Dokumente, mit Knoten für die einzelnen HTML-ELemente; der Wurzelknoten ist das document-Objekt
+	- Baumstruktur für Dokumente, mit Knoten für die einzelnen \ac{HTML}-ELemente; der Wurzelknoten ist das document-Objekt
 	- wenn ein Browser eine Website rendert:
 		- HTML-Dokument wird in lokalen Speicher geladen
 		- geparset
@@ -703,58 +686,19 @@ Firefox und Chrome unterstützen schon einige Features, aber viele sind noch als
 
 
 
-\section{sbt (0.5)}
+\section{sbt}\label{sec:sbt}
 
-sbt\footnote{\url{http://www.scala-sbt.org/}} ist das Build-Werkzeug für Scala-Projekte aus dem Hause Typesafe. Es ist noch relativ neu, ist aber 
+sbt\footnote{\url{http://www.scala-sbt.org/}} ist das Build-Werkzeug für Scala-Projekte aus dem Hause Typesafe.
+Ähnlich wie bei Maven\footnote{in der Java-Welt etabliertes Buildtool}, gilt das Prinzip "`Konvention über Konfiguration"', das heißt nur Abweichungen von der Konvention müssen definiert werden. Auch die Verzeichnisstruktur entspricht standardmäßig der von Maven. Sie muss aber selbst angelegt werden.
 
-\TODO{Standard-Buildtool auch für Scala.js}
+sbt unterstützt die Kompilierung von Scala-Code und kann auch als Testrunner für Scala-Test-Werkzeuge verwendet werden.
+Build-Definitionen werden in einer Scala-basierten \ac{DSL} geschrieben (statt \ac{XML}-basiert wie bei Maven). Größere Konfigurationen können bei Bedarf in Form eines Scala-Programms geschrieben werden.
 
-\TODO{- Konvention über Konfiguration wie Maven, d. h. nur Abweichungen von der Konvention müssen definiert werden}
-\TODO{- Verzeichnisstruktur entspricht standardmäßig der von Maven (nämlich), muss aber selbst erstellt werden}
+Das Dependency-Management geschieht mit Apache Ivy, so dass Librarys aus öffentlichen Repositorys verwendet werden können. Ivy löst Abhängigkeiten auf und lädt die benötigten Ressourcen aus dem Internet herunter. Standardmäßig wird das Repository von Maven Central verwendet, zusätzliche Repositorys können aber per Konfiguration zugänglich gemacht werden. Ivy legt ein lokales Repository im Verzeichnis .ivy2 unter dem Benutzerverzeichnis an (für Windows: \code{C:\\Users\\Bob}). Hier werden Dateien aus externen Repositorys zwischengespeichert. Lokal publizierte Artefakte landen ebenfalls hier.
 
-\TODO{- einige wichtige Kommandos}
-\TODO{  compile
-  test
-  run
-  package
-  clean
-}
-\TODO{- unterstützt die Kompilierung von Scala-Code}
-\TODO{- kann als Testrunner für Scala-Test-Werkzeuge verwendet werden}
-\TODO{- Build-Definition}
-\TODO{  - in einer scalabasierten DSL (statt XML-basiert wie bei Maven)}
-\TODO{  - größere Konfigurationen können bei Bedarf in Form von eines Scala-Programms geschrieben werden (sbt wird dabie als Library verwendet)}
+sbt hat eine interaktive Shell mit automatischer Tab-Vervollständigung, unterstützt kontinuierliche Builds (mit \code{\~} als Präfix) und inkrementelle Kompilation. Außerdem kann es durch Plugins erweitert werden. Mit sbt sind auch gemischte Java/Scala-Projekte möglich.
 
-\TODO{- Dependency-Management mit Apache Ivy, so dass Librarys aus öffentlichen Artefakt-Repositories verwendet werden können (löst Abhängigkeiten auf und lädt die benötigten Ressourcen aus dem Internet herunter), Default von Maven Central, zusätzliche Repositories können per Konfiguration zugänglich gemacht werden}
-\TODO{  - Ivy legt ein lokales Repository im Verzeichnis .ivy2 unter dem HOME-Verzeichnis des Benutzers an (bei Windows: C:\\Users\\Bob); hier werden Dateien aus Remote Repositories zwischengespeichert; lokal publizierte Artefakte landen ebenfalls hier}
-\TODO{- kontinuierliche Builds und Tests (mit \code{\~} als Präfix) - unmittelbares Feedback auf Änderungen, sehr nützlich}
-\TODO{- unterstützt gemischte Java/Scala-Projekte}
-\TODO{- interaktive Shell/Kommandozeile, unterstütz Tab-completing args to commands}
-\TODO{- inkrementelle Kompilation}
-\TODO{- sbt kann durch Plugins erweitert werden (z.B. Plugins, die automatisch Projekte für IDEs wie Eclipse oder IntelliJ erzeugen), dazu müssen Plugins in der Build-Definition angegeben werden}
-
-\TODO{- Problematisch:}
-\TODO{  - leichter Einstieg, aber für umfangreichere Konfigurationen ist ein tiefes Verständnis nötig -> gute Doku}
-\TODO{  - Syntax}
-\TODO{  - relativ neu im Verlgeich zu (Ant oder Maven) -> kleines aber wachsendes Ökosystem von Plugins}
-\TODO{-->  url -> %\url{http://www.scala-sbt.org/}
-}
-\TODO{-->  url -> %\url{https://en.wikipedia.org/wiki/SBT_%28software%29}
-}
-\TODO{-->  url -> %\url{https://codeascraft.com/2014/09/30/building-a-better-build-our-transition-from-ant-to-sbt/}
-}
-
-
-\TODO{Bsp. für Dependencys (-->  Website Knabe)}
-%  libraryDependencies ++= Seq(
-%       //vendor % artifact % version % scope
-%       "junit" % "junit" % "4.8.1" % "test",
-%       //vendor %% scalaVersionDependentArtifact % ownVersion % scope
-%       "org.scalatest" %% "scalatest" % "2.2.1" % "test"
-%    )
-%    "Dazu ist noch eine Erläuterung nötig. Da Scala agressiv weiterentwickelt wird, gibt es häufig inkompatible Versionsunterschiede zwischen einer Version x.y und x.(y+1), nicht aber zwischen x.y und x.y.z. Daher werden Scala-Librarys üblicherweise gegen eine bestimmte Scala-Version x.y kompiliert und es wird deren Nummer in den Artefaktnamen aufgenommen. All dies leistet der Operator \%\%. Der Operator \% nimmt hingegen den Artefaktnamen, so wie er im Buildfile angegeben ist. Er ist daher für die Benutzung von Java-Librarys meist der richtige."
-
-\TODO{muss von der Kommandozeile aus ausgeführt werden}
+Der Einstieg in die Arbeit mit sbt ist unkompliziert, für umfangreichere Konfigurationen ist allerdings ein tiefes Verständnis nötig. Dafür kann auf eine sehr gute Dokumentation zurückgegriffen werden. sbt ist bisher noch in keine \ac{IDE} voll integriert und muss so von der Kommandozeile ausgeführt werden.
 
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
@@ -1151,37 +1095,27 @@ Dokumentation
 
 \section{Ökosystem: Tools und Librarys}\label{sec:sjs-libs}
 
-Obwohl das Projekt Scala.js noch ziemlich jung ist, existiert schon eine beachtliche Auswahl an verwendbaren Librarys. Einige davon sind JavaScript-spezifisch (zum Beispiel Scala-js-dom), aber die meisten laufen auf beiden Plattformen, JavaScript und \ac{JVM}. Hier sollen nur die Librarys kurz angesprochen werden, die im Rahmen dieser Arbeit zur Anwendung kamen.
+Obwohl das Projekt Scala.js noch ziemlich jung ist, existiert schon eine beachtliche Auswahl an verwendbaren Librarys. 
 
 
+\subsection{sbt-Integration}\label{subsec:sjs-sbt}
 
+Für Scala.js existiert ein sbt-Plugin\footnote{\url{http://www.scala-js.org/doc/sbt-plugin.html}}, mit dem es möglich ist, Scala.js-Anwendungen zu kompilieren, zu testen und auszuführen.
+Prinzipiell kann auch auf sbt verzichtet und direkt mit einem Command Line Interface\footnote{\url{http://www.scala-js.org/downloads.html}} gearbeitet werden. Es wird jedoch empfohlen, sbt zu benutzen.
 
+Um das Scala.js-Plugin zu aktivieren, muss in der \code{build.sbt} die folgende Zeile hinzugefügt werden:
 
-\subsection{sbt-Integration}
-
-%TODO % % % %
-
-\TODO{Für Scala.js existiert ein sbt-Plugin, mit dem es möglich ist, Scala.js-Anwendungen zu kompilieren, zu testen und auszuführen.}
-\TODO{  - compiling, running, linking, optimizing --> url -> %http://www.scala-js.org/doc/sbt-plugin.html
-}
-\TODO{  - als Test-Runner - mit Rhino, Node.js oder PhantomJS}
-
-\TODO{command line interface (CLI)}
-\TODO{  - Scala.js ohne sbt  -->  url -> %http://www.scala-js.org/downloads.html
-}
-
-
-
-in
 \begin{lstlisting}[style=snippet]
 enablePlugins(ScalaJSPlugin)
 \end{lstlisting}
+
+Abhängigkeiten von Librarys werden hier ebenfalls hinzugefügt, entweder so:
 
 \begin{lstlisting}[style=snippet]
 libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.8.0"
 \end{lstlisting}
 
-oder mehrere
+oder, für mehrere Librarys, als \code{Seq}:
 
 \begin{lstlisting}[style=snippet]
 libraryDependencies ++= Seq(
@@ -1192,34 +1126,25 @@ libraryDependencies ++= Seq(
 )
 \end{lstlisting}
 
-\code{\%\%\%} für cross-published libs statt \code{\%\%}
+Für cross-publizierte Librarys muss hier der Operator \code{\%\%\%} (statt \code{\%\%}) verwendet werden. Für Librarys lässt sich auch ein Scope festlegen. Zum Beispiel wird durch nachgestelltes \code{\% "test"} für die betreffende Library Test-Scope definiert, das heißt die Library ist nur in diesem Modus verfügbar.
 
-Scope (z.B. Test) festlegen durch nachgestelltes \code{\% "test"}
+Wenn eine Scala.js-Fassade für eine JavaScript-Bibliothek als Dependency definiert ist, so wird die entsprechende JavaScript-Bibliothek automatisch geholt.
 
-Wenn eine Scala.js-Fassade für eine JavaScript-Bibliothek als Dependency definiert ist wird die entsprechende JavaScript-Bibliothek automatisch geholt.
-
-
-Diese Zeile:
+Der offiziellen Dokumentation\footnote{ \url{http://www.scala-js.org/doc/sbt/depending.html}} zufolge, sollte die Zeile:
 
 \begin{lstlisting}[style=snippet]
 skip in packageJSDependencies := false
 \end{lstlisting}
 
-sorgt dafür, dass alle JavaScript-Dependencys in einer Datei \code{-jsdeps.js} gesammelt werden. Dadurch muss nur eine (!) Datei für alle JS-Deps in das HTML-Dokument eingebunden werden. Dies ist so zufolge der offiziellen Dokumentation (-->  \url{http://www.scala-js.org/doc/sbt/depending.html}). Allen Erfahrungen im Rahmen dieser Arbeit nach funktioniert das sogar ganz ohne diese Zeile.
+in die \code{build.sbt} aufgenommen werden. Dadurch werden beim Build alle JavaScript-Dependencys in einer Datei (\code{-jsdeps.js}) gesammelt. Auf diese Weise muss nur \emph{eine} Datei für alle JavaScript-Dependencys in das \ac{HTML}-Dokument eingebunden werden. -- Den Erfahrungen im Rahmen dieser Arbeit nach, funktioniert dies sogar ganz ohne die zusätzliche Zeile in der Build-Definition.
 
-Auch beliebige JavaScript-Bibliotheken können mittels WebJars\footnote{\url{http://www.webjars.org/}} geholt werden.
-
-Hierbei kann eine minifizierte Alternative der JavaScript-Bibliothek angegeben werden. 
-
-Durch die Zeile
+Auch beliebige JavaScript-Bibliotheken können mittels WebJars\footnote{\url{http://www.webjars.org/}} geholt werden. So können auch minifizierte Alternativen der JavaScript-Librarys festgelegt werden. Soll dies beispielsweise für jQuery geschehen, so wird die folgende Zeile benötigt:
 
 \begin{lstlisting}[style=snippet]
 jsDependencies += "org.webjars" % "jquery" % "2.1.4" / "jquery.js" minified "jquery.min.js"
 \end{lstlisting}
 
-wird festgelegt, dass die Scala.js-Fassaden-Bibliothek im \code{FullOptJS}-Modus die minifizierte Version von jQuery in die 
--jsdeps.min.js integriert. Andernfalls
-wird die nicht-minifizierte Version verwendet, das gilt auch für Dependencys, für die keine minifizierte Version existiert.
+Eine Scala.js-Fassaden (wie \code{scalajs-jquery}), kann nun im \code{FullOptJS}-Modus auf die minifizierte Version von jQuery zurückgreifen. Diese wird passend in die Ausgabedatei \code{-jsdeps.min.js} integriert. Ohnde diese explizite Angabe wird immer die nicht-minifizierte Version verwendet.
 
 
 
@@ -1227,6 +1152,8 @@ wird die nicht-minifizierte Version verwendet, das gilt auch für Dependencys, f
 
 
 
+
+\TODO{KURZ!  --> }
 
 -- sbt-Kommandos --
 
@@ -1240,11 +1167,13 @@ Infos hier geben tieferen Einblick scheinen aber nicht auf dem aktuellsten Stand
 \code{set scalaJSStage in Global := FullOptStage}
 
 
-\code{fastOptJS // = dev} kompiliert und optimiert (schnellerer Compiler-Lauf, größere Datei) - zur Entwicklung
+\code{fastOptJS} zur Entwicklung
 
-\code{fullOptJS // = prod} kompiliert und optimiert (langsamerer Compiler-Lauf, aggressiver optimiert -> kleinere Datei, schnelleres JS) - zur Auslieferung
+\code{fullOptJS} zur Auslieferung
 
-mit vorangestellter  \code{\~}, z.B. \code{\~fastOptJS}
+kontinuierlicher Modus mit vorangestellter  \code{\~}, z.B. \code{\~fastOptJS}
+
+
 
 \code{run} kompilierte Scala.js-Anwendung in einer JavaScript Laufzeit/VM (Rhino, Node.js oder PhantomJS) ausführen (main-Methode wird benötigt wie in -> Hallo-Welt)
 	- läuft per default in der \emph{PreLinkStage}, verwendet Rhino
@@ -1253,7 +1182,7 @@ mit vorangestellter  \code{\~}, z.B. \code{\~fastOptJS}
 		- für \ac{DOM}-\ac{API}: \code{jsDependencies += RuntimeDOM} aktiviert PhantomJS (langsamer als Node.js)
 
 \code{test} kompilierte Scala.js-Tests im \code{tests/}-Verzeichnis auf Rhino, Node.js oder PhantomJS ausführen
-	- erzeugt im Verzeichnis \code{target/test-reports/} Test-Reports in XML-Form
+	- erzeugt im Verzeichnis \code{target/test-reports/} Test-Reports in \ac{XML}-Form
 
 \code{compile} kompiliert zu Scala.js Bytecode
 
@@ -1295,7 +1224,7 @@ Ordnerstruktur anlegen wie folgt
 
 TODO: Ordner-Struktur
 
-leider nicht automatisch, es gibt (angeblich?) Plugins (???), eigenes Skript schreiben (-> Datenträger)
+> leider nicht automatisch, es gibt (angeblich?) Plugins (???), eigenes Skript schreiben (-> Datenträger)
 	- ein Weg mit IntelliJ (zu spät entdeckt): sbt-Projekt erzeugen, generiert Standard-Ordnerstruktur (inkl. leerer Java Verzeichnisse), erzeugt build.sbt, plugins.sbt und build.properties, die angepasst werden können
 
 
@@ -1328,11 +1257,11 @@ SalaJSKeys.jsDependencies += "org.webjars" % "jquery" % "2.1.4" / "jquery.js"
 wenn es ein getyptes Interface gibt (wie für jQuery der Fall), dann genügt (webjars werden transitiv referenziert):
 libraryDependencies += "be.doeraene" %%% "scalajs-jquery" % "0.8.0"
 
-Einbindung in HTML mit einem script-Tag möglich durch:
+Einbindung in \ac{HTML} mit einem script-Tag möglich durch:
 skip in packageJSDependencies := false
 FRAGE: ist das noch nötig, oder geschieht das schon automatisch?
 
-dann in der HTML:
+dann in der \ac{HTML}:
 <script src="projectname-jsdeps.js"></script>
 
 
@@ -1384,7 +1313,7 @@ dann in der HTML:
   -->  http://www.scala-js.org/news/2015/08/31/announcing-scalajs-0.6.5/
   -->  http://www.scala-js.org/doc/sjs-defined-js-classes.html
 
-
+\TODO{<--  KURZ!}
 
 
 
@@ -1395,6 +1324,8 @@ dann in der HTML:
 \subsection{IDE-Support}
 (http://www.scala-lang.org/news/2015/02/05/scala-js-no-longer-experimental.html)
 
+\TODO{KURZ!}
+
 \ac{IDE}-Supports
   "With Scala.js tooling, you get syntax highlighting, code completion (even for JavaScript libraries and the \ac{DOM}!), jump-to-definition, and most other features you come to expect in a Scala tooling environment" (http://www.scala-lang.org/news/2015/02/05/scala-js-no-longer-experimental.html)
 
@@ -1404,7 +1335,7 @@ dann in der HTML:
     - Code-Inspection: schlägt automatisch Scala-Code-Verbesserungen
     - Typ-Inferenz: Alt + Enter - für automatische Typ-Annotation einer Variablendefinition (Bsp. \scala{val xs = List("a", "b")} wird zu \scala{val xs: List[String] = List("a", "b"))}
 
-    auch für JavaScript, HTML, CSS (in der Ultimate Edition, free für edu und open source)
+    auch für JavaScript, \ac{HTML}, CSS (in der Ultimate Edition, free für edu und open source)
       - Syntax-Highlighting
       - Code-Completion und Source-Docs zu vielen Schlüsselworten, zu JS-Standard-\ac{API}s wie \ac{DOM}-\ac{API}
       - jump to definition
@@ -1416,111 +1347,41 @@ dann in der HTML:
 
 \subsection{Scala.js workbench}
 
-- sbt-Plugin zum automatischen Live-Neuladen des Browsers
-
-
-
-
-
+Die Scala.js workbench\footnote{\url{https://github.com/lihaoyi/workbench}} ist ein sbt-Plugin zur automatischen Aktualisierung des Browsers 
+bei gespeicherten Änderungen am Code. Dies soll die kontinuierliche Entwicklung mit Scala.js erleichtern. Auch Ausgaben des Compilers werden in die Browser-Konsole übertagen.
 
 \subsection{Librarys}
 
-
-\TODO{...}
+Hier sollen nur die Librarys kurz angesprochen werden, die im Rahmen dieser Arbeit zur Anwendung kamen. Einige davon sind JavaScript-spezifisch (zum Beispiel Scala-js-dom), aber die meisten laufen auf beiden Plattformen, JavaScript und \ac{JVM}. Alle Librarys befinden sind noch vor Version 1.0.
 
 
 \subsubsection{Scala-js-dom}
 
-- statische Typen für die \ac{DOM}-\ac{API}, Erweiterungen
-
--> doeraene TDI S. 8 links oben:
-	von Li Haoy, durch automatische Übersetzung von TypeScript-Typen
-
-http://scala-js.github.io/scala-js-dom/
-scalajs.dom.ext.Color
+Scala-js-dom\footnote{\url{http://scala-js.github.io/scala-js-dom/}} bietet statische Typen für die komplette \ac{DOM}-\ac{API}. Damit sind unter anderem DOM-Manipulationen, die Verwendung des Canvas, von XMLHttpRequests, Drag and Drop, Websockets und localStorage möglich. Zusätzlich sind Komfort-Erweiterungen für Ajax-Requests und zum erleichterten Arbeiten mit Tastatur-Codes und Farben enthalten.
 
 \subsubsection{(scala-js-jquery)}
 
-- statische Typen für jQuery. (Alternativ gibt es die Bibliothek \code{jquery-facade}, die aber nicht ausprobiert wurde.))
+scala-js-jquery\footnote{\url{https://github.com/scala-js/scala-js-jquery}} enthält statische Typen für die populäre jQuery-Library. Es existiert auch eine Alternative (\code{jquery-facade}), die aber nicht ausprobiert wurde.
 
 \subsubsection{ScalaTags}
 
-- cross-kompilierende HTML-Templating-Library (mehr Typsicherheit für Tags)
+ScalaTags\footnote{\url{http://lihaoyi.github.io/scalatags/}} liefert eine \ac{DSL} zum komfortablen \ac{HTML}-Templating. Durch die Verwendung können unter anderem nicht-valide \ac{HTML}-Tags vermieden werden und die \ac{IDE}-Unterstützung für das Schreiben von \ac{HTML}-Elementen ist verbessert. Auch CSS kann generiert werden; hierbei ist es sogar möglich, Stylesheets voneinander erben zu lassen. ScalaTags funktioniert für JavaScipt und auf der \ac{JVM}.
 
-Motivation
-%  -->  http://lihaoyi.github.io/scalatags/#WhyScalatags
-%  -->  http://lihaoyi.github.io/scalatags/#PriorWork
+\subsubsection{uTest}
 
-
-
-mit \scala{TypedTag[html.Element].render} wird eine \ac{DOM}-Tree-Node erzeugt
-  val foo = div("`foo"').render
-  assert(foo.textContent == "foo")
-  foo.text
-  assert(foo.textContent == "foo")
-%  --> http://lihaoyi.github.io/scalatags/#UsingtheDOM
-
-erlaubt direkten Zugriff auf referenzierte Elemente ohne Suche im \ac{DOM} mit \ac{DOM}-Selektoren (mit document.getElementById(...) bzw. jQuery)
-%  -->  http://lihaoyi.github.io/scalatags/#UseCases
-
-ScalaTags: importe / Bundles - schwer zu verstehen, am einfachsten JsDom.all\_, aber dann clutter im Namespace
-
-CSS/Style - wenn nötig können Attribute und Styles in Variablen gemerkt werden; auf diese Weise können auch eigene Attribute festgelegt werden, die Scalatags nicht kennt:
-%  val dataAppKey = "data-app-key".attr
-%  val customBackgroundStyle = "background-color".style
-%  div(
-%    dataAppKey:="YOUR_APP_KEY",
-%    customBackgroundStyle:="red"
-%  )
-
-(CSS mit Vererbung
-%  -->  http://lihaoyi.github.io/scalatags/#CSSStylesheets)
-
-Vertiefung
-%  -->  http://lihaoyi.github.io/scalatags/#Internals
-
-
-\subsubsection{utest}
-
-- minimale cross-kompilierende Test-Library
-
-\TODO{asserts usw. verschieben nach Hallo-Welt-Tests}
-mögliche Macros:
-\begin{lstlisting}[language=Scala]
-object MyTest extends TestSuite {
-  override def tests = TestSuite{
-    "foo" - {
-      assert(1 + 1 == 2)
-      assertMatch(List(1, 2, 3)){case 1 :: _ => }
-      intercept[NoSuchElementException](Nil.head)
-      compileError("val x: Int = 1.2")
-    }
-  }
-}
-\end{lstlisting}
-
-assert und intercept wie in ScalaTest
-
-
-asynchrone Tests mit Futures möglich, aber nicht erforscht
-
-Die bekannten Test-Bibliotheken ScalaTest und Specs2 können nicht verwendet werden, da sie zu stark von Java-Spezifika abhängen, um nach Scala.js portiert werden zu können\cite[\#OtherTestingLibraries]{haoyi.HOS}.
-
+uTest\footnote{\url{https://github.com/lihaoyi/utest}} (\emph{micro-test}) ist eine minimale cross-kompilierende Test-Library.
 
 \subsubsection{Scala-Async}
 
-- Scala-Library zur einfacheren Handhabung von Asynchronität; funktioniert mit Scala.js -->  http://docs.scala-lang.org/sips/pending/async.html
+Scala-Async\footnote{\url{https://github.com/scala/async}} ist eine Scala-Library zur einfacheren Handhabung von Asynchronität mit Futures. Sie funktioniert auch problemlos mit Scala.js.
 
-\subsubsection{autowire}
+\subsubsection{Autowire}
 
-- cross-kompilierende Library für statisch getypte Ajax-Aufrufe und RPCs
+Autowire\footnote{\url{https://github.com/lihaoyi/autowire}} ist eine cross-kompilierende Library für statisch typisierte Netzwerkaufrufe. Hierfür muss zusätzlich eine Serialisierungs-Library festgelegt werden. Diese ist ebenso frei wählbar wie 
 
 \subsubsection{(uPickle) (?)}
 
-- cross-kompilierende Library zur Serialisierung)
-
-
-
+uPickle\footnote{\url{http://lihaoyi.github.io/upickle-pprint/upickle/}} ist eine cross-kompilierende Serialisierung-Library.
 
 
 
@@ -1561,7 +1422,7 @@ Es wurde Windows 8.1 Pro auf einem System mit 64-Bit Intel Core i7-3517U Prozess
 
 Zur Zeitmessung der Compiler- und Test-Läufe wurde auf die Zeitangaben von sbt zurückgegriffen.
 
-Für die ermittelten Dateigrößen wurden die für den entsprechend Modus (\code{FastOptJS}, \code{FullOptJS} oder \code{test}) erzeugte JavaScript-Datei, die Source-Maps-Datei, die Datei mit den JavaScript-Dependencys sowie die benötigten HTML- und CSS-Dateien betrachtet. Andere Artefakte, wie der erzeugte Zwischencode wurden hierbei ignoriert.
+Für die ermittelten Dateigrößen wurden die für den entsprechend Modus (\code{FastOptJS}, \code{FullOptJS} oder \code{test}) erzeugte JavaScript-Datei, die Source-Maps-Datei, die Datei mit den JavaScript-Dependencys sowie die benötigten \ac{HTML}- und CSS-Dateien betrachtet. Andere Artefakte, wie der erzeugte Zwischencode wurden hierbei ignoriert.
 
 Zur Messung der Ausführungsgeschwindigkeit von JavaScript-Programmen kam JSLitmus\footnote{\url{http://www.broofa.com/Tools/JSLitmus/}} mit Google Chrome (46.0.2490.80) zum Einsatz.
 
@@ -1613,6 +1474,8 @@ Für die bequemere Navigation im Projekt bietet sich der Einsatz \ac{IDE} an. In
 
 
 \section{IDE-Integration}
+
+\TODO{KURZ!}
 
 == in IntelliJ importieren ==
 
@@ -1687,6 +1550,8 @@ nach Änderungen an sbt-Konfigurationsdateien ist es nötig, erneut \code{sbt ec
 
 \section{Installation von Source-map-support}
 
+\TODO{KURZ!}
+
 Node.js ...
 
 Damit Stacktraces richtig aufgelöst werden sollte \emph{source-map-support}\footnote{\url{https://www.npmjs.com/package/source-map-support}} im Projekt installiert werden mit:
@@ -1709,6 +1574,8 @@ Künftig kann der \code{node\_modules}-Ordner bedenkenlos gelöscht werden. Ein 
 
 \section{Installation und Start von Anwendung und Tests}
 
+\TODO{KURZ! - Stichpunkte}
+
 - Sourcen von Datenträger oder github(?) (-> git client), hierzu genügt der Aufruf git clone <repo> vom Terminal im gewünschten Verzeichnis
 - Kommandos zum kompilieren --> sbt-Abschnitt - hierher???
 - Readme für jedes Projekt mit ggf. abweichenden spezifischen Anweisungen zum Start der jeweiligen Anwendung
@@ -1729,26 +1596,24 @@ Das Eingangsbeispiel ist bewusst einfach gehalten, um in diesem Rahmen wichtige 
 
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-\section{Ein Minimalbeispiel}
+\section{Zwei Minimalbeispiele}
 
 %TODO Hinweis: lose orientiert an  -->  http://www.scala-js.org/doc/tutorial.html
 
 \TODO{Projekte: sjs-hello-scalajs, sjs-hello-scalajs2}
 
-Ziel war es hier, anhand eines Minimalbeispiels verschiedene Grundbedingungen der Entwicklung mit Scala.js zu untersuchen. Dazu sollte ein klassischen Hallo-Welt-Programms sollte zum Laufen gebracht werden. In diesem kleinen Rahmen sollte die grundlegende Handhabung und Konfiguration von Scala.js verstanden werden. Automatisierte Builds und einfache Tests sollten erprobt und auf ihre Performance hin untersucht werden. Auch die Größe der für die Auslieferung relevanten Kompilate sollte betrachtet werden.
+Ziel war es hier, anhand von zwei Minimalbeispielen verschiedene Grundbedingungen der Entwicklung mit Scala.js zu untersuchen. Dazu sollte als erstes ein klassischen Hallo-Welt-Programms zum Laufen gebracht werden. In diesem kleinen Rahmen sollte die grundlegende Handhabung und Konfiguration von Scala.js verstanden werden. Automatisierte Builds und einfache Tests sollten erprobt und auf ihre Performance hin untersucht werden. Auch die Größe der für die Auslieferung relevanten Kompilate sollte betrachtet werden.
 
-In einem weiteren sehr minimalen Beispiel sollten einfache \ac{DOM}-Manipulationen die Benutzerinteraktion mit Buttons und der Einsatz von jQuery ausprobiert und die Testbarkeit von Oberflächen-Elementen geklärt werden. Außerdem sollte die Source-Maps-Unterstützung zur Fehlersuche erprobt werden.
+Anhand eines weiteren minimalen Beispiels sollten einfache \ac{DOM}-Manipulationen, die Benutzerinteraktion mit Buttons und der Einsatz von jQuery ausprobiert und die Testbarkeit von Oberflächen-Elementen geklärt werden. Außerdem sollte die Source-Maps-Unterstützung zur Fehlersuche erprobt werden.
 
 
-\MyMiniSec{Kurzbeschreibung des Beispielprogramms}
+\MyMiniSec{Kurzbeschreibung des Hallo-Welt-Programms}
 
-Das minimale Programm erzeugt die Ausgabe "`Hello world!"' in der Konsole des Browsers, wenn die entsprechende Webseite geöffnet wird. Der Aufruf \code{sbt run} erzeugt die gleiche Ausgabe in der sbt-\ac{REPL}.
-
-Der benötigte Scala-Code ist überschaubar, wie Listing \ref{code:hello.scala} zeigt.
+Das minimale Programm erzeugt die Ausgabe "`Hello world!"' in der Konsole des Browsers, wenn die entsprechende Webseite geöffnet wird. Der Aufruf \code{sbt run} erzeugt die gleiche Ausgabe in der sbt-\ac{REPL}. Der Scala-Code hierfür ist überschaubar, wie Listing \ref{code:hello.scala} zeigt.
 
 \lstinputlisting[language=Scala, caption={Scala.js-Code für ein Hallo-Welt-Programm.}, label={code:hello.scala}]{listings/01hello-scalajs/HelloApp.scala}
 
-\scala{HelloApp} erbt vom Trait \scala{JSApp}, der eine \scala{main}-Methode mit Rückgabetyp \scala{Unit} verlangt. Dadurch kann die \scala{HelloApp} mit ihrer \scala{main}-Methode nun in JavaScript unter ihrem voll qualifizierten Namen verwendet werden. Die Methode \scala{println} benutzt die Standardausgabe. Wenn das Programm in der sbt-\ac{REPL} ausgeführt wird ist es die Konsole dort, im Browser wird die Browser-Konsole verwendet.
+\scala{HelloApp} erbt vom Trait \scala{JSApp}, der eine \scala{main}-Methode mit Rückgabetyp \scala{Unit} verlangt. Dadurch kann die \scala{HelloApp} mit ihrer \scala{main}-Methode nun in JavaScript unter ihrem voll qualifizierten Namen verwendet werden. Die Methode \scala{println} benutzt die Standardausgabe, das ist, je nach dem, von wo aus die Anwendung ausgeführt wird, die Browser-Konsole oder das sbt-\ac{REPL}.
 
 Dieses Programm lässt sich bereits auf der sbt-Konsole ausführen (Listing \ref{code:run-hello}).
 
@@ -1766,33 +1631,31 @@ Hello world!
 [success] [...]
 \end{lstlisting}
 
-Damit das kleine Programm im Browser ausgeführt werden kann, muß es in eine HTML-Datei eingebunden werden, wie in Listing \ref{code:hello.html}.
+Damit das kleine Programm im Browser ausgeführt werden kann, muß es in eine \ac{HTML}-Datei eingebunden werden, wie in Listing \ref{code:hello.html}.
 
 \lstinputlisting[language=HTML5, caption={HTML-Code zur Einbindung der Scala.js-Datei in eine Website.}, label={code:hello.html}]{listings/01hello-scalajs/index-dev.html}
 
 
-\TODO{auf diese Weise können Produ und Dev getrennt werden; Source Maps und Workbench in Dev eingebunden <-- spezielles Dev-Setup}
-Hierbei empfehlen sich zwei getrennte HTML-Dateien, eine zur Entwicklung und eine für das fertige Produkt, in der die jeweils passenden JavaScript-Dateien zu verwenden sind. Wie in Abschnitt~\ref{sec:compiler} beschrieben, erzeugt der Scala.js-Compiler, je nach Task, \code{fastOptJS} oder \code{fullOptJS}, unterschiedliche JavaScript-Dateien, die anhand ihres Suffix, \code{-fastopt.js} beziehungsweise \code{-opt.js}, auseinandergehalten werden können. Die Pflege von zwei nahezu identischen HTML-Dokumenten mag etwas lästig scheinen. Andererseits besteht ihr Hauptzweck in der unterschiedlichen Konfiguration für Entwicklung oder Produktion. \TODOi{ BEWERTTUNG, besser in Ergebnisse-Teil;} \REDOi \REDOi
+\MyMiniSec{Kurzbeschreibung des zweiten Programms}
 
-Das erweiterte Minimalbeispiel reagiert auf Betätigung eines Buttons mit einer Text-Ausgabe sowohl auf die Browser-Konsole als auch in die Webseite.
+Das erweiterte Minimalbeispiel erzeugt einen \code{<div>}-Container, der an den \code{<body>} des \ac{HTML}-Dokuments angehängt wird. An diesen Container werden verschiedene \ac{HTML}-Elemente angehängt, die vom Scala.js-Programm erzeugt werden: verschiedene \ac{HTML}-Elemente, die den Text "Hello world!" enthalten, sowie zwei Buttons. Die Buttons reagieren auf das Anklicken mit einer Text-Ausgabe sowohl auf die Browser-Konsole als auch in die Webseite. Einer der Buttons zählt, wie oft er angeklickt wurde und gibt die Anzahl bei der Ausgabe mit aus.
 
-%\subsubsection{Ergebnisse der Untersuchung und Bewertung}
+
+\MyMiniSec{Lernaufwand}
+
+Für beide Minimalprogramme sowie für die Tests zum zweiten Programm diente das offizielle Scala.js-Tutorial\footnote{\url{http://www.scala-js.org/doc/tutorial.html}} als Grundlage. Diesem lässt sich sehr gut folgen. Grundkenntnisse in Scala, JavaScript, \ac{HTML} und im Umgang mit sbt sind allerdings hilfreich.
+
 
 \MyMiniSec{Konfigurationsaufwand}
 
-Im direkten Vergleich mit einem Programm in reinem JavaScript und HTML (Listing \ref{code:hello-js.html}):
+Es wird die für ein sbt-Projekt übliche Konfiguration (siehe Abschnitt \ref{sec:sbt}) bestehend aus \code{build.sbt} und \code{project/}-Verzeichnis mit \code{build.properties} benötigt. Zusätzlich muss in einer \code{plugins.sbt} im \code{project/}-Verzeichnis das Scala.js-Plugin hinzugefügt und dieses in der \code{build.sbt} aktiviert werden (siehe Abschnitt \ref{subsec:sjs-sbt}). Der Mehraufwand gegenüber einem reinen Scala-Projekt ist demnach gering. 
 
-\lstinputlisting[language=HTML5, caption={HTML-Code mit eingebettetem JavaScript für ein Hallo-Welt-Programm.}, label={code:hello-js.html}]{listings/01hello-scalajs/hello-js-index.html}
 
-ist der Aufwand, der für ein Scala.js-Projekt mit gleicher Funktionalität betrieben werden muss deutlich größer. Was sich dort auf eine einzige Datei mit wenigen Zeilen Code beschränkt, benötigt hier Build-Definitionen, Plugins und eine ganze Projektstruktur. Andererseits schlägt sich der Gewinn, der sich daraus ergibt, typsicher in Scala für die Oberfläche zu programmieren, bei einem so trivialen Beispiel noch nicht nieder.
+Die Einbindung von jQuery mit der Library \code{scala-js-jquery} ist grundsätzlich unkompliziert. Etwas schwieriger war es, zu verstehen, wie sich hier und generell minifizierte Versionen für die im \code{target/}-Ordner erzeugten JavaScript-Dependencys erzwingen lassen (siehe \ref{subsec:sjs-sbt}).
 
-Die Einbindung von \code{scala-js-jquery} ist unkompliziert. Dazu muss lediglich
-\begin{lstlisting}[style=snippet]
-libraryDependencies += "be.doeraene" %%% "scalajs-jquery" % "0.8.0"
-\end{lstlisting}
-in der \code{build.sbt} hinzugefügt werden.
 
-Etwas schwieriger war aber, zu verstehen wie sich hier und generell minifizierte Versionen für die im \code{target/}-Ordner erzeugten JavaScript-Dependencys erzwingen lassen \TODOi{(siehe Abschnitt ???)}.
+%TODO~~~~~
+
 
 Für Tests wurde \code{uTest} verwendet und ensprechend den \code{libraryDependencies} hinzugefügt. Um das \ac{DOM} für Tests verwenden zu können, muss wie in \TODOi{Kapitel sbt-Integration ???} beschrieben, der Eintrag
 \begin{lstlisting}[style=snippet]
@@ -1869,7 +1732,7 @@ Es wird deutlich, dass sich der Compiler ab dem zweiten Lauf "`stabilisiert"' un
 
 Es ist auch zu erkennen, dass Testläufe, selbst ohne Code-Änderungen nicht besonders schnell sind. In den insgesamt 7 Tests werden 25 Assertions verwendet.\footnote{Im Code stehen 13 Assertions, davon werden 3 jeweils in einer Schleife 5-mal aufgerufen.} \TODOi{Hier darf gemutmaßt werden, ob dabei auch die Ausführungsgeschwindigkeit von PhantomJS eine Rolle spielt.  <-- BESSER KEINE MUTMASSUNG?} Schnellere Testläufe wären hier in jedem Fall wünschenswert. Andererseits fallen etwas langsamere Tests nicht ganz so stark ins Gewicht, wenn man im kontinuierlichen Modus arbeitet (zu erreichen mit dem Kommando \code{\~test}).
 %TODO % % % AB HIER WEITER SIMONS KORREKTURVORSCHLÄGE DURCHGEHEN
-Die Größe der Kompilate übertrifft reines HTML/JavaScript (187 Bytes) um einen Faktor von etwa 100. Andererseits ist dieser Vergleich nicht ganz fair. Ein Großer Teil der von Scala.js generierten JavaScript-Datei ist die Scala-Standardbibliothek.
+Die Größe der Kompilate übertrifft reines \ac{HTML}/JavaScript (187 Bytes) um einen Faktor von etwa 100. Andererseits ist dieser Vergleich nicht ganz fair. Ein Großer Teil der von Scala.js generierten JavaScript-Datei ist die Scala-Standardbibliothek.
 Der Optimierer und der Google Closure Compiler reduzieren die Code-Menge (durch Techniken wie Dead code elimination oder die aggressive Verkürzung von Variablennamen) schon sehr stark. Die Größe von Dateien voll optimiertem Scala.js-generierten JavaScript-Dateien wird deshalb mit wachsender Code-Basis des eigenen Software-Projekts nicht etwa proportional, sondern langsamer anwachsen. Li Haoyi verweist zum Beispiel auf ein eigenes Projekt mit einem Umfang von ca. 2000 Zeilen Code, welches voll optimiert noch 288 kB groß ist. (TODO! -> eigenes client-server-Bsp.) Das Problem wird weiter relativiert durch die Tatsache, dass die meisten Server ihre Daten gzip-komprimiert übertragen, was laut Haoyi die Datenlast auf etwa ein Zehntel verkleinert.\cite[\#BlobSize]{haoyi.HOS}
 
 Seit Bestehen des Projekts wurden bei der Verringerung der erzeugten Dateigröße schon erhebliche Fortschritte erzielt. Generierte der Prototyp des Compilers für ein Hallo-Welt-Programm noch 16 MB, so reduzierte sich dies bald darauf mit der Einführung des Google Closure Compilers ins Projekt im August 2013 schon auf 900 kB \cite[Folie 5 f., Min. 6]{doeraene2014.WHB}. Der aktuelle Stand mit 20 kB (siehe \ref{table:compiler-performance1}) ist somit schon erstaunlich gut und lässt auf weitere Verbesserung in der Zukunft hoffen.
@@ -1921,9 +1784,35 @@ Der Einsatz von Source Maps erhöht den Komfort beim Debugging in der Browser-Ko
 
 \MyMiniSec{Testbarkeit}
 
-Mit der verwendeten Test-Biliothek uTest lassen sich Tests formulieren, um zu prüfen, dass HTML-Elemente wie erwartet existieren oder dass Buttons erwartungsgemäß reagieren. Allerdings ist es hierfür nötig, die betreffenden HTML-Elemente mit eindeutigen IDs zu versehen, was einen zusätzlichen Overhead darstellt. Für eine leichtere Selektion von HTML-Elementen in Tests erweist sich darüber hinaus der Einsatz von jQuery als nützlich. Was hier fehlt, ist die Möglichkeit, wie im JavaScript-Test-Framework Jasmine, mithilfe sogenannter \emph{Spies} prüfen zu können, ob und mit welchen Argumenten eine Methode aufgerufen wurde.\footnote{\url{http://jasmine.github.io/2.0/introduction.html\#section-Spies}} Für Scala.js existiert zwar ein Wrapper für Jasmine. In einer Ankündigung auf der offiziellen Scala.js-Webseite\cite{scalajs.ASJ} wird aber explizit von dessen Verwendung abgeraten. Grundsätzlich lässt sich mit uTest gut arbeiten, allerdings erhält man beim Fehlschlagen von Tests häufig einen sehr langen Stacktrace. Für einen größeren Komfort wäre hier für die Zukunft ein IDE-Plugin mit navigierbarem Stacktrace wünschenswert.
+Mit der verwendeten Test-Biliothek uTest lassen sich Tests formulieren, um zu prüfen, dass \ac{HTML}-Elemente wie erwartet existieren oder dass Buttons erwartungsgemäß reagieren. Allerdings ist es hierfür nötig, die betreffenden \ac{HTML}-Elemente mit eindeutigen IDs zu versehen, was einen zusätzlichen Overhead darstellt. Für eine leichtere Selektion von \ac{HTML}-Elementen in Tests erweist sich darüber hinaus der Einsatz von jQuery als nützlich. Was hier fehlt, ist die Möglichkeit, wie im JavaScript-Test-Framework Jasmine, mithilfe sogenannter \emph{Spies} prüfen zu können, ob und mit welchen Argumenten eine Methode aufgerufen wurde.\footnote{\url{http://jasmine.github.io/2.0/introduction.html\#section-Spies}} Für Scala.js existiert zwar ein Wrapper für Jasmine. In einer Ankündigung auf der offiziellen Scala.js-Webseite\cite{scalajs.ASJ} wird aber explizit von dessen Verwendung abgeraten. Grundsätzlich lässt sich mit uTest gut arbeiten, allerdings erhält man beim Fehlschlagen von Tests häufig einen sehr langen Stacktrace. Für einen größeren Komfort wäre hier für die Zukunft ein IDE-Plugin mit navigierbarem Stacktrace wünschenswert.
 
-\TODO{HIER einfügen asserts -> 3.10 uTest}
+... kontinuierliche Builds und Tests (mit \code{\~} als Präfix) - unmittelbares Feedback auf Änderungen, sehr nützlich
+
+
+
+
+\TODO{asserts usw. verschieben nach Hallo-Welt-Tests}
+mögliche Macros:
+\begin{lstlisting}[language=Scala]
+object MyTest extends TestSuite {
+  override def tests = TestSuite{
+    "foo" - {
+      assert(1 + 1 == 2)
+      assertMatch(List(1, 2, 3)){case 1 :: _ => }
+      intercept[NoSuchElementException](Nil.head)
+      compileError("val x: Int = 1.2")
+    }
+  }
+}
+\end{lstlisting}
+
+assert und intercept wie in ScalaTest
+
+asynchrone Tests mit Futures möglich, aber nicht erforscht
+Die bekannten Test-Bibliotheken ScalaTest und Specs2 können nicht verwendet werden, da sie zu stark von Java-Spezifika abhängen, um nach Scala.js portiert werden zu können\cite[\#OtherTestingLibraries]{haoyi.HOS}.
+
+
+
 
 
 
@@ -1938,7 +1827,7 @@ Mit der verwendeten Test-Biliothek uTest lassen sich Tests formulieren, um zu pr
 
 \TODO{Ziel formulieren}
 
-Typsicheres HTML-Templating 
+Typsicheres \ac{HTML}-Templating 
 
 TODO: Einleitungssatz
 
@@ -1951,18 +1840,18 @@ TODO: Einleitungssatz
 
 minisec{Kurzbeschreibung des Beispielprogramms}
 
-Verschiedene valide HTML-Tags werden mit Scala.js erzeugt.
+Verschiedene valide \ac{HTML}-Tags werden mit Scala.js erzeugt.
 
 minisec{Ergebnisse der Untersuchung und Bewertung}
 
-Betrachtet wurden vier Möglichkeiten, in Scala.js HTML zu generieren. Dazu sei in der \code{index.html} ein
+Betrachtet wurden vier Möglichkeiten, in Scala.js \ac{HTML} zu generieren. Dazu sei in der \code{index.html} ein
 \html{<div>} mit der ID "`container"' definiert. Die Referenz darauf wird im Scala.js-Programm bekannt gemacht durch:
 
 \begin{lstlisting}[language=Scala, style=snippet]
 val container: org.scalajs.dom.raw.Element = document.getElementById("container")
 \end{lstlisting}
 
-Mithilfe von Scala-js-dom können die \ac{DOM}-Methoden \scala{createElement()} zum erzeugen von HTML-Elementen und \scala{appendChild()} zum einhängen von Elementen in den DOM-Tree verwendet werden.
+Mithilfe von Scala-js-dom können die \ac{DOM}-Methoden \scala{createElement()} zum erzeugen von \ac{HTML}-Elementen und \scala{appendChild()} zum einhängen von Elementen in den DOM-Tree verwendet werden.
 
 \begin{lstlisting}[language=Scala, caption={HTML-Generierung mit Scala-js-dom und Nodes.}]
 val foo = document.createElement("div")
@@ -1975,13 +1864,13 @@ div.appendChild(par)
 node.appendChild(elm)
 \end{lstlisting}
 
-Allerdings können so auch, ob absichtlich oder durch Tippfehler, nicht-valide HTML-Elemente erzeugt werden, wie zum Beispiel diese:
+Allerdings können so auch, ob absichtlich oder durch Tippfehler, nicht-valide \ac{HTML}-Elemente erzeugt werden, wie zum Beispiel diese:
 \begin{lstlisting}[language=Scala, style=snippet]
 document.createElement("xyz")     // --> <xyz>...</xyz>
 document.createElement("\@\$#!")  // --> Laufzeitfehler
 \end{lstlisting}
 
-Eine weitere Möglichkeit, ist die direkte Manipulation der \code{innerHTML}-Property, der HTML-Code als String zugewiesen werden kann.
+Eine weitere Möglichkeit, ist die direkte Manipulation der \code{innerHTML}-Property, der \ac{HTML}-Code als String zugewiesen werden kann.
 
 \begin{lstlisting}[language=Scala, caption={HTML-Generierung mit Scala-js-dom und Strings.}]
 node.innerHTML = s"""
@@ -1991,11 +1880,11 @@ node.innerHTML = s"""
 """.stripMargin
 \end{lstlisting}
 
-Bei dieser Variante sind aus Tippfehlern resultierende unvalide HTML-Tags sogar noch wahrscheinlicher. Haoy warnt in diesem Zusammenhang auch vor der Gefahr von Cross-Site-Scripting.\cite[\#HelloWorld:HTML]{haoyi.HOS}
+Bei dieser Variante sind aus Tippfehlern resultierende unvalide \ac{HTML}-Tags sogar noch wahrscheinlicher. Haoy warnt in diesem Zusammenhang auch vor der Gefahr von Cross-Site-Scripting.\cite[\#HelloWorld:HTML]{haoyi.HOS}
 
-Mit ScalaTags nun ist es möglich, in Scala typsichere HTML-Templates zu schreiben, aus denen sich valider HTML-Code generieren lässt. Attribute wie etwa \code{id} und \code{class} können ebenso wie CSS-Styles gesetzt werden.\footnote{ScalaTags bietet bei Bedarf sogar eine \ac{DSL}, um CSS-Stylesheets zu generieren.}
+Mit ScalaTags nun ist es möglich, in Scala typsichere \ac{HTML}-Templates zu schreiben, aus denen sich valider \ac{HTML}-Code generieren lässt. Attribute wie etwa \code{id} und \code{class} können ebenso wie CSS-Styles gesetzt werden.\footnote{ScalaTags bietet bei Bedarf sogar eine \ac{DSL}, um CSS-Stylesheets zu generieren.}
 
-Eine Möglichkeit ist es nun, aus diesen Templates HTML-Strings zu rendern, was vor allem für serverseitiges HTML-Templating interessant ist (hier existiert schließlich kein \ac{DOM}). In dieser Variante kann ScalaTags auch in reinen Scala-Projekten eingesetzt werden.
+Eine Möglichkeit ist es nun, aus diesen Templates \ac{HTML}-Strings zu rendern, was vor allem für serverseitiges \ac{HTML}-Templating interessant ist (hier existiert schließlich kein \ac{DOM}). In dieser Variante kann ScalaTags auch in reinen Scala-Projekten eingesetzt werden.
 
 \begin{lstlisting}[language=Scala, caption={HTML-Generierung mit ScalaTags und Strings.}]
 import scalatags.Text.all._
@@ -2017,7 +1906,7 @@ node.appendChild(
 )
 \end{lstlisting}
 
-Damit ist es möglich typsicher, deklarativ und nahe an HTML, gleichzeitig (schon durch das Wegfallen der schließenden Tags) sehr lesbaren Code zu schreiben. Hinzu kommt die Möglichkeit, Kontrollfluss-Anweisungen wie \scala{for} und \scala{if/else} einzustreuen (ein Beispiel hierfür: Listing \ref{code:setupCurrencySelect}).
+Damit ist es möglich typsicher, deklarativ und nahe an \ac{HTML}, gleichzeitig (schon durch das Wegfallen der schließenden Tags) sehr lesbaren Code zu schreiben. Hinzu kommt die Möglichkeit, Kontrollfluss-Anweisungen wie \scala{for} und \scala{if/else} einzustreuen (ein Beispiel hierfür: Listing \ref{code:setupCurrencySelect}).
 
 
 
@@ -2086,7 +1975,7 @@ Ein anderer bekannter Fehler ist das ungewöhnliche Verhalten der Zeichenfläche
 
 Alle geplanten Anforderungen ließen sich umsetzen: der Zugriff auf die \ac{DOM}-\ac{API}, das Zeichnen auf den Canvas, timergesteuerte Ausführung und die Verwendung von Event-Handlern.
 
-Um ein Canvas-Objekt zu erhalten, gibt es in JavaScript zwei Möglichkeiten: entweder man definiert im HTML-Dokument ein Canvas-Element mit einer eindeutigen ID \html{<canvas id="myCanvas"></canvas>} und greift im JavaScript-Code darauf zu:
+Um ein Canvas-Objekt zu erhalten, gibt es in JavaScript zwei Möglichkeiten: entweder man definiert im \ac{HTML}-Dokument ein Canvas-Element mit einer eindeutigen ID \html{<canvas id="myCanvas"></canvas>} und greift im JavaScript-Code darauf zu:
 
 \begin{lstlisting}[language=JavaScript, style=snippet]
 var canvas = document.getElementById("my-canvas")  // JavaScript
@@ -2124,7 +2013,7 @@ ctx.fillStyle = "silver"
 ctx.fillRect(x, y, width, heigth)
 \end{lstlisting}
 
-Die Typ-Casts mögen etwas unschön sein, aber die zwei beschriebenen Fälle sind auch die einzigen, die in der Beispielanwendung benötig werden. Sébastien Doeraene zufolge ist die erste Art Cast zur Spezialisierung des HTML-Elements, unvermeidbar, andernfalls müsste der \ac{DOM} selbst Teil des Typsystems sein. Der zweite Cast zum konkreten Rendering-Kontext wird wohl in einer künftigen Version von Scala.js nicht mehr nötig sein. Doeraene weist auch darauf hin, dass in sechs Scala.js-Beispielanwendungen mit insgesamt 1000 Zeilen Code exakt diese beiden Casts, und nur diese, benötigt werden.\cite[S. 8]{doeraene2013.TDI}
+Die Typ-Casts mögen etwas unschön sein, aber die zwei beschriebenen Fälle sind auch die einzigen, die in der Beispielanwendung benötig werden. Sébastien Doeraene zufolge ist die erste Art Cast zur Spezialisierung des \ac{HTML}-Elements, unvermeidbar, andernfalls müsste der \ac{DOM} selbst Teil des Typsystems sein. Der zweite Cast zum konkreten Rendering-Kontext wird wohl in einer künftigen Version von Scala.js nicht mehr nötig sein. Doeraene weist auch darauf hin, dass in sechs Scala.js-Beispielanwendungen mit insgesamt 1000 Zeilen Code exakt diese beiden Casts, und nur diese, benötigt werden.\cite[S. 8]{doeraene2013.TDI}
 
 Um einen Timer zu starten, der ein Aktion regelmäßig ausführt, bietet die \ac{DOM}-\ac{API} die Methode \scala{setInterval}. Die folgende Anweisung erzeugt zum Beispiel einmal pro Sekunde eine Ausgabe auf die Konsole:
 
@@ -2236,7 +2125,7 @@ Das \code{bootSnippet} legt fest, welcher JavaScript als Einsprungspunkt für da
 refreshBrowsers <<= refreshBrowsers.triggeredBy(fastOptJS in Compile)
 \end{lstlisting}
 
-Nun muss die Workbench noch in der Entwicklungsversion des HTML-Dokuments eingebunden werden durch folgenden Code-Schnipsel:
+Nun muss die Workbench noch in der Entwicklungsversion des \ac{HTML}-Dokuments eingebunden werden durch folgenden Code-Schnipsel:
 
 \begin{lstlisting}[language=HTML5, style=snippet]
 <script src="/workbench.js"></script>
@@ -2309,6 +2198,8 @@ Das Workbench-Plugin funktioniert nicht immer ganz zuverlässig, und manchmal mu
 
 %TODO#############################
 
+\TODO{EVTL NUR MIT BILD UND wenigen Stichpunkten}
+
 \TODO{Projekt: extract: string-analyzer}
 
 \TODO{>> zusammenlegen mit HTML-Templating (s.o.)}
@@ -2328,7 +2219,7 @@ Das Workbench-Plugin funktioniert nicht immer ganz zuverlässig, und manchmal mu
 
 %\subsection{Ziel der Untersuchung}
 
-Die Kommunikation mit Objekten ((?)) außerhalb des Web-Clients, wie zum Beispiel mit Webservices, ist ein wichtiger Bestandteil der allermeisten interaktiven Web-Anwendungen. Dazu wird standardmäßig eine als \emph{Ajax} bezeichnete Technik verwendet. Dabei werden aus der Web-Anwendung heraus über das HTTP-Protokoll Daten von einem Server angefragt, um auf Grundlage der Antwort Teile der HTML-Seite zu aktualisieren. Diese Standardtechnik und die Behandlung von Asynchronität mit Scala.js sollte erprobt werden.
+Die Kommunikation mit Objekten ((?)) außerhalb des Web-Clients, wie zum Beispiel mit Webservices, ist ein wichtiger Bestandteil der allermeisten interaktiven Web-Anwendungen. Dazu wird standardmäßig eine als \emph{Ajax} bezeichnete Technik verwendet. Dabei werden aus der Web-Anwendung heraus über das HTTP-Protokoll Daten von einem Server angefragt, um auf Grundlage der Antwort Teile der \ac{HTML}-Seite zu aktualisieren. Diese Standardtechnik und die Behandlung von Asynchronität mit Scala.js sollte erprobt werden.
 
 %\subsection{Kriterien}
 
@@ -2403,6 +2294,9 @@ container.appendChild(
 \end{lstlisting}
 
 Die Felder für Eingabe (\scala{inputAmount}) und Ergebnis (\scala{outputAmount}) wurden zuvor definiert und mit \scala{.render} umgewandelt, damit sie im Programm referenziert werden können. Auf diese Art ist es nicht nötig, den Umweg über \scala{document.getElementById()} oder mit jQuery-Selektoren zu gehen.
+
+\TODO{>> VORTEIL: kein Umweg über Selektoren und IDs nötig}
+\TODO{>> NAHCTEIL: ScalaTags: importe / Bundles - schwer zu verstehen, am einfachsten JsDom.all\_, aber dann clutter im Namespace}
 
 Für die Umrechnung wurde eine Klasse \scala{Converter} definiert. Als Quelle für die Umrechnungskurse sollte die Yahoo! Finance \ac{API}\footnote{\url{https://code.google.com/p/yahoo-finance-managed/wiki/YQLAPI}} genutzt werden, die auf HTTP-Anfrage hin Ergebnisse im JSON-Format\footnote{JavaScript Object Notation, ein kompaktes Format zum Datenaustausch.} liefert. Anfragen werden in einer Query-Language formuliert. Die Anfrage:
 
@@ -2484,6 +2378,9 @@ case class Converter(
 
 Durch den Aufruf von \scala{JSON.parse} wird der Antworttext deserialisiert. Dabei erhält man ein dynamisch getyptes Objekt. Hier muss nun besonders sorgfältig vorgegangen werden, da der Compiler uns nicht vor Tippfehlern schützt. Die Rate muss zur sinnvollen Verwendung zuerst in einen String, und dieser dann in einen \scala{Double}-Wert umgewandelt werden.
 
+\TODO{async erläutern!}
+>> zu async --> url -> %http://docs.scala-lang.org/sips/pending/async.html
+
 Nun kann eine Methode geschrieben werden, die auf Knopfdruck hin eine HTTP-Anfrage beim Webservice stellt und beim Eintreffen der Antwort dafür sorgt, dass der umgerechnete Betrag auf der Webseite angezeigt wird.
 
 \begin{lstlisting}[language=Scala, style=snippet]
@@ -2545,7 +2442,7 @@ Mittelwert, Median, Varianz und Standardabweichung als Bibliotheksfunktionen
 
 \MyMiniSec{Ergebnisse der Untersuchung und Bewertung}
 
-einfache GUI in klassischem HTML/JavaScript, die Scala.js-generierte Statistik-Lib verwendet (siehe Abb. \ref{fig:stat-lib-gui}) - funktioniert sehr gut
+einfache GUI in klassischem \ac{HTML}/JavaScript, die Scala.js-generierte Statistik-Lib verwendet (siehe Abb. \ref{fig:stat-lib-gui}) - funktioniert sehr gut
 
 
 
@@ -2673,6 +2570,8 @@ also recht nahe beieinander
 
 \TODO{Projekt: clientserver}
 
+\TODO{EVTL NUR KURZ MIT BILD und Stichpunkten}
+
 %\subsection{Ziel der Untersuchung}
 
 \TODO{Ziel formulieren}
@@ -2710,7 +2609,7 @@ Schnittstelle in einer Sprache
 - leichter nur eine (!) Library (jeweils für Templating und Serialisierung) zu lernen, die in Client und Server verwendet werden kann
 \cite[\#SharingCode]{haoyi.HOS}
 
-- relativ einfache statisch typisierte RPCs mit autowire
+- relativ einfache statisch typisierte RPCs mit Autowire
 
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
@@ -2847,7 +2746,7 @@ großes Potential \\
 		Wiederverwendbarkeit von Code \\
 		nur in einer Sprache denken, nicht eine weitere lernen \\
 	typbedingte Laufzeitfehler auch für Client-Seite (JavaScript) ausgeschlossen sind \\
-	mit Templating-Library auch HTML-Tags typsicher macht \\
+	mit Templating-Library auch \ac{HTML}-Tags typsicher macht \\
 	
 Doku noch im Wandel, stellenweise ("`tiefer drin"') noch etwas sparsam erklärt, zeitweise und sporadisch nicht mit den neuesten Änderungen synchron (/nicht auf dem aktuellsten Stand), aber im Großen und Ganzen ziemlich gut, erlaubt recht tiefen Einblick \\
 
@@ -2879,7 +2778,7 @@ Blick über den Tellerrand: \\
 - anderer vielversprechender Ansatz: Elm \\
 	-->  \url{http://elm-lang.org/} \\
 	- FRP (Functional Reactive Programming) Sprache um deklarativ UIs für den Browser zu schreiben, statisch typisiert \\
-	- kompiliert nach HTML, CSS und JavaScript \\
+	- kompiliert nach \ac{HTML}, CSS und JavaScript \\
 	- hat \ac{REPL}, package manager, debugger \\
 	- librarys \\
 	- Alternative zu Scala.js? - kein Scala, nur Client... \\
@@ -2958,6 +2857,8 @@ Ausblick \\
 	\acro{EPFL}{École polytechnique fédérale de Lausanne}
 	\acro{DSL}{Domain-specific language}
 	\acro{REPL}{Read-eval-print loop}
+	\acro{XML}{Extensible Markup Language}
+	\acro{HTML}{Hypertext Markup Language}
 \end{acronym}
 
 % ABBILDUNGSVERZEICHNIS ERSTELLEN
