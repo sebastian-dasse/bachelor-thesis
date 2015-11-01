@@ -294,7 +294,8 @@ Um Interaktivität im Browser zu ermöglichen, reicht HTML allein nicht aus. Ein
 
 JavaScript wurde 1995 von Brendan Eich für Netscape innerhalb von zehn Tagen entwickelt.\footnote{Es ging damals darum, den Konkurrenten Java auszustechen: "`JS had to ,look like Java` only less so, be Java's dumb kid brother or boy-hostage sidekick. Plus, I (sic!) had to be done in ten days or something worse than JS would have happened."' \cite{eich2010.KBE}}  Der Einsatzzweck der Sprache bestand zu dieser Zeit in erster Linie darin, statische Webseiten durch interaktive Elemente attraktiver zu machen. Komplexe clientseitige Web-Anwendungen, wie sie heute mit JavaScript entwickelt werden, hatte man damals nicht im Blick. Um der wachsenden Komplexität der Web-Anwendungen gerecht zu werden, kommt eine immer breiter werdende Palette an JavaScript-Frameworks zum Einsatz, durch die auf strukturierende Hilfsmittel und auf erweiterte Standardfunktionalitäten zurückgegriffen werden kann. Diese erleichtern zwar die Arbeit und führen schneller zu qualitativ hochwertigerer Software, die Einarbeitung in jedes dieser unterschiedlichen Frameworks verlangt allerdings einen erheblichen Aufwand.
 
-Die Sprache JavaScript ist aus verschiedenen Gründen problematisch. So existieren zahlreiche Inkonsistenzen und kontraintuitive Sprachbesonderheiten, welche zwar dokumentiert sind, aber das Programmieren erschweren. JavaScript ist dynamisch typisiert, was besonders in größeren Projekten zum Problem wird. Refactorings sind schwierig und es kann zu schwer zu findenden Laufzeitfehlern kommen (mit Meldungen wie dem notorischen "`undefined is not a function"'). Zusätzlich sind viele Konzepte, wie zum Beispiel Klassen, Modularisierung oder Konstanten, in JavaScript unspezifiziert. Sie sind zwar umsetzbar, doch häufig existieren viele verschiedene Wege um zu erreichen, was in anderen Programmiersprachen einfach Teil der Sprache ist. Häufig bieten hier Frameworks oder Librarys von Drittanbietern Lösungen, allerdings um den Preis zusätzlicher Lernzeit.
+Die Sprache JavaScript ist aus verschiedenen Gründen problematisch. So existieren zahlreiche Inkonsistenzen und kontraintuitive Sprachbesonderheiten, welche zwar dokumentiert sind, aber das Programmieren erschweren. JavaScript ist dynamisch typisiert, was besonders in größeren Projekten zum Problem wird. Refactorings sind schwierig und es kann zu schwer zu findenden Laufzeitfehlern kommen (mit Meldungen wie dem notorischen "`undefined is not a function"'). Zusätzlich sind viele Konzepte, wie zum Beispiel Klassen, Modularisierung oder Konstanten, in JavaScript unspezifiziert. Sie sind zwar umsetzbar, doch häufig existieren viele verschiedene Wege um zu erreichen, was in anderen Programmiersprachen einfach Teil der Sprache ist. 
+Das führt dazu, das für solche Standardprobleme jedes Mal das "`Rad neu erfunden"' wird oder neu zu auszuhandeln ist, welcher Weg beschritten werden soll. Häufig bieten hier Frameworks oder Librarys von Drittanbietern Lösungen, allerdings um den Preis zusätzlicher Lernzeit.
 
 % siehe jeweils Einleitung von Doeraene 2013 und Haoyi 2015
 
@@ -379,7 +380,7 @@ Pakete können, anders als in Java, beliebig verschachtelt werden. Die Zugriffsm
 %funktional (aber auch imperativ)
 
 %Scala unterstützt funktionale Programmierung.
-Scala ist eine vollständig funktionale Sprache\footnote{Funktionale Programmierung basiert auf dem in den 1930er Jahren von Alonzo Church entwickelten Lambda-Kalkül. Dessen zentrale Idee besteht darin, dass Funktionen anonym definiert werden. Das Lambda-Kalkül ist Turing-vollständig, und somit gleich mächtig wie imperative Sprachen. Jedes imperative Programmierkonstrukt lässt sich demnach auch funktional ausdrücken.}. Funktionen sind in Scala First-class-Citizens, das heißt sie haben denselben Status wie alle anderen Daten. Sie können einer anderen Funktion als Parameter übergeben werden oder von einer anderen Funktion zurückgegeben werden. Diese "`andere"' Funktion bezeichnet man als Funktion höherer Ordnung. Funktionen können ineinander verschachtelt werden und anonym als \emph{Funktionsliterale} (oft auch Lambda-Funktionen genannt) verwendet werden.
+Scala ist eine vollständig funktionale Sprache\footnote{Funktionale Programmierung basiert auf dem in den 1930er Jahren von Alonzo Church entwickelten Lambda-Kalkül. Dessen zentrale Idee besteht darin, dass Funktionen anonym definiert werden. Das Lambda-Kalkül ist Turing-vollständig, und somit gleich mächtig wie imperative Sprachen. Jedes imperative Programmierkonstrukt lässt sich demnach auch funktional ausdrücken.}. Funktionen sind in Scala First-Class-Citizens, das heißt sie haben denselben Status wie alle anderen Daten. Sie können einer anderen Funktion als Parameter übergeben werden oder von einer anderen Funktion zurückgegeben werden. Diese "`andere"' Funktion bezeichnet man als Funktion höherer Ordnung. Funktionen können ineinander verschachtelt werden und anonym als \emph{Funktionsliterale} (oft auch Lambda-Funktionen genannt) verwendet werden.
 
 Funktionen bilden Eingabewerte auf Ausgabewerte ab, ohne dabei den Zustand der Eingabewerte zu verändern. Man sagt: Sie sind frei von Nebenwirkungen (\emph{side effects}). Zusätzlich sind Funktionen referentiell transparent, das heißt sie liefern für gleiche Argumente immer das gleiche Ergebnis. Für jeden Eingabewert kann der Funktionsaufruf durch sein Resultat ersetzt werden, ohne dass sich dadurch die Semantik ändert. Durch diese Eigenschaften wird die funktionale Programmierung zunehmend attraktiv für den Einsatz in nebenläufigen Programmen. Einfach ausgedrückt: Werte die sich nie ändern müssen auch nicht synchronisiert werden.
 
@@ -418,7 +419,7 @@ Zur IDE-Integration existieren Plugins für Eclipse\footnote{Es existiert auch e
 
 Für Tests eignet sich ScalaTest, das viele unterschiedliche Teststile unterstützt. Auch die in der Java-Welt etablierten Frameworks JUnit und TestNG können verwendet werden.
 
-Mit \textit{sbt} existiert ein Buildtool, das Scala-Projekte der De-facto-Standard ist. Aber auch mit Ant und Maven sind Builds möglich.
+Mit \emph{sbt} existiert ein Buildtool, das Scala-Projekte der De-facto-Standard ist. Aber auch mit Ant und Maven sind Builds möglich.
 
 Auf der Scala-Website finden sich neben der Dokumentation der API\footnote{Programmierschnittstelle, engl. \ac{API}} auch offizielle Tutorials und ein Style Guide.\footnote{\url{http://docs.scala-lang.org/}}
 
@@ -428,31 +429,14 @@ Auf der Scala-Website finden sich neben der Dokumentation der API\footnote{Progr
 
 JavaScript ist eine dynamische Skriptsprache, die es erlaubt, objektorientiert und funktional zu programmieren. Der primäre Zweck von JavaScript ist es, aus statischen Webseiten interaktive Webanwendungen machen\cite[S. 361]{flanagan2011.JDG}.
 
-\TODO{warum JS?}
-\TODO{wo läuft JS?}
+Die wichtigste Zielplattform für JavaScript ist der Browser. Dieser benötigt zur Ausführung von JavaScript eine JavaScript-Engine, die den Code zur Laufzeit interpretiert und in Maschinencode übersetzt. Aus Performancegründen sind moderne JavaScript-Engines allerdings meistens keine Interpreter mehr, sondern führen eine Just-in-time-Kompilierung (JIT)\footnote{\url{https://en.wikipedia.org/wiki/Just-in-time_compilation}} durch. Einige aktuell verbreitete JavaScript-Engines sind V8 (Google Chrome und Opera), SpiderMonkey (Mozilla Firefox) und Nitro (Apple Safari). Ein Vorteil von Web-Anwendungen besteht darin, dass diese vom Benutzer nicht installiert werden müssen. Hierzug genügt der Aufruf im Browser. Darüber hinaus ist in den letzten Jahren auf der Serverseite Node.js (V8) als leichtgewichtige JavaScript-Laufzeitumgebung populär geworden.
 
-Die wichtigste Zielplattform für JavaScript ist der Browser. Dieser benötigt zur Ausführung von JavaScript eine JavaScript-Engine, die den Code zur Laufzeit interpretiert und in Maschinencode übersetzt. Aus Performancegründen sind moderne JavaScript-Engines allerdings meistens keine Interpreter mehr, sondern führen eine Just-in-time-Kompilierung (JIT)\footnote{\url{https://en.wikipedia.org/wiki/Just-in-time_compilation}} durch. Einige aktuell verbreitete JavaScript-Engines sind V8 (Google Chrome und Opera), SpiderMonkey (Mozilla Firefox) und Nitro (Apple Safari).
-
-%TODO ++++++++   H I E R   W E I T E R   +++++++
-
-%TODO verschieben -> PhantomJS (ein auf WebKit basierender sogenannter \textit{headless browser}, der zum Beispiel für Tests zum Einsatz kommt)
-
-Darüber hinaus ist in den letzten Jahren auf der Serverseite Node.js (V8) als leichtgewichtige JavaScript-Laufzeitumgebung populär geworden.
-
-\TODO{Vorteile der JavaScript-Plattform:}
-\TODO{- Web-Anwendungen müssen vom Benutzer nicht installiert werden, können einfach im Browser aufgerufen werden}
-\TODO{- Referenzen zwischen verschiedenen Systemen durch Hyperlinks}
-\TODO{- Sicherheit durch Sandbox-Prinzip foot-> %\footnote{kein Zugriff aus dem Browser heraus (begrenzte Ausnahme: Zugriff auf User-bestimmte Dateien durch File API)
-}
-\TODO{cite -> %\cite[\#Javascript-the-platform]{haoyi.HOS}
-}
-
-Der Sprachstandard wird unter dem offiziellen Namen ECMAScript \TODOi{(kurz: ES)} von der Organisation Ecma International standardisiert (als Standard ECMA-262). Der aktuell von allen wichtigen Browsern unterstützte Standard ECMAScript 5.1 stammt aus dem Jahr 2011.\footnote{\url{http://www.ecma-international.org/ecma-262/5.1/}} Die im Juni 2015 veröffentlichte Version ECMAScript 6 enthält viele Verbesserungen um die Sprache zu modernisieren, ist aber momentan noch nicht ausreichend in den verbreiteten Browser implementiert.
+Der Sprachstandard wird unter dem offiziellen Namen ECMAScript von der Organisation Ecma International standardisiert (als Standard ECMA-262). Der aktuell von allen wichtigen Browsern unterstützte Standard ECMAScript 5.1 stammt aus dem Jahr 2011.\footnote{\url{http://www.ecma-international.org/ecma-262/5.1/}} Die im Juni 2015 veröffentlichte Version ECMAScript 6 enthält viele Verbesserungen um die Sprache zu modernisieren\footnote{\url{http://www.ecma-international.org/publications/standards/Ecma-262.htm}}, ist aber momentan noch nicht ausreichend in den verbreiteten Browsern implementiert.
 
 JavaScript ähnelt zwar in der Syntax seinem ungleichen Namensvetters Java, die Semantik unterscheidet sich hingegen teilweise stark\cite{eich1996.JSL}.
 
 
-\subsection{Objektorientierung}
+\subsection{Objektorientierung}\label{subsec:js-oo}
 
 JavaScript ist eine objektorientierte Sprache. Objekte auf können auf drei Arten erzeugt werden:
 
@@ -462,164 +446,137 @@ JavaScript ist eine objektorientierte Sprache. Objekte auf können auf drei Arte
   \item seit ES5 mit \js{Object.create()}, wobei als Parameter der Konstruktor übergeben werden muss.
 \end{itemize}
 
-Objekte haben Eigenschaften (\textit{properties}), die primitive Werte, Referenzen auf andere Objekte, oder Methoden sein können.
-
-Propertys eines Objekts können neben der geläufigen Punkt-Notation (\js{foo.bar}) auch durch den in eckigen Klammern eingeschlossene Membernamen als String \mbox{(\js{foo["bar"]})} referenziert werden. Bei JavaScript-Objekten handelt es sich nämlich im Grunde um Collections benannter Werte, das heißt sie sind nichts anderes als assoziative Arrays\footnote{eine Reihe von Schlüssel-Wert-Paaren, in Scala: \textit{Map}, in anderen Sprachen gelegentlich auch: \textit{Dictionary}}. Daher werden bei Bedarf Objekte auch explizit als Collections verwendet, wobei als Schlüssel allerdings nur Strings erlaubt sind.
+Objekte haben Eigenschaften (\emph{Propertys}), die primitive Werte, Referenzen auf andere Objekte, oder Methoden sein können. Propertys eines Objekts können neben der geläufigen Punkt-Notation (\js{foo.bar}) auch durch den in eckigen Klammern eingeschlossene Membernamen als String \mbox{(\js{foo["bar"]})} referenziert werden. Bei JavaScript-Objekten handelt es sich nämlich im Grunde um Collections benannter Werte, das heißt sie sind nichts anderes als assoziative Arrays\footnote{eine Collection, die aus Schlüssel-Wert-Paaren besteht, in Scala: \emph{Map}, in anderen Sprachen gelegentlich auch: \emph{Dictionary}}. Daher werden bei Bedarf Objekte auch explizit als Collections verwendet, wobei als Schlüssel allerdings nur Strings erlaubt sind.
 
 Das Konzept von Klassen ist nicht Teil der Sprache. Vererbung funktioniert in JavaScript über den Prototypen. Dazu referenziert jedes JavaScript-Objekt ein anderes Objekt, deren Eigenschaften es erbt: den Prototypen. Objekte die vom selbem Prototypen erben kann man als Klasse auffassen.\cite{mdn.WWO}\cite[S. 115 ff., S. 199 ff.]{flanagan2011.JDG}
 
 \subsection{Funktionale Programmierung}
 
-Funktionen sind in JavaScript First-class-Citizens. Sie können in Variablen gespeichert oder verschachtelt werden, können als Parameter übergeben werden oder als Rückgabewert einer Funktion dienen. Damit sind auch Funktionen höherer Ordnung möglich. Ein häufiger Anwendungsfall für Funktionen höherer Ordnung in JavaScript sind sogenannte Callback-Funktionen. Ein andere sind Closures. Durch \textit{Currying} lässt sich auch die partielle Anwendungen von Fuktionen umsetzen. --- All das aber im Vergleich zu Scala mühsamer und \TODOi{verbose}.
+Funktionen sind in JavaScript First-Class-Citizens (wie in Scala). Sie können in Variablen gespeichert oder verschachtelt werden, können als Parameter übergeben werden oder als Rückgabewert einer Funktion dienen. Damit sind auch Funktionen höherer Ordnung möglich. Ein häufiger Anwendungsfall für Funktionen höherer Ordnung in JavaScript sind sogenannte Callback-Funktionen. Ein anderer sind Closures\footnote{anonyme Funktionen mit Zugriff auf ihren Erstellungskontext}. Durch \emph{Currying} lässt sich auch die partielle Anwendungen von Fuktionen umsetzen. --- All dies ist aber im Vergleich zu Scala mühsamer und \emph{verbose} (wortreich).
 
-Die Behandlung von Funktionsparametern ist in JavaScript äußerst flexibel. Werden beim Funktionsaufruf weniger Parameter übergeben als im Methodenheader deklariert sind, erhalten diese automatisch den Wert \js{undefined}. Werden zu viele Parameter übergeben, so werden diese einfach ingoriert. Auf alle tatsächlich übergebenen Argumente kann innerhalb einer \js{Function} durch eine Liste namens \js{arguments} zugegriffen werden, unabhängig vom Methodenheader.
-
-Mit dem Schlüsselwort \js{this} wird innerhalb einer \js{Function} der Aufrufkontext referenziert. Das ist dasjenige Objekt, \textit{an} dem oder \textit{durch} das die Methode aufgerufen wurde. 
-\cite[199 ff.]{flanagan2011.JDG}
+Die Behandlung von Funktionsparametern ist in JavaScript äußerst flexibel. Werden beim Funktionsaufruf weniger Parameter übergeben als im Methodenheader deklariert sind, erhalten diese automatisch den Wert \js{undefined}. Werden zu viele Parameter übergeben, so werden diese einfach ingoriert. Auf alle tatsächlich übergebenen Argumente kann innerhalb einer \js{Function} durch eine Liste namens \js{arguments} zugegriffen werden, unabhängig von im Methodenheader deklarierten Parametern.
 
 \subsection{Dynamische Typisierung}
 
 JavaScript ist eine in äußerstem Maße dynamische Sprache. Objekte können in JavaScript zur Laufzeit grundlegend verändert werden. Methoden können hinzugefügt, Methoden zu Attributen gemacht oder durch andere Methoden ersetzt werden.
 
-Variablen sind in JavaScript nicht typisiert. Daher kann einer Variablen erst ein Wert vom Typ A und später ein Wert vom Typ B zugewiesen werden. Außerdem finden in JavaScript viele implizite Konvertierungen statt, wenn in einem Programm ein anderer als der erwartete Typ verwendet wird, zum Beispiel von \js{Number} nach \js{String} oder von einem beliebigen Typ nach \js{Boolean}.
+Variablen sind in JavaScript nicht typisiert. Daher ist es zulässig, einer Variablen erst einen Wert vom Typ A und später einen Wert vom Typ B zuzuweisen. Außerdem finden in JavaScript viele implizite Konvertierungen statt, wenn in einem Programm ein anderer als der erwartete Typ verwendet wird, zum Beispiel von \js{Number} nach \js{String} oder von einem beliebigen Typ nach \js{Boolean}.
 
 JavaScript unterscheidet nur wenige Datentypen. Es gibt die primitiven Typen: \js{Boolean}, \js{Number} und \js{String}. 
-Dabei werden alle Zahlen ohne Unterscheidung zwischen Ganz- und Fließpunktkommazahlen als \textit{float} repräsentiert. Alle primitiven Typen sind \textit{immutable}.
-
-Alle primitiven Typen außer \js{null} und \js{undefined} werden als Objekte behandelt. Dazu existieren Wrapper, in welche die primitiven Typen bei Bedarf automatisch konvertiert werden. Auf diese Weise können beispielsweise Methoden der Wrapper-Klasse \js{String} direkt an einem Stringliteral aufgerufen werden (\js{\"foo\".toUpperCase()}).
+Dabei werden alle Zahlen ohne Unterscheidung zwischen Ganz- und Fließpunktkommazahlen als \js{Float} repräsentiert. Alle primitiven Typen sind \emph{immutable} (unveränderlich). Außerdem werden sie ausnahmslos als Objekte behandelt. Dazu existieren Wrapper, in welche die primitiven Typen bei Bedarf automatisch konvertiert werden. Auf diese Weise können beispielsweise Methoden der Wrapper-Klasse \js{String} direkt an einem Stringliteral aufgerufen werden (\js{\"foo\".toUpperCase()}).
 
 Daneben existieren zwei spezielle Werte: \js{undefined}, für Variablen ohne zugewiesenen Wert, und \js{null}, die "`kein-Objekt"'-Referenz (verwirrenderweise vom Typ \js{Object}).
 
-Alle Typen außer den primitiven Typen und \js{null} und \js{undefined} sind \textit{mutable}.
-
-\js{Object} ist der Datentyp für alle Referenztypen, der wie beschrieben, manchmal auch explizit als Collection verwendet wird. \js{Array} ist der einzige Typ für geordnete Collections.
-
-Es gibt den Typ \js{Function} für Funktionen. Daneben existieren nur noch \js{Date}, \js{Error}, \js{Math} und \js{Regexp}.
-\cite[S. 29 ff.]{flanagan2011.JDG}
+Alle anderen Typen sind \emph{mutable}. \js{Object}, der Datentyp für alle Referenztypen, \js{Array}, der Typ für geordnete Collections und \js{Function} für Funktionen. Daneben existieren nur noch die Typen \js{Date}, \js{Error}, \js{Math} und \js{Regexp}. \cite[S. 29 ff.]{flanagan2011.JDG}
 
 
 \subsection{Besonderheiten und Probleme}
 
-\TODO{>>lexical scope (Variablen ohne var global)}
-\TODO{>>function scope, trotz blockbasierter Syntax}
-\TODO{Bsp.}
+JavaScript hat einige Besonderheiten, die besonders für Programmierer, die von einer syntaktisch verwandten Sprache wie Java kommen, überraschend sind. So können zum Beispiel keine konstanten Werte festgelegt werden. Diese Besonderheiten bereiten häufig Probleme. Deshalb sollen hier einige der wichtigeren erläutert werden.
+
+
+\MyMiniSec{Scope und Hoisting}
+
+Obwohl JavaScript eine blockbasierte Syntax verwendet, hat es keinen \emph{Block Scope}\footnote{Scope ist der Gültigkeitsbereich von Variablen.}. Stattdessen gilt \emph{Function Scope}. Ein Beispiel:
+
 \begin{lstlisting}[language=JavaScript, style=snippet]
-var i = 123
+var i = 123;
 for (var i = 0; i < 10; i++) { /**/ }
-console.log(i) // --> 123
+console.log(i);  // --> 10
+\end{lstlisting}
+
+Hier verdeckt die Variablendeklaration von \js{i} in der \js{for}-Schleife nicht etwa das außerhalb der Schleife deklarierte \js{i}. Stattdessen findet eine Neudeklaration der Variablen statt. Entsprechend hat \js{i}, nachdem die Schleife verlassen wurde, den Wert, der ihr als letztes innerhalb der Schleife zugewiesen wurde.
+
+Zu beachten ist auch, dass Variablen, die ohne das vorangestellte Schlüsselwort \js{var} deklariert werden, automatisch globale Variablen sind.
+
+Eine andere Besonderheit bei Variablendeklarationen besteht, darin, dass innerhalb des Scopes alle Variablendeklarationen, nicht aber -definitionen nach oben gezogen werden. Dies nennt sicht \emph{Hoisting}. Veranschaulichen soll dies folgendes Beispiel:
+
+\begin{lstlisting}[language=JavaScript, style=snippet]
+var x = 123;
+(function() {
+  console.log(x);  // --> undefined
+  var x = 345;
+  console.log(x);  // --> 345
+})();
+\end{lstlisting}
+
+Hierbei wird innerhalb der Funktion eine Variable \js{x} deklariert. Diese Deklaration verdeckt 
+innerhalb der Funktion das \js{x}, welches außerhalb deklariert wurde. Die Definition der Variablen ist allerdings in der ersten Zeile der Funktion noch unbekannt.
+
+
+\MyMiniSec{Prototypbasierte Vererbung}
+
+Vererbung geschieht in JavaScript mit Prototypen anstatt mit Klassen. Dafür werden Klone von einem bereits existierendes Objekt erzeugt, das heißt Objekte erben direkt von anderen Objekten. Das ist ein grundlegend anderer Mechanismus, als die Java-Programmierern vertraute Vererbung mit Klassen. Jedoch ist es möglich, Klassen und eine klassenbasierte Vererbung zu imitieren. Stoyan Stefanov schlägt hierfür eine Variante mit einer \js{inherit}-Methode vor, die allerdings selbst implementiert werden muss (siehe Listing \ref{code:js-class-inherit}).
+
+\begin{lstlisting}[language=JavaScript, caption={[Vererbungsmuster mit Klassen in JavaScript.] Vererbungsmuster mit Klassen in JavaScript. \protect\cite[Basierend auf:][S. 16 f.]{stefanov2010.JSP} }, label={code:js-class-inherit}]
+var Parent = function(name) {
+  this. name = name || "Adam";
+};
+Parent.prototype.say = function() {
+  return this.name;
+};
+
+var Child = function() {};
+
+var inherit = function(C, P) {
+  C.prototype = new P();
+};
+
+inherit(Child, Parent);
 \end{lstlisting}
 
 
-\TODO{>>Prototyp-basiert}
-\TODO{- statt Klassen}
-\TODO{-> ein bereits existierendes Objekt wird geklont}
-\TODO{- Programmierern die von anderen Sprachen kommen nicht vertraut}
-\TODO{- Klassen möglich, mit Pattern; künftig mit ES6 mit Sprachmitteln}
-\TODO{Seit ES5 getter und setter möglich, aber keine echt privaten Member, kann nur umständlich mithilfe von Closures emuliert werden}
-\TODO{(siehe cite -> %\cite[S. 226]{flanagan2011.JDG}
-)}
+\MyMiniSec{Das Schlüsselwort \js{this}}
+
+Das Schlüsselwort \js{this} hat in JavaScript eine spezielle Bedeutung. Hiermit wird innerhalb einer \js{Function} der Aufrufkontext referenziert. Das ist dasjenige Objekt, \emph{an} dem oder \emph{durch} das die Methode aufgerufen wurde. 
+\cite[199 ff.]{flanagan2011.JDG} Das kann beispielsweise bei der Verwendung in Closures problematisch sein. Soll dort \js{this} verwendet werden, so muss hierfür ein Alias definiert werden, der direkte Aufruf von \js{this} würde fehlschlagen (siehe Listing \ref{code:js-closure-this}).
+
+\begin{lstlisting}[language=JavaScript, style=snippet, caption={Die Verwendung von \js{this} in JavaScript-Closures.}, label={code:js-closure-this}]
+var Incrementer = function(inc) {
+  this.inc = inc;
+  va self = this;
+  return function(x) {
+    return x + self.inc;
+  };
+};
+var inc2 = new Incrementer(2);
+inc2(10);  // --> 12
+\end{lstlisting}
 
 
-\TODO{>>Arrays (Collections)}
-\TODO{Objekt als assoziatives Array / Hashmap / Hashtabelle / Dictionary}
-\TODO{- können als foo["mykey"] oder foo.mykey adressiert werden}
-\TODO{Array einzige "`Collection"'}
+\MyMiniSec{Kapselung und Modularisierung}
 
-\TODO{Set, Map, auch WeakSet und WeakMap (mit weak references die von der Garbage Collection aufgeräumt werden, gegen Memory Leaks) -> ES6, noch nicht von allen Browsern unterstützt, aber es existieren sog. Polyfills }
-\TODO{url -> %(https://en.wikipedia.org/wiki/Polyfill)
-}
-
-\TODO{>> keine Konstanten (aber mit ES6)}
-
-\TODO{>>Probleme mit uneindeutigem/unintuitivem this}
-\TODO{- this referenziert das aufrufenden Objekt, bei Closures problematisch; behelfsweise kann this in der Closure in einer Variablen (häufig self genannt) gemerkt und diese übergeben werden}
-
-\TODO{>>Kapselung, Modularisierung}
-\TODO{- kein Zugriffsmodifizierer/Schlüsselwort private}
-\TODO{-> behelfsweise kann Privatheit emuliert werden, aber sperrig}
-\TODO{	- mithilfe von Closures private Instanzvariablen (innerhalb der Konstruktorfunktion definieren)}
-\TODO{	- mithilfe anonymer Funktionen (function-Scope)}
-\TODO{- keine Pakete oder Namespaces als Teil der Sprache}
-\TODO{-> kann durch Patterns geschaffen werden}
-\TODO{-> Librarys wie RequireJS oder verschiedene Frameworks bieten Mechanismen zu Modularisierung}
-
-\TODO{- Traits und Mixins möglich, aber nicht als Teil der Sprache -> url -> %(\url{https://en.wikipedia.org/wiki/JavaScript#Implicit_and_explicit_delegation}
-}
-
-\TODO{unstrukturiert: JavaScript gibt keine Struktur vor}
+JavaScript kennt keine Zugriffsmodifizierer wie \code{private}. Ebenso unbekannt sind Pakete oder Namespaces. Diese Konstrukte können aber nachgebildet werden.\footnote{Um Privatheit nachzubilden kann beispielsweise der Function Scope genutzt werden}
 
 
-\TODO{>> Standard}
-\TODO{- neuer Standard ECMAScript 6 im Juni 2015 veröffentlicht}
-\TODO{	- Konstanten mit const}
-\TODO{	- block-scoped variablen (mit let statt var) und functions}
-\TODO{	- Lambdas/anonyme Funktionen -> in JS sog. arrow functions (dann möglich: [1, 2, 3].map(x => x * x) statt bisher [1, 2, 3].map(function(x) { return x * x; }) )}
-\TODO{	- lexikalisches this - intuitivere Behandlung des Objektkontextes}
-\TODO{	- Defaultwerte für Parameter, eine Art Varargs}
-\TODO{	- variadische Funktionen mit Parameter}
-\TODO{	- String Interpolation (\js{var person = \{ name: "Foo" \};} \\ \js{var message = "Hello \$\{person.name\}!"})}
-\TODO{	- Destructuring Assignment, mit dem Arrays oder Objekte bei der Zuweisung in ihre Bestandteile zerlegt werden können}
-\TODO{	- Klassen mit class, constructor, getter und setter, Vererbung mit extends, Zugriff auf Superklassen mit super}
-\TODO{	- Iterator, der mit einem For-Of-Operator verwendet werden kann}
-\TODO{	- komfortable Methoden für den Umgang mit Strings und Zahlen (Number.isNan(42), Number.isFinite(42) )}
-\TODO{	- Promises zum Umgang mit Asynchronität}
-\TODO{	url -->  %\url{es6-features.org}
-}
-\TODO{	url -->  %\url{http://www.ecma-international.org/publications/standards/Ecma-262.htm}
-}
-\TODO{- Firefox und Chrome unterstützen schon viele Features, aber meistens noch als experimentell gekennzeichnet, noch nur teilweise schon in allen aktuell Browsern voll unterstützt: ECMAScript 5 (von 2009) bzw. 5.1 von 2011 (???)}
+\MyMiniSec{Collections}
+
+JavaScript kennt strenggenommen nur einen Collections-Typ: \js{Array}, ein dynamisches Array. Seit ECMAScript 5.1 werden hier Funktionen höherer Ordnung (\js{map}, \js{filter}, \js{reduce}, \js{sort}, \js{forEach}) unterstützt.\footnote{siehe: \url{https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array} Hierbei ist aber zu beachten, dass die iterative Lösung deutlich schneller im Vergleich zur funktionalen Variante ist. (Beim Akkumulieren der Werte eines Arrays ist eine \js{for}-Schleife etwa zehnmal schneller als \js{forEach}.)}
+
+Der Typ \js{Object} kann (wie in Abschnitt \ref{subsec:js-oo} beschrieben) auch als Dictionary verwendet werden.
 
 
+\MyMiniSec{Weitere Probleme}
 
-\TODO{Eigenschaften (nach Schirmacher-Folie, S. 5: %D:\UNI\2014-SoSe\CG2\VL
-)}
-\TODO{	funktional}
-\TODO{	objektorientiert}
-\TODO{	dynamisch}
-\TODO{	unstrukturiert}
-\TODO{	Typisierung (vgl. url -> %http://de.wikipedia.org/wiki/Typisierung_(Informatik))
-}
-\TODO{	Arrays}
-\TODO{	Probleme mit uneindeutigem this}
-\TODO{	Kapselung - mithilfe anonymer Funktionen}
-	
-                             
-\TODO{>>Probleme von JavaScript}
-\TODO{- häufig unerwartetes Verhalten / nicht erwartungskonform  -->  Bsp.e}
-\TODO{- fehlende Typsicherheit  -->  Bsp.e}
-\TODO{- function scope, nicht block scope}
-\TODO{- Vererbung mit Prototypen; kein Standard zur Modellierung von Klassen, viele verschiedene Möglichkeiten  ->  Chaos, Hürde für Programmierer die von anderen Sprachen wie Java oder C++ kommen}
-\TODO{-->  Doeraene}
-\TODO{- ...}
-\TODO{-->  BA Wiederhold}
-\TODO{- funktionale Methoden: map, filter reduce, forEach -- Support, Performance}
-\TODO{- im Browser: kann deaktiviert sein, aber verschwindender Prozentsatz der Nutzer tut dies  --> url -> %\url{https://developer.yahoo.com/blogs/ydn/many-users-javascript-disabled-14121.html}
-}
-\TODO{	- hier ist es sinnvoll, zu unterscheiden zwischen Web-Dokumenten, die auch ohne JavaScript zugänglich sein sollten, und Web-Anwendungen, von denen man das nicht erwarten kann, schließlich handelt es sich bei diesen um JavaScript-Programme (mit dem Browser als Plattform/OS)}
-\TODO{	cite -> %\cite[S.311]{flanagan2011.JDG}
-}
-
-\TODO{-->  cite -> %\cite{flanagan2011.JDG}
-}
-\TODO{-->  cite -> %\cite{crockford2008.JSG}
-}
-
-\TODO{-->  url5 -> %\url{https://en.wikipedia.org/wiki/ECMAScript}
-}
+Viele Eigenheiten der Sprache JavaScript sind nicht erwartungsgemäß sondern überraschend (wie Hoisting oder das Verhalten von \js{this}) und häufig schwer zu durchschauen (wie die Vererbung mit Prototypen). Zusätzlich ist JavaScript eine relativ \emph{verbose} Sprache. Aus diesen Gründen und nicht zuletzt der fehlenden Typsicherheit wegen, ist JavaScript-Code oft schlecht wartbar. Refactorings sind aufwendig, und das Finden von Fehlern ist nur zu oft äußerst schwierig. Hinzu kommt die Tatsache, das die verschiedenen Browser JavaScript und die JavaScript-\ac{API}s unterschiedlich gut unterstützen.
 
 
-\TODO{(  - relativ "`verbose"'/geschwätzig)}
-\TODO{(  - schlechte Wartbarkeit)}
-\TODO{(  - aufwendiges Refactoring)}
+\MyMiniSec{Lösungen}
 
+In JavaScript sind viele Programmierkonstrukte unspezifiziert und die Sprache erzwingt nur wenig Struktur. Als Lösung bieten sich verschiedene Programmiermuster an, wie sie in \cite{crockford2008.JSG}, \cite{stefanov2010.JSP} und \cite{flanagan2011} vorgeschlagen werden. Ein weitere Möglichkeit ist hier die Verwendung von Librarys für die gewünschte Funktionalität. \footnote{So bietet zum Beispiel RequireJS (\url{http://requirejs.org/}) Lösungen zur Modularisierung und  Prototype (\url{http://prototypejs.org/}) Erweiterungen zur Umsetzung von Klassen und Vererbung.} Die Vielfalt der möglichen Wege zur Lösung von Standardproblemen stellt hier eine besondere Schwierigkeit dar.
 
-\TODO{- Problem: Browser-Inkompatibilitäten}
-\TODO{- Problem: vieles in der Sprache unspezifiziert, Lösungen dafür existieren, aber sehr viele Arten, etwas zu tun (viele verschiedene Patterns, viele verschiedene Frameworks)}
+Der neue Standard ECMAScript 6 bringt hier viele Verbesserungen\footnote{Ein guter Überblick findet sich hier: \url{es6-features.org}}. Die wichtigsten sind:
 
-\TODO{- notorisch schwer zu debuggen - Fehlermeldungen wie: undefined is not a function, durch die sich häufig nicht die eigentliche Fehlerursache zurückverfolgen lässt}
+\begin{itemize}
+\item Konstanten mit \js{const}
+\item Variablen mit Block Scope (Deklaration mit \js{let} statt \js{var})
+\item Klassen mit \js{class}, \js{constructor}, \js{get} und \js{set}, Vererbung mit dem Schlüsselwort \js{extends}, Zugriff auf die Basisklasse mit \js{super}
+\item ein Import-Export-Mechanismus zur Modularisierung
+\item sogenannte \emph{Arrow Functions} (zum Beispiel: \js{[1, 2, 3].map(x => x * x)}), die auch eine intuitivere Behandlung des Objektkontextes \js{this} ermöglichen
+\item neue Collections: Set, Map und auch WeakSet und WeakMap
+\end{itemize}
 
-
-\TODO{- häufig benutzte clientseitige / Frontend- Frameworks geben (ihre) Struktur, müssen aber jedesmal erst neu gelernt werden}
+Firefox und Chrome unterstützen schon einige Features, aber viele sind noch als experimentell gekennzeichnet.
 
 
 \subsection{Tools und Ökosystem}
@@ -2505,7 +2462,7 @@ import scalajs.concurrent.JSExecutionContext.Implicits.runNow
 Ajax.get(url).onSuccess{ case xhr => handleXhrResponse(xhr) }
 \end{lstlisting}
 
-So wird eine \scala{Converter}-Klasse definiert, die immutable ist. Für jedes Währungspaar soll ein neue Instanz erzeugt werden.
+So wird eine \scala{Converter}-Klasse definiert, die \emph{immutable} ist. Für jedes Währungspaar soll ein neue Instanz erzeugt werden.
 
 \begin{lstlisting}[language=Scala, caption={Der Währungsumrechner.}]
 case class Converter(
@@ -3000,7 +2957,6 @@ Ausblick \\
 	\acro{JVM}{Java Virtual Machine}
 	\acro{EPFL}{École polytechnique fédérale de Lausanne}
 	\acro{DSL}{Domain-specific language}
-	\acro{ES}{ECMAScript}
 	\acro{REPL}{Read-eval-print loop}
 \end{acronym}
 
