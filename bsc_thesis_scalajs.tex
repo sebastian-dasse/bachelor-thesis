@@ -692,69 +692,39 @@ hinzugefügt wird, welches alle Supertypen der Klasse enthält. \cite[S. 3 f.]{d
 
 \section{Scala-Unterstützung und semantische Unterschiede}
 
-Scala.js ermöglicht zwar die Verwendung der ganzen Scala-Standard-Library. Die Semantik unterscheidet sich aber in einigen Punkten von Standard-Scala auf der JVM. So werden Laufzeit-Reflections nur in sehr begrenztem Umfang unterstützt. Möglich sind Instanztests mit \scala{Any.isInstanceOf[T]}) \cite[S. 2 f.]{doeraene2013.TDI} und die Abfrage des Klassennamens mit \scala{java.lang.Object.getClass.getName} \cite{scalajs.DSS}. Die Java-Standardbibliothek wird bisher nur zu einem kleinen Teil unterstützt \cite{doeraene2014.WHB}, insbesondere können die Java Collections nicht verwendet werden. Nicht möglich ist außerdem die Benutzung des \ac{REPL} \cite{doeraene2013.CSJ}.
+Scala.js ermöglicht zwar die Verwendung der ganzen Scala-Standard-Library. Die Semantik unterscheidet sich aber in einigen Punkten von Standard-Scala auf der JVM. So werden Laufzeit-Reflections nur in sehr begrenztem Umfang unterstützt. Möglich sind Instanztests mit \scala{Any.isInstanceOf[T]}) \cite[S. 2 f.]{doeraene2013.TDI} und die Abfrage des Klassennamens mit \scala{java.lang.Object.getClass.getName} \cite{scalajs.DSS}. Die Java-Standardbibliothek wird bisher nur zu einem kleinen Teil unterstützt \cite{doeraene2014.WHB}, insbesondere können die Java-Collections nicht verwendet werden. Außerdem ist die Benutzung des Scala-\ac{REPL} nicht möglich \cite{doeraene2013.CSJ}.
 
-Daneben gibt es vor allem zwei wichtige semantische Abweichungen von der Scala-Semantik: die Funktionsweise primitiver Typen und die Behandlung von Laufzeitfehlern als undefiniertes Verhalten.
+Daneben gibt es zwei besonders wichtige semantische Abweichungen von der Scala-Seman-tik: die Funktionsweise primitiver Typen und die Behandlung von Laufzeitfehlern als undefiniertes Verhalten.
 
 
 \subsection{Primitive Typen}\label{subsec:sjs-primitives}
 
-Bei "`primitive Typen"'\footnote{Strenggenommen gibt es in Scala semantisch keine primitiven Typen.} gibt es einige Besonderheiten. \scala{Float}s werden standardmäßig wie \scala{Double}s behandelt. Eine strikte \scala{Float}-Semantik kann, wenn benötigt, per sbt-Konfiguration erzwungen werden, kann aber massive Leistungseinbußen zur Folge haben \cite[S.~2]{doeraene2013.TDI}\cite{scalajs.DSS}. 
+Bei "`primitive Typen"'\footnote{Strenggenommen gibt es in Scala semantisch keine primitiven Typen.} gibt es einige Besonderheiten. \scala{Float}s werden standardmäßig wie \scala{Double}s behandelt. Eine strikte \scala{Float}-Semantik kann, wenns nötig, per sbt-Konfiguration erzwungen werden, kann aber massive Leistungseinbußen zur Folge haben \cite[S.~2]{doeraene2013.TDI} \cite{scalajs.DSS}. 
 Bei der Ausgabe von Fließpunktkommazahlen mit der Methode \scala{toString} treten gewisse Abweichungen von der gewohnten Darstellung auf, die aber durch entsprechende Formatierung ausgeglichen werden können. Alle anderen numerischen Typen haben die gleiche Semantik wie in Scala. 
 
 JavaScript kennt ausschließlich den Zahlentyp \scala{Number}, der \scala{Double} in Java/Scala entspricht. Scala.js hüllt dennoch seine primitive Typen bei der Übersetzung nicht in Objekte ein (sogenanntes Boxing), um das entsprechende Verhalten zu emulieren. Auf diese Weise könnte Scala.js zwar eine größere Nähe zur Scala-Semantik erreichen, allerdings um den Preis eines beträchtlichen Leistungsverlusts. \cite[S. 2]{doeraene2013.TDI}\cite[\#ThePerformance/CorrectnessTradeoff]{haoyi.HOS}
 
-Aus diesem Grund sind für primitive Typen Typtests zur Laufzeit wertebasiert. So liefert beispielsweise ein \scala{isInstanceOf[T]}-Check des Werts \scala{1} Übereinstimmung mit \scala{Byte}, \scala{Short}, \scala{Int}, \scala{Float} und \scala{Double}. Auf \scala{1.5} passen nur \scala{Float} und \scala{Double}. \cite{scalajs.DSS}
+Aus diesem Grund sind Laufzeit-Typtests für primitive Typen wertebasiert. Beispielsweise liefert ein \scala{isInstanceOf[T]}-Check des Werts \scala{1} Übereinstimmung mit \scala{Byte}, \scala{Short}, \scala{Int}, \scala{Float} und \scala{Double}. Auf \scala{1.5} passen nur \scala{Float} und \scala{Double}. \cite{scalajs.DSS}
 
 Um Ganzzahlsemantik zu erreichen, werden in Scala.js alle \scala{Int}-Operationen durch bitweise Veroderung umgesetzt\footnote{Als einziger Außnahme ist für die Multiplikation eine spezielle Implementierung nötig. Für Details hierzu siehe: \url{https://github.com/scala-js/scala-js/issues/425}}, das heißt aus der Scala-Operation \scala{a + b} wird im JavaScript-Code \js{(a + b) \| 0}. Da die meisten JavaScript-Umgebungen als Optimierung für bitweise Operationen
-intern \code{int32} verwenden, führt dies sogar zu schnelleren \code{Int}s. \cite[Folie~16~ff., Min.~10]{doeraene2015.SSP}
+intern \code{int32} verwenden, führt dies sogar zu, im Vergleich zu nativem JavaScript, besonders schnellen \code{Int}-Operationen. \cite[Folie~16~ff., Min.~10]{doeraene2015.SSP}
 
 
 \subsection{Undefiniertes Verhalten}\label{subsec:undefined-behavior}
 
 Das Auftreten bestimmter Programmierfehler, die auf der JVM als Exceptions gemeldet werden\footnote{\scala{RuntimeException}s wie \scala{NullPointerException}, \scala{ArithmeticException} oder \scala{ArraysIndex-OutOfBoundException} sowie \scala{StackOverflowError} und andere \scala{VirtualMachineError}s.},
-wird in Scala.js als \emph{undefiniertes Verhalten} behandelt. Die unkorrekte Typumwandlung:
-%Eine unkorrekte Typumwandlung mit wie \lstinline[language=Scala, style=inline]| val s = "foo".asInstanceOf[List[String]] | wirft auf der JVM eine \scala{ClassCastException}
+ist in Scala.js \emph{undefiniertes Verhalten}. Die unkorrekte Typumwandlung:
 
 \begin{lstlisting}[language=Scala, style=snippet]
 val s = "foo".asInstanceOf[List[String]]
 \end{lstlisting}
 
-wirft etwa auf der JVM eine \scala{ClassCastException}. Der Overhead, um das in JavaScript durch Laufzeit-Typprüfungen umzusetzen, wäre allerdings viel zu groß (Doeraene spricht von einer Verdoppelung der Ausfführungszeit \cite[Folie 23 ff., Min. 15]{doeraene2015.SSP}). Um dadurch nicht die Fehlerfindung zu verschlechtern, finden im Entwicklungs-Modus (\code{fastOptJS}) Prüfungen statt, die im Fehlerfall zum direkten Programmabsturz führen:
-
-\begin{lstlisting}[style=snippet]
-scala.scalajs.runtime.UndefinedBehaviorError: An undefined behavior was detected: hello is not an instance of scala.collection.immutable.List
-\end{lstlisting}
+wirft etwa auf der JVM eine \scala{ClassCastException}. Der Overhead, um das in JavaScript durch Laufzeit-Typprüfungen umzusetzen, wäre allerdings viel zu groß (Doeraene spricht von einer Verdoppelung der Ausfführungszeit \cite[Folie 23 ff., Min. 15]{doeraene2015.SSP}). Um dadurch nicht die Fehlerfindung zu verschlechtern, finden im Entwicklungs-Modus (\code{fastOptJS}) Prüfungen statt, die im Fehlerfall direkt zum Programmabsturz führen.
 
 Im Produktionsmodus (\code{fullOptJS}) werden diese Prüfungen entfernt. Auch Casts sind zur Laufzeit keine Operationen mehr, sondern werden weg-optimiert.
 
 JVM-konformes Verhalten kann in der sbt-Build-Definition erzwungen werden, dabei ist aber mit hohen Leistungseinbußen zu rechnen. \cite[Folie 23 ff., Min. 15]{doeraene2015.SSP}\cite{scalajs.DSS}
 
-%Erklärung am Bsp. Division durch Null
-%\begin{lstlisting}
-%Problem:
-%	JVM: 15 / 4           // 3
-%	JS:  15 / 4           // 3.25
-%Fix:
-%	JVM: 15 / 4           // 3
-%	JS:  (15 / 4) | 0     // 3
-%neues Problem:
-%	JVM: 15 / 0           // ArithmeticException
-%	JS:  15 / 0           // Infinity
-%	JS:  (15 / 0) | 0     // 0
-%moeglicher Fix (aber teuer):
-%	JVM: 1 / 0           // ArithmeticException
-%	JS:  function intDivide(x, y){
-%  var z = x / y
-%  if (z == Infinity) throw new ArithmeticException("Divide by Zero")
-% else return z
-% }
-% intDivide(1, 0) // ArithmeticException
-%\end{lstlisting}
-%	- wäre ineffizienter Fix, für jede Division statt zwei simpler arithmetischer Operation einen Funktionsaufruf und Prüfung auf Infinity zu ersetzen
-%	- Kompromiss von Scala.js: im FastOptJS-Modus gibt es Prüfungen auf ArithmeticException,  ArrayIndexOutOfBoundsException usw. (aber noch work in progress); im FullOptJS-Modus werden diese Prüfungen entfernt
-%-->  \url{http://lihaoyi.github.io/hands-on-scala-js/#Whydoeserrorbehaviordiffer?}
-	
 
 
 \section{JavaScript-Interoperabilität}
@@ -763,9 +733,7 @@ JavaScript-Interoperabilität ist eine der wichtigsten Eigenschaften von Scala.j
 
 \subsection{Typkorrespondenzen}
 
-Für das Verhältnis von Typen in Scala.js und JavaScript gibt es bestimmte Korrespondenzen entsprechend derer diese übersetzt werden (siehe Tabelle \ref{table:type-correspondance}).
-
-\medskip
+Für das Verhältnis von Typen in Scala.js und JavaScript gelten bestimmte Korrespondenzen, entsprechend derer sie übersetzt werden (siehe Tabelle \ref{table:type-correspondance}). "`Primitive"' Scala-Typen entsprechen unmittelbar bestimmten primitiven JavaScript-Typen. Für sie existieren in Scala.js implizite Konvertierungen, so dass sie ganz normal verwendet werden können, ohne dass hier etwas zu tun wäre. Alle anderen Typen sind für JavaScript entweder opak, das heißt sie entsprechen einer Black Box, oder sie werden nach bestimmten Regeln exportiert.
 
 \begin{table}[!h]
 \begin{tabular}{|l|l|}
@@ -784,15 +752,9 @@ Für das Verhältnis von Typen in Scala.js und JavaScript gibt es bestimmte Korr
 \label{table:type-correspondance}
 \end{table}
 
-\medskip
-
-"`Primitive"' Scala-Typen entsprechen unmittelbar bestimmten primitiven JavaScript-Typen. Für sie existieren in Scala.js implizite Konvertierungen, so dass sie ganz normal verwendet werden können, ohne dass hier weiter etwas zu tun wäre. Alle anderen Typen sind für JavaScript entweder opak, das heißt sie entsprechen einer Black Box, oder sie werden nach bestimmten Regeln exportiert.
-
 Es gibt aber auch bestimmte Nicht-Korrespondenzen: Scala-\scala{Function}s sind keine JavaScript-\js{Function}s. Vielmehr werden sie durch spezielle \scala{js.Function}-Typen repräsentiert. Doch hierfür existieren implizite Konvertierungen in beide Richtungen.
 
 Für drei weitere Typen existieren keine unmittelbaren Entsprechungen in JavaScript, so dass sie in Scala.js durch besondere Hilfsklassen repräsentiert werden (Tabelle \ref{table:type-non-correspondance}). Hier müssen die Konvertierungen allerdings in der Regel explizit vorgenommen werden.
-
-\medskip
 
 \begin{table}[!h]
 \begin{tabular}{|l|l|}
@@ -806,31 +768,11 @@ Für drei weitere Typen existieren keine unmittelbaren Entsprechungen in JavaScr
 \label{table:type-non-correspondance}
 \end{table}
 
-\medskip
 
 
 \subsection{JavaScript von Scala.js aus aufrufen}
 
 Dies ist die wichtigste Richtung der Interoperabilität. Dabei gelten für primitive JavaScript-Typen die genannten Korrespondenzen. Für andere vordefinierte JavaScript-Typen existieren Definitionen im Paket \scala{scala.scalajs.js} (siehe Listing \ref{code:sjs-js-types}).
-
-\begin{lstlisting}[caption={Scala.js-Typhierarchie für vordefinierte JavaScript-Typen. \cite{scalajs.DCJ}}, label={code:sjs-js-types}]
-js.Any
- +- js.Object
- |   +- js.Date
- |   +- js.RegExp
- |   +- js.Array[A]
- |   +- js.Function
- |       +- js.Function0[+R]
- |       +- js.Function1[-T1, +R]
- |       +- ...
- |       +- js.Function22[-T1, ..., -T22, +R]
- |       +- js.ThisFunction
- |           +- js.ThisFunction0[-T0, +R]
- |           +- js.ThisFunction1[-T0, -T1, +R]
- |           +- ...
- |           +- js.ThisFunction21[-T0, ..., -T21, +R]
- +- js.Dictionary[A]
-\end{lstlisting}
 
 Mit \scala{js.ThisFunction} bietet Scala.js auch Funktionen, die das spezielle Verhalten von \js{this} in JavaScript modellieren. Dazu wird einer solchen Funktion als erster Parameter das \js{this}-Argument (der Aufrufkontext) übergeben.
 
@@ -851,9 +793,29 @@ import scala.scalajs.js.JSNumberOps._
 
 Ebenfalls im Paket \scala{scala.scalajs.js} enthalten ist eine Fassade für das JavaScript \js{Math}-Objekt.
 
-Ein besonders interessanter Aspekt der JavaScript-Interoperabilität ist der statisch typisierte Aufruf von JavaScript-\ac{API}s wie der \ac{DOM}-\ac{API}, von jQuery oder von eigenen JavaScript-Librarys.
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[caption={Scala.js-Typhierarchie für vordefinierte JavaScript-Typen. \cite{scalajs.DCJ}}, label={code:sjs-js-types}]
+js.Any
+ +- js.Object
+ |   +- js.Date
+ |   +- js.RegExp
+ |   +- js.Array[A]
+ |   +- js.Function
+ |       +- js.Function0[+R]
+ |       +- js.Function1[-T1, +R]
+ |       +- ...
+ |       +- js.Function22[-T1, ..., -T22, +R]
+ |       +- js.ThisFunction
+ |           +- js.ThisFunction0[-T0, +R]
+ |           +- js.ThisFunction1[-T0, -T1, +R]
+ |           +- ...
+ |           +- js.ThisFunction21[-T0, ..., -T21, +R]
+ +- js.Dictionary[A]
+\end{lstlisting}
+\end{minipage} 
 
-Damit das möglich ist, muss zum jeweiligen JavaScript-Interface ein passender Scala-Trait definiert werden. Dieser dient als reine Fassade der JavaScript-Implementierung und entsprechend müssen alle seine Methoden und Werte als \scala{js.native} definiert sein. Für eine JavaScript-"`Klasse"' \code{Foo}:
+
+Ein besonders interessanter Aspekt der JavaScript-Interoperabilität ist der statisch typisierte Aufruf von JavaScript-\ac{API}s, wie der \ac{DOM}-\ac{API}, von jQuery oder von eigenen JavaScript-Librarys. Damit das möglich ist, muss zum jeweiligen JavaScript-Interface ein passender Scala-Trait definiert werden. Dieser dient als reine Fassade der JavaScript-Implementierung. Dazu müssen alle seine Methoden und Werte als \scala{js.native} definiert sein. Für eine JavaScript-"`Klasse"' \code{Foo}:
 
 \begin{lstlisting}[language=JavaScript, style=snippet]
 var Foo = function() {
@@ -866,7 +828,7 @@ var Foo = function() {
 };
 \end{lstlisting}
 
-würde eine Fassade etwa so aussehen:
+würde eine Fassade so aussehen:
 
 \begin{lstlisting}[language=Scala, style=snippet]
 @js.native
@@ -878,39 +840,9 @@ class Foo extends js.Object {
 
 Entsprechende Fassaden können selbst geschrieben werden, existieren aber bereits für viele wichtige JavaScript-\ac{API}s (siehe Abschnitt \ref{sec:sjs-libs}).
 
-%(Bsp. nach \cite{doeraene2015.SSP}):
-%\begin{lstlisting}[language=Scala]
-%// es existiert:
-%trait js.Any extends scala.AnyRef
-%
-%// dann Fassade (vereinfacht):
-%@js.native // Annotation fuer Vorwaerts-Kompatibilitaet mit Scala.js 1.0.0
-%class XMLHttpRequest extends /*...*/ js.Object {
-%  def status: Int = js.native
-%  def responseText: String = js.native
-%  var onload: js.Function1[Event, _] = js.native
-%  def open(method: String, url: String, async: Boolean = js.native, ...): Unit = js.native
-%  def send(data: js.Any = js.native): Unit = js.native
-%}
-%
-%// kann nun verwendet werden:
-%def main(pre: html.Pre): Unit = {
-%  val xhr = new dom.XMLHttpRequest()
-%  xhr.open("GET",
-%    "http://api.openweathermap.org/" +
-%    "data/2.5/weather?q=Singapore")
-%  xhr.onload = { (e: dom.Event) =>
-%    if (xhr.status = 200)
-%      pre.textContent = xhr.responseText
-%  }
-%  xhr.send()
-%}
-%\end{lstlisting}
+Werte, die von solchen Fassaden-Typen geliefert werden, werden vom Compiler systematisch entsprechend ihrer Signatur gecastet, das heißt ihr Typ gilt danach als bekannt. Dadurch kann der Code bei der Übersetzung stärker optimiert werden. Das bedeutet aber auch: Für den Fall, dass die JavaScript-Implementierung den falschen Typ zurückgibt, ist das Verhalten \emph{undefiniert} (siehe Abschnitt \ref{subsec:undefined-behavior}). \cite[Folie 40, Min. 33]{doeraene2015.SSP}
 
-Werte, die solche Fassaden-Typen liefern, werden vom Compiler systematisch entsprechend ihrer Signatur gecastet, das heißt ihr Typ gilt danach als bekannt. Dadurch kann der Code bei der Übersetzung stärker optimiert werden. Das bedeutet aber auch, dass das Verhalten für den Fall, dass die JavaScript-Implementierung den falschen Typ zurückgibt, undefiniert ist
-(siehe Abschnitt \ref{subsec:undefined-behavior}). \cite[Folie 40, Min. 33]{doeraene2015.SSP}
-
-Dynamisch typisierte Aufrufe auf JavaScript lassen sich nicht immer ganz vermeiden, sei es, weil es umständlich scheint oder sogar unmöglich ist, einen sinnvollen Typ für die Schnittstelle festzulegen, sei es dass für eine bestimmte JavaScript-Library einfach noch keine Fassade existiert. Hierfür liefert \scala{js.Dynamic.global} eine dynamisch typisierte Referenz auf den globalen Scope. Hiermit sind nun auf der Basis des Typs \scala{js.Dynamic}, der von \scala{js.Any} erbt, dynamische typisierte Methodenaufrufe und Lese- und Schreibzugriffe möglich:
+Dynamisch typisierte Aufrufe auf JavaScript lassen sich nicht immer ganz vermeiden, sei es, weil es umständlich scheint oder sogar unmöglich ist, einen sinnvollen Typ für die Schnittstelle festzulegen, sei es, dass für eine bestimmte JavaScript-Library noch keine Fassade existiert. Hierfür liefert \scala{js.Dynamic.global} eine dynamisch typisierte Referenz auf den globalen Scope. Damit sind auf der Basis des Typs \scala{js.Dynamic}, der von \scala{js.Any} erbt, dynamische typisierte Methodenaufrufe sowie Lese- und Schreibzugriffe möglich:
 
 \begin{lstlisting}[language=Scala, style=snippet]
 val doc: js.Dynamic = js.Dynamic.global.document
@@ -918,7 +850,8 @@ val foo: js.Dynamic = doc.getElementById("foo")
 val div: js.Dynamic = doc.createElement("div")
 \end{lstlisting}
 
-Instanzen von dynamischen Typen können auch erzeugt werden, zum Beispiel:
+Instanzen von dynamischen Typen können ebenfalls erzeugt werden, zum Beispiel:
+
 \begin{lstlisting}[language=Scala, style=snippet]
 val today = js.Dynamic.newInstance(js.Dynamic.global.Date)()
 \end{lstlisting}
@@ -927,7 +860,7 @@ Auf diese Weise kann nahezu JavaScript-Semantik in Scala geschrieben werden, sol
 
 \subsection{Scala.js nach JavaScript exportieren}
 
-Damit auf Scala.js-Code von JavaScript direkt zugegriffen werden kann, muss dieser explizit exportiert werden. Häufig genügt es, die Hauptmethode zu exportieren, so dass die Anwendung gestartet werden kann. Hierfür reicht es aus, vom Trait \scala{js.App} zu erben:
+Damit auf Scala.js-Code von JavaScript direkt zugegriffen werden kann, muss dieser explizit exportiert werden. Häufig genügt es, die Hauptmethode einer Anwendung zu exportieren, so dass diese gestartet werden kann. Hierfür reicht es aus, die Anwendung vom Trait \scala{js.App} zu erben:
 
 \begin{lstlisting}[language=Scala, style=snippet]
 object MyApp extends scala.scalajs.js.JSApp {
@@ -1306,9 +1239,6 @@ Zur Messung der Ausführungsgeschwindigkeit von JavaScript-Programmen kam JSLitm
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 \chapter{Projekt-Setup, Installation}\label{chap:setup}
 
-%TODO (Abweichungen ggf. separat bei der jeweiligen Anwendung)
-
-\TODO{TODO: im Zweifel kurz und in Stichpunkten:}
 Die nachfolgende Anleitung bezieht sich auf die Installation auf einem Windows-8.1-Rechner. Auf anderen Plattform können einzelne Schritte im Detail abweichen.
 
 Um die Installation erfolgreich durchführen zu können ist eine gute Internetverbindung erforderlich, da die einige Bibliotheken heruntergeladen müssen. Außerdem wird ein aktueller Browser benötigt. Für volle Source-Maps-Unterstützung in der Browser-Konsole empfiehlt sich hier Google Chrome\footnote{\url{https://www.google.de/chrome/browser/desktop/}}.
@@ -1993,62 +1923,15 @@ Das Workbench-Plugin funktioniert nicht immer ganz zuverlässig, und manchmal mu
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-%\section{scalajs-showcase - der Rest:  umfangreichere Templates, Events (3)}
-%
-%\subsection{Untersuchungsziele}
-%\subsection{Untersuchungskriterien}
-%\subsection{Kurzbeschreibung des Beispielprogramms}
-%\subsection{Untersuchungsergebnisse}
-%\subsection{Schwierigkeiten}
-%\subsection{Erfolge}
-%\subsection{Bewertung: differenziert oder boolsch mit Begründung; Fazit aus Schwierigkeiten und Erfolgen}
-
-
-
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-\section{HTML-Templating 2}
-
-%TODO#############################
-
-\TODO{EVTL NUR MIT BILD UND wenigen Stichpunkten}
-
-\TODO{Projekt: extract: string-analyzer}
-
-\TODO{>> zusammenlegen mit HTML-Templating (s.o.)}
-
-%\subsection{Ziel der Untersuchung}
-%\subsection{Kriterien}
-\MyMiniSec{Kurzbeschreibung des Beispielprogramms}
-\MyMiniSec{Ergebnisse der Untersuchung und Bewertung}
-
-
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 \section{Ajax}
-
-%TODO#############################
 
 \TODO{Projekt: sjs-currency-converter}
 
 Die Kommunikation mit Objekten außerhalb des Web-Clients, zum Beispiel mit Webservices, ist ein wichtiger Bestandteil der meisten interaktiven Web-Anwendungen. Dazu wird standardmäßig eine als \emph{Ajax} bezeichnete Technik verwendet. Hierbei werden aus der Web-Anwendung heraus über das \ac{HTTP} Daten von einem Server angefragt, um auf Grundlage der Antwort Teile der \ac{HTML}-Seite zu aktualisieren. \cite[S.~491]{flanagan2011.JDG} Diese Aufrufe geschehen asynchron, das heißt die Seite blockiert nicht, sondern bleibt weiter bedienbar, während auf die Antwort vom Server gewartet wird. Diese Standardtechnik und der Umgang mit Asynchronität sollte mit Scala.js erprobt werden.
 
 
-\MyMiniSec{Kurzbeschreibung des Beispielprogramms}
+\MyMiniSec{Kurzbeschreibung des Währungsumrechners}
 
 Beispielhaft wurde ein Währungsumrechner umgesetzt, der dem Benutzer die Eingabe des Betrags und die Auswahl von Quell- und Zielwährung per Auswahlliste anbietet, und auf Knopfdruck oder Betätigung der Entertaste hin die Umrechnung auf der Basis tagesaktueller Kurse durchführt. Beträge werden bis auf vier Nachkommastellen hin genau dargestellt. Die Eingabe ist fehlertolerant gegenüber ungültigen Beträgen. Als kleiner Komfort kann der Betrag mit der Escape-Taste auf 1.0000 zurückgesetzt werden. \TODOi{>>> bessere Bildqualität... >>>}
 
@@ -2191,10 +2074,9 @@ case class Converter(
 }
 \end{lstlisting}
 
-Durch den Aufruf von \scala{JSON.parse} wird der Antworttext deserialisiert. Dabei erhält man ein dynamisch getyptes Objekt. Hier muss nun besonders sorgfältig vorgegangen werden, da der Compiler einen nicht vor Tippfehlern schützt. Die Rate muss zur sinnvollen Verwendung zuerst in einen String, und dieser dann in einen \scala{Double}-Wert umgewandelt werden.
+Durch den Aufruf von \scala{JSON.parse} wird der Antworttext deserialisiert. Dabei erhält man ein dynamisch getyptes Objekt. Hier muss besonders sorgfältig vorgegangen werden, denn der Compiler schützt einen dabei nicht vor Tippfehlern. Die Rate muss zur sinnvollen Verwendung zuerst in einen String, und dieser dann in einen \scala{Double}-Wert umgewandelt werden.
 
-Die Methode \scala{convert} soll \scala{srcAmount: Double} und \scala{rate: Future[Double]} verwenden, um den Ergebnisbetrag 
-als \scala{Fuuture[Double]} zurückzuliefern. Hier wird zur einfacheren Handhabung von Futures ein \scala{async}-Block verwendet. Futures können, wenn sie in ein \scala{await} geschachtelt sind, innerhalb eines \scala{async}-Blocks behandelt werden, als wäre ihr Ergebnis schon bekannt.
+Die Methode \scala{convert} soll den Ergebnisbetrag als \scala{Future[Double]} zurückzuliefern. Hierzu werden \scala{srcAmount: Double} und \scala{rate: Future[Double]} benötigt. Um die Handhabung von Futures zu vereinfachen wird hier ein \scala{async}-Block verwendet. Futures können, wenn sie in ein \scala{await} geschachtelt sind, innerhalb eines \scala{async}-Blocks behandelt werden, als wäre ihr Ergebnis schon bekannt. Auf diese Weise lässt sich die Intention sehr klar ausdrücken: Der Quellbetrag soll mit dem Umrechnungskurs multipliziert werden.
 
 Nun kann eine Methode geschrieben werden, die auf Knopfdruck eine \ac{HTTP}-Anfrage beim Webservice stellt und beim Eintreffen der Antwort dafür sorgt, dass der umgerechnete Betrag auf der Webseite angezeigt wird.
 
@@ -2232,36 +2114,23 @@ Die Dokumentation der verwendeten Librarys Scala-js-dom, ScalaTags, und Scala-As
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 \section{Eine Cross-kompilierende Library}
 
-%TODO#############################
-
 \TODO{Projekte: sjs-crosscompiling-statistics-lib, js-port-of-statistics-lib, benchmark-statistics-libs}
 
-%\subsection{Ziel der Untersuchung}
+Die Wiederverwendbarkeit von Code für Client \emph{und} Server ist ein wünschenswertes Ziel. Hier sollte anhand der Implementierung einer kleinen cross-kompilierenden Library erprobt werden, wie das mit Scala.js möglich ist. Außerdem sollte durch Tests die Korrektheit der Bibliothek sichergestellt werden. 
+Außerdem sollte die implementierten Scala.js-Library in natives HTML/JavaScript eingebunden werden, um auch die Interoperabilität zu erproben. Schließlich sollte eine Portierung nach JavaScript vorgenommen werden um einerseits einen Vergleich des Codes aber vor allem auch einen Leistungsvergleich zwischen Scala.js und nativem JavaScript vornehmen zu können.
 
-\TODO{ZIEL formulieren}
-
-Cross-compiling lib
-
-Performance-Vergleich zu reinem JS - Micro-Benchmark
-
-BILD -> \cite[Folie 52, Min. ???]{doeraene2015.SSP} % -->  Doeraene2015-Scalajs-p52.jpg
-
-%\subsection{Kriterien}
-
-TODO
-
-\MyMiniSec{Kurzbeschreibung des Beispielprogramms}
-
-Mittelwert, Median, Varianz und Standardabweichung als Bibliotheksfunktionen
-- in Scala.js, cross-kompilierendes Projekt (nach JVM und JS), Unit-Tests (uTest), kleines JS-Frontend zur Benutzung (fehlertolerante Eingabe)
-- Portierung in natives JavaScript zum Vergleich, Unit-Tests (Jasmine)
-- Benchmark (JSLitmus) -> \url{http://www.broofa.com/Tools/JSLitmus/}
-
-\MyMiniSec{Ergebnisse der Untersuchung und Bewertung}
-
-einfache GUI in klassischem \ac{HTML}/JavaScript, die Scala.js-generierte Statistik-Lib verwendet (siehe Abb. \ref{fig:stat-lib-gui}) - funktioniert sehr gut
+%BILD -> \cite[Folie 52, Min. ???]{doeraene2015.SSP} % -->  Doeraene2015-Scalajs-p52.jpg
 
 
+\MyMiniSec{Kurzbeschreibung der Statistik-Library}
+
+Es wurde eine kleine Statistik-Library implementiert. Diese bietet die zur Auswertung einer Zahlenfolge die 
+vier Funktionen: Mittelwert, Median, Varianz und Standardabweichung.
+
+\MyMiniSec{Kurzbeschreibung der Statistik-GUI}
+
+Es eine einfache GUI mit \ac{HTML}, \ac{CSS} und nativem JavaScript implementiert, welche die Statistik-Library verwendet
+(siehe Abb. \ref{fig:stat-lib-gui}). In ein Eingabefeld können Zahlen, getrennt durch Komma oder Whitespace eingetragen werden. Dabei ist die Eingabe fehlertolerant gegenüber von eingestreuten nicht-numerischen Zeichen. Über eine Auswahlliste kann die gewünschte Berechnung ausgewählt werden. Durch Betätigen der Entertaste im Eingabefeld wird die Zahlenfolge ausgewertet und das Ergebnis angezeigt.
 
 \begin{figure}[!h]
     \centering
@@ -2271,15 +2140,86 @@ einfache GUI in klassischem \ac{HTML}/JavaScript, die Scala.js-generierte Statis
 \end{figure}
 
 
->>Benchmark - der Statistik-Lib
+\MyMiniSec{Cross-Projekt}
 
-- sjs etwa 9 \% (CHECK AGAIN) langsamer als pures js
-- ops/sec (viel ist gut)
-%- (siehe Tabelle \ref{table:stat-lib-benchmark} und Abb. \ref{fig:stat-lib-benchmark})
-- \TODOi{(siehe Abbildung 6.9(??) und Tabelle 6.4 (??))}
+Das cross-kompilierende Projekt hat eine Struktur wie in Listing \ref{code:cross-project-struct} dargestellt. Die Struktur orientiert sich an den Hinweisen der Scala.js-Dokumenation \cite{scalajs.CBP}, wo auch die nötige Konfiguration der \code{build.sbt} beschrieben ist.
 
-also recht nahe beieinander
+\begin{lstlisting}[language=scala, caption={Grobstruktur der cross-kompilierenden Scala.js-Library}, label={code:cross-project-struct}]
+library
+ +- js
+ |   +-src
+ |      +- main
+ |      +- test
+ +- jvm
+ |   +-src
+ |      +- main
+ |      +- test
+ +- shared
+     +-src
+        +- main
+        +- test
+\end{lstlisting}
 
+Die Funktionalität wurde im \code{shared}-Projekt implementiert. In \code{js} und \code{jvm} existieren jeweils plattformspezifische Fassaden, die Methodenaufrufe an die geteilte Implementierung delegieren.
+
+
+\MyMiniSec{JavaScript-Interoperabilität}
+
+Die kompilierten JavaScript-Artefakte des Cross-Projekts finden sich im Verzeichnis \code{library/js/target/}.
+
+Es gibt eine JavaScript-spezifische Fassade mit den zum Export nötigen Annotationen; auch wird hier der \js{js.Array}-Typ verwendet:
+
+\begin{lstlisting}[language=Scala, style=snippet]
+package platform
+
+@JSExport
+object StatLib {
+  @JSExport def mean(seq: js.Array[Double]): Double = statistics.Statistics.mean(seq)
+  ...
+}
+\end{lstlisting}
+
+Die kompilierte Library kann wie gewohnt in ein \ac{HTML}-Dokument eingebunden werden:
+
+\begin{lstlisting}[language=HTML5, style=snippet]
+<script src="../statistics-lib-js-opt.js"></script>
+<script src="Util.js"></script>
+\end{lstlisting}
+
+In der JavaScript-Datei \js{Util.js} mit der Oberflächenlogik kann die Library nun verwendet werden:
+
+\begin{lstlisting}[language=JavaScript, style=snippet]
+var stat = platform.StatLib();
+stat.deviation([1, 2, 3])
+\end{lstlisting}
+
+
+\MyMiniSec{Tests}
+
+Für die cross-kompilierende Library wird durch drei äquivalente Test-Suiten mit uTest in allen drei Unterprojekten das gleichwertige Funktionieren auf beiden Plattformen geprüft. Tests können für beide Plattformen, oder auch nur gezielt für JavaScript oder \ac{JVM} ausgeführt werden.
+
+Für die JavaScript-Portierung wurden entsprechende 
+Tests für das JavaScript-Test-Werkzeug Jasmine erstellt.
+
+
+\MyMiniSec{Code-Qualität}
+
+Die Funktionen lassen sich mit Scala sehr knapp formulieren.
+
+Im Vergleich fiel bei der Portierung in natives JavaScript fiel sofort auf, dass mehr Hilfs-Methoden selbst geschrieben werden müssen. Um performante Funktionen zu erhalten, konnte in nativem JavaScript nicht auf die funktionalen Methoden \js{Array}-Methoden wie \js{map} zurückgegriffen werden, denn diese sind im Vergleich mit einer iterativen Implementierung etwa zehnmal langsamer, wie ein separater Benchmark-Test ergab.
+
+
+\MyMiniSec{Vergleichender Benchmark}
+
+Die Ergebnisse des vergleichenden Benchmarks der Statistik-Funktionen zeigen Abbildung \TODOi{6.9(??) und Tabelle 6.4 (??))}. Dabei sind die verschiedenen Funktionen an ihrem Suffix zu unterscheiden: \code{js} für JavaScript und \code{sjs} für Scala.js. Die Maßeinheit sind Operationen pro Sekunde.
+
+Demnach sind die Scala.js-Implementierungen ist etwa 9 \% \TODOi{ CHECK AGAIN } langsamer als natives JavaScript (wenn in JavaScript auf Funktionen höherer Ordnung verzichtet wird).
+
+Damit sind beide Implementierungen doch recht nahe beieinander. Die etwas geringere Leistungsfähigkeit sollte nur bei äußerst leistungshungrigen Anwendungen ins Gewicht fallen.
+
+Durch den Einsatz von Scala.js gewinnt man hingegen eine plattformübergreifende Implementierung, die außerdem den Vorteil hat, dass funktional programmiert werden kann.
+
+Das führt deshalb nicht zu einem heftigen Leistungsabfall, weil der Optimierer die Funktionsaufrufe ...
 
 \begin{figure}[!h]
 	\centering
@@ -2305,57 +2245,8 @@ also recht nahe beieinander
 
 
 
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-\section{Minimales Client-Server-Setup mit clientseitigem Routing}
-
-%TODO#############################
-
-\TODO{Projekt: clientserver}
-
-\TODO{EVTL NUR KURZ MIT BILD und Stichpunkten}
-
-%\subsection{Ziel der Untersuchung}
-
-\TODO{Ziel formulieren}
-
-Cient/Server-Setup zum Laufen bringen, ausprobieren
-
-geteilte Schnittstelle ausprobieren
-
-Clientseitiges Routing verwenden, ggf. selbst schreiben
-
-%\subsection{Kriterien}
-\MyMiniSec{Kurzbeschreibung des Beispielprogramms}
-
-Clientseitiges Routing
-
-Freundesliste (hart-codiert, keine DB), hinzufügen und entfernen von Freunden
-
-Client-Server und RPCs entsprechend Code-Vorschlägen von Li Haoy\cite[]{haoyi.HOS}
-
-verwendet: spray - Sammlung von Librarys zur Entwicklung von REST/\ac{HTTP}-basierten Webservices auf der Basis von Akka; beinhaltet spray-can, einen schnellen \ac{HTTP}-Server)
-
-\MyMiniSec{Ergebnisse der Untersuchung und Bewertung}
 
 
-ggf. diskutieren: Verwendung vieler objects
-
-eine (!) Templating-Sprache für Server und Client: ScalaTags \cite{haoyi.HOS}
-
-eine (!) Library zur Serialisierung: uPickle \cite{haoyi.HOS}
-
-Schnittstelle in einer Sprache
-
-- muss nicht zwei Librarys für Client und Server finden
-
-- leichter nur eine (!) Library (jeweils für Templating und Serialisierung) zu lernen, die in Client und Server verwendet werden kann
-\cite[\#SharingCode]{haoyi.HOS}
-
-- relativ einfache statisch typisierte RPCs mit Autowire
-
-
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-%\chapter{Auswertung (speziell der "`weichen"' Kriterien)}
 
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
@@ -2378,6 +2269,7 @@ Gab es Randbedingungen, Ereignisse, die die Arbeit wesentlich beeinflußt haben?
 	- noch keine gedruckten Quellen
 	- Entwicklung im Wandel
 Gibt es noch offene Probleme?
+- benchmark von sjs läuft nicht mit aktueller version
 - siehe unten ...
 Wie könnten diese vermutlich gelöst werden?
 - siehe unten ...
