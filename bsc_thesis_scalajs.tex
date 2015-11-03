@@ -1,4 +1,4 @@
-% BESCHREIBUNG DER DOCUMENTCLASS
+ % BESCHREIBUNG DER DOCUMENTCLASS
 % a4paper 	-	weil wir ein Din-A4-Dokument benutzen.
 % 12pt		-	Schriftgröße von 12 Punkt.
 % listof=totoc 	-	heisst, dass das Tabellenverzeichnis (\listoftables) & das Abbildungsverzeichnis (\listoffigures) im Inhaltsverzeichnis aufgenommen werden.
@@ -322,7 +322,7 @@ Um diesen Fragen nachzugehen, werden in einigen Fallstudien verschiedene kleiner
 
 \section{Abgrenzung}
 
-Einige Probleme können in dieser Arbeit nicht behandelt werden. Dazu zählt als erstes die Kompatibilität von Webseiten mit älteren Browsern. \TODOi{Ebenfalls nicht diskutiert wird die Frage, ob \ac{HTML}-Dokumente besser auf Client- oder Serverseite generiert werden sollten. In einem praktischen Client-Server-Beispiel wird die Serverseite bewusst einfach gehalten. Insbesondere wird auf den Einsatz einer Datenbank verzichtet und die Themen Authentifizierung und Sitzungsverwaltung bewusst ausgeblendet. (???)}
+Das Probleme der Kompatibilität von Webseiten mit älteren Browsern wird in dieser Arbeit nicht behandelt werden. Auch wird die Frage, ob \ac{HTML}-Dokumente besser auf Client- oder Serverseite generiert werden sollten, nicht diskutiert.
 
 
 \section{Aufbau der Arbeit}
@@ -331,7 +331,7 @@ Kapitel \ref{chap:basics} stellt das technische Umfeld vor und klärt in diesem 
 
 Kapitel \ref{chap:scala.js} liefert einen Überblick über Scala.js. Dazu werden zunächst die konzeptionellen Grundlagen erklärt. Danach wird auf einige semantische Abweichungen von Scala eingegangen und die Interoperabilität mit JavaScript erläutert. Schließlich wird das technische Ökosystem beschrieben, das Scala.js bietet.
 
-Kapitel \ref{chap:methods} erläutert die Vorgehensweise bei der Untersuchung und stellt dafür Kriterien auf.
+Kapitel \ref{chap:methods} erläutert die Vorgehensweise bei der Untersuchung und stellt dafür Kriterien auf. Außerdem werden die bei der Untersuchung verwendeten technischen Hilfsmittel genannt.
 
 Kapitel \ref{chap:setup} enthält eine Anleitung zur Installation der benötigten Software und erklärt die nötigen Schritte um die Fallbeispiele zur Ausführung zu bringen.
 
@@ -461,7 +461,7 @@ Daneben existieren zwei spezielle Werte: \js{undefined}, für Variablen ohne zug
 Alle anderen Typen sind \emph{mutable}. \js{Object}, der Datentyp für alle Referenztypen, \js{Array}, der Typ für geordnete Collections und \js{Function} für Funktionen. Daneben existieren nur noch die Typen \js{Date}, \js{Error}, \js{Math} und \js{Regexp}. \cite[S. 29 ff.]{flanagan2011.JDG}
 
 
-\subsection{Besonderheiten und Probleme}\ref{subsec:js-problems}
+\subsection{Besonderheiten und Probleme}\label{subsec:js-problems}
 
 JavaScript hat einige Besonderheiten, die besonders für Programmierer, die von einer syntaktisch verwandten Sprache wie Java kommen, überraschend sind. So können zum Beispiel keine konstanten Werte festgelegt werden. Da diese Besonderheiten häufig Probleme bereiten, sollen hier einige der wichtigeren erläutert werden.
 
@@ -707,7 +707,7 @@ JavaScript kennt ausschließlich den Zahlentyp \scala{Number}, der \scala{Double
 Aus diesem Grund sind Laufzeit-Typtests für primitive Typen wertebasiert. Beispielsweise liefert ein \scala{isInstanceOf[T]}-Check des Werts \scala{1} Übereinstimmung mit \scala{Byte}, \scala{Short}, \scala{Int}, \scala{Float} und \scala{Double}. Auf \scala{1.5} passen nur \scala{Float} und \scala{Double}. \cite{scalajs.DSS}
 
 Um Ganzzahlsemantik zu erreichen, werden in Scala.js alle \scala{Int}-Operationen durch bitweise Veroderung umgesetzt\footnote{Als einziger Außnahme ist für die Multiplikation eine spezielle Implementierung nötig. Für Details hierzu siehe: \url{https://github.com/scala-js/scala-js/issues/425}}, das heißt aus der Scala-Operation \scala{a + b} wird im JavaScript-Code \js{(a + b) \| 0}. Da die meisten JavaScript-Umgebungen als Optimierung für bitweise Operationen
-intern \code{int32} verwenden, führt dies sogar zu, im Vergleich zu nativem JavaScript, besonders schnellen \code{Int}-Operationen. \cite[Folie~16~ff., Min.~10]{doeraene2015.SSP}
+intern \code{int32} verwenden, führt dies sogar zu, im Vergleich zu nativem \mbox{JavaScript}, besonders schnellen \code{Int}-Operationen. \cite[Folie~16~ff., Min.~10]{doeraene2015.SSP}
 
 
 \subsection{Undefiniertes Verhalten}\label{subsec:undefined-behavior}
@@ -752,7 +752,7 @@ Für das Verhältnis von Typen in Scala.js und JavaScript gelten bestimmte Korre
 \label{table:type-correspondance}
 \end{table}
 
-Es gibt aber auch bestimmte Nicht-Korrespondenzen: Scala-\scala{Function}s sind keine JavaScript-\js{Function}s. Vielmehr werden sie durch spezielle \scala{js.Function}-Typen repräsentiert. Doch hierfür existieren implizite Konvertierungen in beide Richtungen.
+Es gibt aber auch bestimmte Nicht-Korrespondenzen: Scala-\scala{Function}s sind keine Java-Script-\js{Function}s. Vielmehr werden sie durch spezielle \scala{js.Function}-Typen repräsentiert. Doch hierfür existieren implizite Konvertierungen in beide Richtungen.
 
 Für drei weitere Typen existieren keine unmittelbaren Entsprechungen in JavaScript, so dass sie in Scala.js durch besondere Hilfsklassen repräsentiert werden (Tabelle \ref{table:type-non-correspondance}). Hier müssen die Konvertierungen allerdings in der Regel explizit vorgenommen werden.
 
@@ -1014,7 +1014,8 @@ Die JavaScript-Laufzeit ist, je nach Einstellung: Rhino, Node.js oder PhantomJS.
 Durch eine vorangestellte \code{\~} ist das Arbeiten im kontinuierlichen Modus möglich
 Jede gespeicherte Code-Änderung löst automatisch einen Neuaufruf des gewählten Tasks aus. Zum Beispiel wird mit \code{\~fastOptJS} automatisch im Produktionsmodus neu übersetzt. \cite[\#TheCommandLine]{haoyi.HOS} ist hier wieder eine wertvolle und (als Mitarbeiter des Projekts) auch autorisierte Quelle -> es gibt weiter unten ein Kapitel "`The Command Line"' zum Thema.
 
-Die zur Auslieferung benötigten JavaScript-Dateien werden im Verzeichnis \code{target/scala-2.11/} erzeugt; \ac{HTML}- und \ac{CSS}-Dateien befinden sich eine Ebene tiefer in \code{target/scala-2.11/classes/}.
+Die zur Auslieferung benötigten JavaScript-Dateien werden im Verzeichnis 
+\linebreak\mbox{\code{target/scala-2.11/}} erzeugt. \ac{HTML}- und \ac{CSS}-Dateien befinden sich eine Ebene tiefer in \linebreak\mbox{\code{target/scala-2.11/classes/}}.
 
 
 
@@ -1034,7 +1035,7 @@ Scala.js kann gut durch \ac{IDE}s unterstützt werden. Hierdurch ist ein komfort
 \subsection{Scala.js workbench}
 
 Die Scala.js workbench\footnote{\url{https://github.com/lihaoyi/workbench}} ist ein sbt-Plugin zur automatischen Aktualisierung des Browsers 
-bei gespeicherten Änderungen am Code. Dies soll die kontinuierliche Entwicklung mit Scala.js erleichtern. Auch Ausgaben des Compilers werden in die Browser-Konsole übertagen.
+bei gespeicherten Änderungen am Code. Dies soll die kontinuierliche Entwicklung mit Scala.js erleichtern. Auch Ausgaben des Compilers werden in die Browser-Konsole übertragen.
 
 
 \subsection{Librarys}
@@ -1120,15 +1121,16 @@ Die folgende Software wird benötigt:
 	\item Java Development Kit (JDK) 8\footnote{Gegebenenfalls genügt auch ein JRE.}  --  \url{www.oracle.com/technetwork/java/javase/}
 	\item Scala  --  \url{http://www.scala-lang.org/}
 	\item sbt  --  \url{http://www.scala-sbt.org/}
-	\item git  --  \url{https://git-scm.com/} \TODOi{<<<<< benötigt??? <<<<<}
+%	\item git  --  \url{https://git-scm.com/} \TODOi{<<<<< benötigt??? <<<<<}
 	\item Node.js  --  \url{https://nodejs.org/en/}
 	\item PhantomJS  --  \url{http://phantomjs.org/}
 \end{itemize}
 
 Alle benötigten Programme sind auf dem beigefügten Datenträger enthalten. Sie lassen sich alternativ auch unter der angegebenen Adresse beim Hersteller herunterladen. Dort finden sich auch Installationsanleitungen. Für Windows existieren ausführbare Installationsprogramme, die selbsterklärend sind. PhantomJS muss nicht installiert werden; hier genügt es, den Inhalt der .zip-Datei in das gewünschte Programmverzeichnis zu entpacken.
 
-Unter Windows ist es für alle Programme \TODOi{mit Ausnahme von git} nötig, dem System durch das Setzen einer Umgebungsvariablen den Installationspfad bekannt zu machen.
+Scala.js muss nicht installiert werden sondern wird per Build-Definition als sbt-Plugin gestartet.
 
+Unter Windows müssen für alle installierten Programme Umgebungsvariablen gesetzt werden, um dem System den Installationspfad bekannt zu machen. Hierzu sind folgende Schritte nötig:
 
 \begin{enumerate}
 \item "`System"'-Dialog öffnen (\code{Windows-Taste + x})
@@ -1136,9 +1138,8 @@ Unter Windows ist es für alle Programme \TODOi{mit Ausnahme von git} nötig, de
 \item Knopf "`Umgebungsvariablen"' betätigen
 \item Variable "`Path"' auswählen und auf "`Bearbeiten..."' klicken
 \item Pfad zur ausführbaren Datei des Programms (\code{bin/} im jeweiligen Programmverzeichnis) mit vorangestelltem Semikolon an bestehenden Eintrag anhängen, zum Beispiel für Java: \code{;C:\\Program Files\\Java\\jdk1.8.0\_51\\bin}
-\end{enumerate}
 
-Scala.js muss nicht installiert werden sondern wird per Build-Definition als sbt-Plugin gestartet.
+\end{enumerate}
 
 
 \section{IDE-Integration}
@@ -1208,31 +1209,26 @@ Das hat den Vorteil, dass die benötigten Dependencys in einer Konfigurationsdat
 
 \section{Installation und Start von Anwendungen und Tests}
 
-\TODOi{git??? -> Sourcen von Datenträger oder github(?) (-> git client), hierzu genügt der Aufruf git clone <repo> vom Terminal im gewünschten Verzeichnis}
-
 Die Beispielanwendungen finden sich auf dem Datenträger im Order \code{source/}. Jedes Beispielprojekt enthält eine Readme-Datei mit allen nötigen Schritten.
 
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 \chapter{Fallstudien}\label{chap:case-studies}
 
-\TODOi{In den folgenden Fallstudien werden anhand kleiner Beispielimplementierungen die Themen Interaktion mit dem \ac{DOM}, das Arbeiten mit Events, die Verwendung des HTML5 Canvas, asynchrone Datenübertragung mit Ajax, die Möglichkeit der Erstellung cross-kompilierender Librarys und ein Beispiel für Client-Server Interaktion mit einem clientseitigen Routing vorgestellt. (CHECK!)} Ziel ist es dabei, bestimmte Aspekte der Nützlichkeit von Scala.js am jeweiligen Anwendungsfall zu zeigen und gegebenenfalls auf dabei aufgetretene Schwierigkeiten hinzuweisen.
+In den folgenden Fallstudien werden anhand kleiner Beispielimplementierungen die Themen Interaktion mit dem \ac{DOM}, das Arbeiten mit Events, die Verwendung des HTML5 Canvas, asynchrone Datenübertragung mit Ajax und die Möglichkeit der Erstellung cross-kompilierender Librarys. Ziel ist es dabei, bestimmte Aspekte der Nützlichkeit von Scala.js am jeweiligen Anwendungsfall zu zeigen und gegebenenfalls auf dabei aufgetretene Schwierigkeiten hinzuweisen.
 
 Zuerst wird jeweils das Untersuchungsziel erläutert. Danach wird als zweites das Beispielprogramm kurz in seiner Funktionsweise beschrieben. Anschließend werden die Ergebnisse der Untersuchung besprochen und bewertet.
 
 Das Eingangsbeispiel ist bewusst einfach gehalten, um in diesem Rahmen wichtige Eigenschaften von Scala.js zu diskutieren. Es stützt sich auf das offizielle Scala.js-Tutorial \cite{scalajs.SJT}. Für alle Implementierungen lieferten die Beispiele von Li Haoyi \cite{haoyi.HOS} wichtige Anregungen.
-
-\TODO{Liste der Beispielprojekte, verlinkt auf GitHub}
-
 
 
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 \section{Zwei Minimalbeispiele}
 
-%TODO Hinweis: lose orientiert an  -->  http://www.scala-js.org/doc/tutorial.html
+\textbf{Projekte:} sjs-hello-scalajs, sjs-hello-scalajs2, js-hello
 
-\TODO{Projekte: sjs-hello-scalajs, sjs-hello-scalajs2}
+\MyMiniSec{Ziel der Unterschung}
 
 Ziel war es hier, anhand von zwei Minimalbeispielen verschiedene Grundbedingungen der Entwicklung mit Scala.js zu untersuchen. Dazu sollte als erstes ein klassischen Hallo-Welt-Programms zum Laufen gebracht werden. In diesem kleinen Rahmen sollte die grundlegende Handhabung und Konfiguration von Scala.js verstanden werden. Automatisierte Builds und einfache Tests sollten erprobt und auf ihre Performance hin untersucht werden. Auch die Größe der für die Auslieferung relevanten Kompilate sollte betrachtet werden.
 
@@ -1280,16 +1276,17 @@ Für beide Minimalprogramme sowie für die Tests zum zweiten Programm diente das
 
 \MyMiniSec{Konfigurationsaufwand}
 
-Es wird die für ein sbt-Projekt übliche Konfiguration (siehe Abschnitt \ref{sec:sbt}) bestehend aus \code{build.sbt} und \code{project/}-Verzeichnis mit \code{build.properties} benötigt. Zusätzlich muss in einer \code{plugins.sbt} im \code{project/}-Verzeichnis das Scala.js-Plugin hinzugefügt und dieses in der \code{build.sbt} aktiviert werden (siehe Abschnitt \ref{subsec:sjs-sbt}). Der Mehraufwand gegenüber einem reinen Scala-Projekt ist demnach gering. 
+Es wird die für ein sbt-Projekt übliche Konfiguration bestehend aus \code{build.sbt} und \code{project/}-Verzeichnis mit \code{build.properties} benötigt. Zusätzlich muss in einer \code{plugins.sbt} im \code{project/}-Verzeichnis das Scala.js-Plugin hinzugefügt und dieses in der \code{build.sbt} aktiviert werden (siehe Abschnitt \ref{subsec:sjs-sbt}). Der Mehraufwand gegenüber einem reinen Scala-Projekt ist demnach gering. 
 
+Es empfiehlt sich, für Entwicklung und Produktion zwei getrennte \ac{HTML}-Dateien mit jeweils passender Konfiguration zu pflegen. Dort müssen die jeweils passenden JavaScript-Dateien zu Verwendung eingebunden werden. Wie in Abschnitt~\ref{sec:compiler} beschrieben, erzeugt der Scala.js-Compiler, je nach Task, \code{fastOptJS} oder \code{fullOptJS}, unterschiedliche JavaScript-Dateien. Diese können anhand ihres Suffix, \code{-fastopt.js} beziehungsweise \code{-opt.js}, auseinandergehalten werden. Für die Produktion sollten minifiziertes JavaScipt und \ac{CSS} eingebunden werden. In der Entwicklung kann zum Beispiel das Workbench-Plugin zur Verwendung eingebunden werden:
+
+\begin{lstlisting}[language=HTML5, style=snippet]
+<script src="/workbench.js"></script>
+\end{lstlisting}
 
 Die Einbindung von jQuery mit der Library \code{scala-js-jquery} ist grundsätzlich unkompliziert. Etwas schwieriger war es, zu verstehen, wie sich hier und generell minifizierte Versionen für die im \code{target/}-Ordner erzeugten JavaScript-Dependencys erzwingen lassen (siehe \ref{subsec:sjs-sbt}).
 
-
-%TODO~~~~~
-
-
-Für Tests wurde \code{uTest} verwendet und ensprechend den \code{libraryDependencies} hinzugefügt. Um das \ac{DOM} für Tests verwenden zu können, muss wie in \TODOi{Kapitel sbt-Integration ???} beschrieben, der Eintrag:
+Für Tests wurde \code{uTest} verwendet und ensprechend den \code{libraryDependencies} hinzugefügt. Um das \ac{DOM} für Tests verwenden zu können, muss der Eintrag:
 
 \begin{lstlisting}[style=snippet]
 jsDependencies in Test += RuntimeDOM
@@ -1426,32 +1423,21 @@ Die bekannten Test-Bibliotheken ScalaTest und Specs2 können nicht mit Scala.js 
 
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-\section{HTML-Templating}
+\section{HTML-Templating mit ScalaTags}
 
-%TODO -----> Kapitel raus, Wichtiges übernehmen in StringAnalyzer
 
-\TODO{Projekte: sjs-hello-scalatags (+ extract: string-analyzer}
+\textbf{Projekt:} sjs-hello-scalatags
 
-%\subsection{Ziel der Untersuchung}
+\MyMiniSec{Ziel der Unterschung}
 
-\TODO{Ziel formulieren}
+Hier war es das Ziel, mithilfe von Scala-js-dom und ScalaTags \ac{DOM}-Manipulationen vorzunehmen und möglichst typsichere \ac{HTML}-Templates zu schreiben. Die Handhabung sollte verstanden und der Lernaufwand sollte abgeschätzt werden. Vor allem sollte der zu erwartende Gewinn für Lesbarkeit, Ausdruckskraft und Wiederverwendbarkeit des Codes eingeschätzt werden.
 
-Typsicheres \ac{HTML}-Templating 
 
-TODO: Einleitungssatz
-
-%\subsection{Kriterien}
-
-\begin{itemize}
-	\item Machbarkeit
-	\item Lesbarkeit
-\end{itemize}
-
-minisec{Kurzbeschreibung des Beispielprogramms}
+\MyMiniSec{Kurzbeschreibung des Beispielprogramms}
 
 Verschiedene valide \ac{HTML}-Tags werden mit Scala.js erzeugt.
 
-minisec{Ergebnisse der Untersuchung und Bewertung}
+\MyMiniSec{Ergebnisse der Untersuchung und Bewertung}
 
 Betrachtet wurden vier Möglichkeiten, in Scala.js \ac{HTML} zu generieren. Dazu sei in der \code{index.html} ein
 \html{<div>} mit der ID "`container"' definiert. Die Referenz darauf wird im Scala.js-Programm bekannt gemacht durch:
@@ -1460,7 +1446,7 @@ Betrachtet wurden vier Möglichkeiten, in Scala.js \ac{HTML} zu generieren. Dazu
 val container: org.scalajs.dom.raw.Element = document.getElementById("container")
 \end{lstlisting}
 
-Mithilfe von Scala-js-dom können die \ac{DOM}-Methoden \scala{createElement()} zum erzeugen von \ac{HTML}-Elementen und \scala{appendChild()} zum einhängen von Elementen in den DOM-Tree verwendet werden.
+Mithilfe von Scala-js-dom können die \ac{DOM}-Methoden \scala{createElement()} zum erzeugen von \ac{HTML}-Elementen und \scala{appendChild()} zum Einhängen von Elementen in den DOM-Tree verwendet werden.
 
 \begin{lstlisting}[language=Scala, caption={HTML-Generierung mit Scala-js-dom und Nodes.}]
 val foo = document.createElement("div")
@@ -1515,36 +1501,27 @@ node.appendChild(
 )
 \end{lstlisting}
 
-Damit ist es möglich typsicher, deklarativ und nahe an \ac{HTML}, gleichzeitig (schon durch das Wegfallen der schließenden Tags) sehr lesbaren Code zu schreiben. Hinzu kommt die Möglichkeit, Kontrollfluss-Anweisungen wie \scala{for} und \scala{if/else} einzustreuen (ein Beispiel hierfür: Listing \ref{code:setupCurrencySelect}).
+Damit ist es möglich typsicher, deklarativ und nahe an \ac{HTML}, gleichzeitig -- schon durch das Wegfallen der schließenden Tags -- sehr lesbaren Code zu schreiben. Hinzu kommt die Möglichkeit, Kontrollfluss-Anweisungen wie \scala{for} und \scala{if/else} einzustreuen (ein Beispiel hierfür: Listing \ref{code:setupCurrencySelect}).
 
 
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 \section{Canvas, Timer und Events}
 
-\TODO{Projekt: sjs-canvas-frenzy}
+\textbf{Projekte:} sjs-canvas-frenzy
 
-\TODO{>> Workbench ausgliedern!!!}
-
-%\subsection{Ziel der Untersuchung}
+\MyMiniSec{Ziel der Unterschung}
 
 Bei diesem Beispiel ging es um die Erprobung des HTML5-Canvas und der \ac{DOM}-\ac{API} mit Scala.js. Es sollten Timer-gesteuerte Aktionen mithilfe der Methoden des \code{WindowTimers}-Interface und das Arbeiten mit Event-Handlern für Maus- und Keyboard-Events ausprobiert werden. Hierbei sollte einerseits geklärt werden, ob und wie solche Standardtechniken der Oberfächenprogrammierung mit Scala.js machbar sind, andererseits sollte untersucht werden, ob die Entwicklung durch die Arbeit mit Scala.js sogar erleichtert wird, oder ob das Gegenteil der Fall ist.
 
 Gleichzeitig wurde die Scala.js Workbench im produktiven Einsatz ausprobiert und dabei auf ihre Nützlichkeit hin geprüft.
 
-%\subsection{Kriterien}
 
-\begin{enumerate}
-	\item Umsetzbarkeit aller Anforderungen
-	\item Leichtigkeit der Implentierung
-	\item Nützlichkeit
-\end{enumerate}
+\MyMiniSec{Kurzbeschreibung des Canvas-Programms}
 
-\MyMiniSec{Kurzbeschreibung des Beispielprogramms}
+Die Anwendung erzeugt automatisch einfache Bilder, indem sie zufällig Rechtecke oder Kreise zeichnet. Auch Position, Abmessungen, Farbe und Transparenz der Elemente sind zufallsgeneriert. Bei den Abmessungen der gezeichneten Formen sorgt ein \TODOi{Mechanismus} dafür, dass die Werte nicht zu abrupt variieren, damit sich ein etwas ruhigerer Eindruck ergibt. Dazu werden die Zufallswerte jeweils durch lineare Interpolation mit dem Vorgängerwert geglättet. Das Ergebnis ist beispielhaft in den Abbildungen \ref{fig:frenzy1} und \ref{fig:frenzy2} zu sehen.
 
-Die Anwendung erzeugt automatisch einfache Bilder, indem sie zufällig Rechtecke oder Kreise von zeichnet. Auch Position, Abmessungen, Farbe und Transparenz der Elemente sind zufallsgeneriert. Bei den Abmessungen sorgt ein Mechanismus dafür, dass die Werte nicht zu abrupt variieren, sondern sich ein etwas ruhigerer Eindruck ergibt. Dazu werden die Zufallswerte jeweils durch lineare Interpolation mit dem letzten Wert geglättet. Das Ergebnis ist beispielhaft in den Abbildungen \ref{fig:frenzy1} und \ref{fig:frenzy2} zu sehen.
-
-Mit der Maus kann bei gedrückt gehaltener linker Maustaste auf den Canvas-Bereich gezeichnet werden. Dabei wird ein zufälliger Farbverlauf erzeugt (siehe Abb. \ref{fig:frenzy3} und \ref{fig:frenzy4}).
+Außerdem kann mit der Maus bei gedrückt gehaltener linker Maustaste auf den Canvas-Bereich gezeichnet werden. Dabei wird ein zufälliger Farbverlauf erzeugt (siehe Abb. \ref{fig:frenzy3} und \ref{fig:frenzy4}).
 
 \begin{figure}[!h]
 	\centering
@@ -1575,14 +1552,15 @@ Die Anwendung lässt sich durch die Tastatur steuern. Das automatische Zeichnen 
 
 Die Größe der Zeichenfläche wird jeweils an die aktuelle Größe des Browserfensters neu angepasst. Allerdings wird dabei auch die Zeichenfläche geleert.
 
-Eine Schwäche der aktuellen Implementierung ist es, dass die beim Zeichnen mit der Maus entstehende Linie bei langsamer Mausbewegung noch nicht sehr glatt erscheint. Das hängt damit zusammen, dass für jede registrierte Mausbewegung, die als MouseEvent verarbeitet werden kann, eine Teillinie gezeichnet wird. Diese ist jeweils die Verbindungslinie zwischen der Mausposition des vorigen mit der des aktuellen MouseEvent. Zwischen diesen Teillinie entsteht, wenn sie nicht in exakt dieselbe Richtung weisen, eine Lücke.
 
-Ein anderer bekannter Fehler ist das ungewöhnliche Verhalten der Zeichenfläche beim Zoomen im Browser. \REDOi \TODOi{raffen und in einen Absatz}
-
-
-%\subsection{Ergebnisse der Untersuchung und Bewertung}
+\MyMiniSec{Umsetzbarkeit}
 
 Alle geplanten Anforderungen ließen sich umsetzen: der Zugriff auf die \ac{DOM}-\ac{API}, das Zeichnen auf den Canvas, timergesteuerte Ausführung und die Verwendung von Event-Handlern.
+
+Eine Schwäche der aktuellen Implementierung ist es allerdings, dass die beim Zeichnen mit der Maus entstehende Linie bei langsamer Mausbewegung noch nicht sehr glatt erscheint. Das hängt damit zusammen, dass für jede registrierte Mausbewegung, die als MouseEvent verarbeitet werden kann, eine Teillinie gezeichnet wird. Diese ist jeweils die Verbindungslinie zwischen der Mausposition des vorigen mit der des aktuellen MouseEvent. Zwischen diesen Teillinie entsteht, wenn sie nicht in exakt dieselbe Richtung weisen, eine Lücke. Dieses Problem ist aber nicht Scala.js-spezifisch. Eine möglicher Ansatz wäre hier, alle im Zeichnmodus registrierten Mauspositionen in einer Liste zu sammeln und daraus eine glatte Kurve zu berechnen. Da die Beispielanwendung nur prototypschen Charakter hat, wurde der Lösung dieses Fehlers aber nicht weiter nachgegangen. Ein anderer bekannter Fehler ist das ungewöhnliche Verhalten der Zeichenfläche beim Zoomen im Browser.
+
+
+\MyMiniSec{Verwendung des Canvas}
 
 Um ein Canvas-Objekt zu erhalten, gibt es in JavaScript zwei Möglichkeiten: entweder man definiert im \ac{HTML}-Dokument ein Canvas-Element mit einer eindeutigen ID \html{<canvas id="myCanvas"></canvas>} und greift im JavaScript-Code darauf zu:
 
@@ -1624,6 +1602,9 @@ ctx.fillRect(x, y, width, heigth)
 
 Die Typ-Casts mögen etwas unschön sein, aber die zwei beschriebenen Fälle sind auch die einzigen, die in der Beispielanwendung benötig werden. Sébastien Doeraene zufolge ist die erste Art Cast zur Spezialisierung des \ac{HTML}-Elements, unvermeidbar, andernfalls müsste der \ac{DOM} selbst Teil des Typsystems sein. Der zweite Cast zum konkreten Rendering-Kontext wird wohl in einer künftigen Version von Scala.js nicht mehr nötig sein. Doeraene weist auch darauf hin, dass in sechs Scala.js-Beispielanwendungen mit insgesamt 1000 Zeilen Code exakt diese beiden Casts, und nur diese, benötigt werden. \cite[S. 8]{doeraene2013.TDI}
 
+
+\MyMiniSec{Timer}
+
 Um einen Timer zu starten, der ein Aktion regelmäßig ausführt, bietet die \ac{DOM}-\ac{API} die Methode \scala{setInterval}. Die folgende Anweisung erzeugt zum Beispiel einmal pro Sekunde eine Ausgabe auf die Konsole:
 
 \begin{lstlisting}[language=JavaScript, style=snippet]
@@ -1638,7 +1619,10 @@ dom.setInterval(() => println("hi"), 1000)
 
 Hier ist also nichts neu zu lernen, die JavaScript-\ac{DOM}-\ac{API} wird mithilfe der Fassade einfach verwendet. Zusätzlich profitiert man hier von der prägnanten Scala-Syntax, mit der sich Lambas knapper schreiben lassen.
 
-Zur Veranschaulichung der Verwendung von Event-Handler sei hier folgendes Beispiel herausgegriffen:
+
+\MyMiniSec{Event-Handler}
+
+Zur Veranschaulichung der Verwendung von Event-Handlern sei hier folgendes Beispiel herausgegriffen:
 
 \begin{lstlisting}[language=Scala, style=snippet]
 dom.document.onkeyup = { (evt: dom.KeyboardEvent) => evt.keyCode match {
@@ -1651,6 +1635,9 @@ dom.document.onkeyup = { (evt: dom.KeyboardEvent) => evt.keyCode match {
 \end{lstlisting}
 
 Hier wird der \scala{onkeyup}-Property zur Event-Behandlung eine anonyme Funktion (auch: Lambda) zugewiesen. Dank Scalas Pattern Matching kann sehr knapp und übersichtlich das gewünschte Verhalten formuliert werden. Scala-js-dom stellt neben Fassaden für die \ac{DOM}-\ac{API} im Paket \scala{org.scalajs.dom.ext} nützliche Helfer zur Verfügung, darunter eine Liste für die meisten Keyboard-Tasten-Codes, so dass hier nicht mit kryptischen Zahlenwerten gearbeitet werden muss.
+
+
+\MyMiniSec{Abstraktionen}
 
 Um die Frequenz des automatischen Zeichnens per Keyboard-Interaktion steuerbar zu machen, muss der Timer angehalten und mit einem Intervall erneut gestartet werden können. Es erwies sich daher als sauberer und für den Handler-Code entlastend (und ganz im Sinne von DRY\footnote{\emph{Don't Repeat Yourself!}}), gewisse Implementierungsdetails in einer eigenen Timer-Abstraktion zu verbergen (Listing \ref{code:canvas-timer}).
 
@@ -1675,21 +1662,10 @@ class Timer(var interval: Int, action: => Unit) {
 \end{lstlisting}
 
 
->>Scala-js-dom       **** UP % ^^^
+\MyMiniSec{IDE-Unterstützung}
 
-hinzufügen in der build.sbt - zack, fertig:
-
-\begin{lstlisting}[style=snippet]
-libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.8.0"
-\end{lstlisting}
-
-
-
-
-
->>Gewinn durch Möglichkeit der Verwendung von Scala  ------- siehe oben - einarbeiten!!!
-
-Die Typsicherheit hat hier beim Editieren den unmittelbaren Vorteil, dass die \ac{IDE}-Unterstützung
+Einen unmittelbaren Gewinn bei der Verwendung von Scala.js stellt die verbesserte \ac{IDE}-Unterstützung beim Editieren dar. 
+Aufgrund der statischen Typisierung die \ac{IDE} verfügbaren Member einer Klasse in der automatischen Code-Vervollständigung anbieten (siehe Abbildung \ref{fig:typesafe-autocomplete}).
 
 \begin{figure}[!h]
     \centering
@@ -1699,14 +1675,7 @@ Die Typsicherheit hat hier beim Editieren den unmittelbaren Vorteil, dass die \a
 \end{figure}
 
 
-	-> Contra (?) bzw. Achtung ->  man muss durch Disziplin selbst darauf achten, dass man js.Dynamic vermeidet und ggf. castet, ist aber selten nötig (-> andere Beispiele???)
-
-
-
-
-\subsection{Workbench-Plugin <- AUSLAGERN}
-
-\TODO{EIGENES MINI-KAPITEL}
+\MyMiniSec{Kontinuierliches Arbeiten mit dem Workbench-Plugin}
 
 Damit das Workbench-Plugin von sbt auch geladen wird, muss es in der \code{plugins.sbt} hinzugefügt werden:
 
@@ -1739,7 +1708,7 @@ Hierbei ist es wichtig, darauf zu achten, dass diese Zeile nach allen anderen Ja
 
 Beim Start von sbt wird nun automatisch das Workbench-Plugin geladen. Dieses startet einen lokalen Server für das Projektwurzelverzeichnis unter der Adresse \url{localhost/127.0.0.1:12345}. Dadurch ist mit der Eingabe der Adresse \url{http://localhost:12345/target/scala-2.11/classes/index-dev.html} im Browser die Scala.js-Anwendung erreichbar.
 
-Zur flüssigen Entwicklung ist es am komfortabelsten, im kontinuierlichen Modus zu arbeiten. Dazu wird nun \code{\~fastOptJS} aufgerufen, wodurch jedes Speichern von Code-Änderungen einen Build triggert. Ist hierbei die Workbench gestartet, muss das Terminal während der Entwicklung seltener aufgesucht werden, denn selbst Ausgaben des Compilers werden nützlicherweise in der Browser-Konsole ausgegeben (siehe Abb. \ref{fig:workbench-in-action1} - \ref{fig:workbench-in-action4}).
+Zur flüssigen Entwicklung ist es am komfortabelsten, im kontinuierlichen Modus zu arbeiten. Dazu wird nun \code{\~fastOptJS} aufgerufen, wodurch jedes Speichern von Code-Änderungen einen Build triggert. Ist hierbei die Workbench gestartet, muss das Terminal während der Entwicklung seltener aufgesucht werden, denn selbst Ausgaben des Compilers werden nützlicherweise in der Browser-Konsole ausgegeben (siehe Abb. \ref{fig:workbench-in-action1} - \ref{fig:workbench-in-action2}).
 
 \begin{figure}[!h]
     \centering
@@ -1762,7 +1731,9 @@ Das Workbench-Plugin funktioniert nicht immer ganz zuverlässig, und manchmal mu
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 \section{Ajax}
 
-\TODO{Projekt: sjs-currency-converter}
+\textbf{Projekte:} sjs-currency-converter
+
+\MyMiniSec{Ziel der Unterschung}
 
 Die Kommunikation mit Objekten außerhalb des Web-Clients, zum Beispiel mit Webservices, ist ein wichtiger Bestandteil der meisten interaktiven Web-Anwendungen. Dazu wird standardmäßig eine als \emph{Ajax} bezeichnete Technik verwendet. Hierbei werden aus der Web-Anwendung heraus über das \ac{HTTP} Daten von einem Server angefragt, um auf Grundlage der Antwort Teile der \ac{HTML}-Seite zu aktualisieren. \cite[S.~491]{flanagan2011.JDG} Diese Aufrufe geschehen asynchron, das heißt die Seite blockiert nicht, sondern bleibt weiter bedienbar, während auf die Antwort vom Server gewartet wird. Diese Standardtechnik und der Umgang mit Asynchronität sollte mit Scala.js erprobt werden.
 
@@ -1950,7 +1921,9 @@ Die Dokumentation der verwendeten Librarys Scala-js-dom, ScalaTags, und Scala-As
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 \section{Eine Cross-kompilierende Library}
 
-\TODO{Projekte: sjs-crosscompiling-statistics-lib, js-port-of-statistics-lib, benchmark-statistics-libs}
+\textbf{Projekte:} sjs-crosscompiling-statistics-lib, js-port-of-statistics-lib, benchmark-statistics-libs
+
+\MyMiniSec{Ziel der Unterschung}
 
 Die Wiederverwendbarkeit von Code für Client \emph{und} Server ist ein wünschenswertes Ziel. Hier sollte anhand der Implementierung einer kleinen cross-kompilierenden Library erprobt werden, wie das mit Scala.js möglich ist. Außerdem sollte durch Tests die Korrektheit der Bibliothek sichergestellt werden. Außerdem sollte die implementierten Scala.js-Library in natives HTML/JavaScript eingebunden werden, um auch die Interoperabilität zu erproben. Schließlich sollte eine Portierung nach JavaScript vorgenommen werden um einerseits einen Vergleich des Codes, aber auch einen Leistungsvergleich zwischen Scala.js und nativem JavaScript vornehmen zu können.
 
