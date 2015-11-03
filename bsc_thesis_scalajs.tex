@@ -860,7 +860,7 @@ Auf diese Weise kann nahezu JavaScript-Semantik in Scala geschrieben werden, sol
 
 \subsection{Scala.js nach JavaScript exportieren}
 
-Damit auf Scala.js-Code von JavaScript direkt zugegriffen werden kann, muss dieser explizit exportiert werden. Häufig genügt es, die Hauptmethode einer Anwendung zu exportieren, so dass diese gestartet werden kann. Hierfür reicht es aus, die Anwendung vom Trait \scala{js.App} zu erben:
+Damit von JavaScript aus direkt auf Scala.js-Code zugegriffen werden kann, muss dieser explizit exportiert werden. Häufig genügt es, die Hauptmethode einer Anwendung zu exportieren, so dass diese gestartet werden kann. Dazu reicht es aus, die Anwendung vom Trait \scala{js.App} erben zu lassen:
 
 \begin{lstlisting}[language=Scala, style=snippet]
 object MyApp extends scala.scalajs.js.JSApp {
@@ -878,7 +878,7 @@ Für den gezielten Export einzelner Klassen, Methoden und Felder existiert die A
 
 Scala.js erzeugt in mehreren Stufen aus Scala-Code optimierten JavaScript-Code (siehe Abb. \ref{fig:sjs-compilation}). Dabei wird im ersten Schritten vom Scala.js-Compiler\footnote{genauer: vom scalac-Compiler mit dem Scala.js-Plugin} jede .scala-Datei zu einer .sjsir-Datei\footnote{Scala.js Intermediate Representation} mit Zwischencode (vergleichbar mit Java-Bytecode) kompiliert.
 
-Als nächstes werden alle .sjsir-Dateien mit allen transitiven Dependencys gelinkt. An diesem Punkt ist die komplette Scala-Standard-Library enthalten, und die generierten JavaScript-Dateien hätten eine Größe von über 20 MB. Nun können starke Optimierungen vorgenommen werden, weil Scala.js zur Link-Zeit den kompletten Code, inklusive aller Dependencys kennt; da Scala.js keine Laufzeit-Reflections unterstützt, muss auch hierauf keine Rücksicht genommen werden \cite[Folie 45 ff., Min. 36]{doeraene2015.SSP}.
+Als nächstes werden alle .sjsir-Dateien mit allen transitiven Dependencys gelinkt. An diesem Punkt ist die komplette Scala-Standard-Library enthalten, und die generierten JavaScript-Dateien hätten eine Größe von über 20 MB. Nun können starke Optimierungen vorgenommen werden, weil Scala.js zur Link-Zeit den kompletten Code, inklusive aller Dependencys kennt \cite[Folie 45 ff., Min. 36]{doeraene2015.SSP}.
 
 \begin{figure}[!h]
     \centering
@@ -887,9 +887,9 @@ Als nächstes werden alle .sjsir-Dateien mit allen transitiven Dependencys gelin
     \label{fig:sjs-compilation}
 \end{figure}
 
-In der Optimierungsstufe (\code{FastOptJS}) wird unter anderem unerreichbarer Code entfernt (\emph{Dead code elimination}) und es werden Methoden- und insbesondere anonyme Funktionsaufrufe ge-inlined (\emph{Closure elimination}), das heißt die Aufrufe werden durch ihre Implementierungen ersetzt. Hierdurch wird die Größe der Kompilate verringert und insbesondere die Performance verbessert. Das Ergebnis dieser Phase ist eine einzige JavaScript-Datei. Für die Entwicklungsphase endet der Prozess hier.
+In der Optimierungsstufe (\code{FastOptJS}) wird unter anderem unerreichbarer Code entfernt (\emph{Dead code elimination}) und es werden Methoden- und insbesondere anonyme Funktionsaufrufe ge-inlined (\emph{Closure elimination}), das heißt die Aufrufe werden durch ihre Implementierungen ersetzt. Hierdurch wird die Größe der Kompilate verringert und die Performance verbessert. Das Ergebnis dieser Phase ist eine einzige JavaScript-Datei. Für die Entwicklungsphase endet der Prozess hier.
 
-Zur weiteren Verringerung der Dateigröße gibt es nun noch eine Optimierungsphase (\code{FullOptJS}), bei welcher der Google Closure Compiler\footnote{\url{https://developers.google.com/closure/compiler/}} diese "`schnell-optimierte"' JavaScript-Datei durch Dead code elimination, Entfernung von Whitespace sowie die aggressive Verkürzung von Variablennamen zusätzlich verkleinert. Dieser Optimierungsschritt ist allerdings nicht besonders schnell und ist für die Produktionsphase vorgesehen. \cite{scalajs.DCO}\cite[\#HowCompilationWorks]{haoyi.HOS}
+Zur weiteren Verringerung der Dateigröße gibt es nun noch eine Optimierungsphase (\code{FullOptJS}), bei welcher der Google Closure Compiler\footnote{\url{https://developers.google.com/closure/compiler/}} diese "`schnell-optimierte"' JavaScript-Datei durch weitere Dead code elimination, Entfernung von Whitespace sowie die aggressive Verkürzung von Variablennamen zusätzlich stark verkleinert. Dieser Optimierungsschritt ist allerdings nicht besonders schnell. Er ist deshalb für die Produktionsphase vorgesehen. \cite{scalajs.DCO}\cite[\#HowCompilationWorks]{haoyi.HOS}
 
 Der Scala.js-Compiler unterstützt separate und inkrementelle Kompilierung, das heißt nur die einzelnen geänderten Kompilationseinheiten beziehungsweise sogar nur einzelne geänderte Programmteile innerhalb einer Datei werden neu übersetzt. Das beschleunigt inkrementelle Builds erheblich, was insbesondere dem gewohnten Workflow von Frontend-Entwicklern entsprechen dürfte.
 
@@ -905,9 +905,9 @@ Die Scala Test-Suite läuft für knapp 2000 Tests, die das erwartungsgemäße Ko
 
 Scala.js ist auf der offiziellen Website\footnote{\url{http://www.scala-js.org/}} dokumentiert. Hier findet sich die \ac{API}-Dokumentation, eine Referenzhandbuch sowie eine Übersicht über die mit Scala.js benutzbaren Librarys. Auch historische \ac{API}-Dokumentationen und  Release-Ankündigungen sind hier einsehbar.
 
-Zum Einstieg gibt es ein Tutorial und beispielhafte Projektstrukturen (\emph{Skeletons}, die als Grundlage für eigene Projekte dienen können. Auch kann mit dem interaktiven Online-Scratchpad Scala.jsFiddle\footnote{\url{http://www.scala-js-fiddle.com/}} Scala.js direkt im Browser ausprobiert werden. Einige interessante Vortragsvideos der Scala.js-Entwickler verlinkt sind hier ebenso verlinkt, wie ein FAQ, die Mailingliste und ein eigener Scala.js-Chatroom.
+Zum Einstieg gibt es ein Tutorial und beispielhafte Projektstrukturen (\emph{Skeletons}, die als Grundlage für eigene Projekte dienen können. Auch kann mit dem interaktiven Online-Scratchpad Scala.jsFiddle\footnote{\url{http://www.scala-js-fiddle.com/}} Scala.js direkt im Browser ausprobiert werden. Einige interessante Vortragsvideos der Scala.js-Entwickler sind hier verlinkt, es gibt ein FAQ, eine Mailingliste und einen eigenen Scala.js-Chatroom.
 
-Es existiert bereits ein E-Book, das mit vielen praktischen Beispielen einen guten Überblick über die Möglichkeiten von Scala.js liefert, aber auch die grundlegenden konzeptionelle Hintergründe erläutert. \cite{haoyi.HOS}
+Es gibt bereits ein E-Book\footnote{\url{http://lihaoyi.github.io/hands-on-scala-js/}}, das mit vielen praktischen Beispielen einen guten Überblick über die Möglichkeiten von Scala.js liefert und auch grundlegende konzeptionelle Hintergründe erläutert.
 
 
 \section{Ökosystem: Tools und Librarys}\label{sec:sjs-libs}
@@ -920,13 +920,45 @@ Obwohl das Projekt Scala.js noch ziemlich jung ist, existiert schon eine beachtl
 Mit dem Scala.js-sbt-Plugin\footnote{\url{http://www.scala-js.org/doc/sbt-plugin.html}} ist es möglich, Scala.js-Anwendungen zu kompilieren, zu testen und auszuführen.
 Prinzipiell kann auch auf sbt verzichtet und direkt mit einem Command Line Interface\footnote{\url{http://www.scala-js.org/downloads.html}} gearbeitet werden. Es wird jedoch empfohlen, sbt zu benutzen.
 
-Um das Scala.js-Plugin zu aktivieren, muss in der \code{build.sbt} die folgende Zeile hinzugefügt werden:
+\TODOi{VGL: ...}
+%-->  \url{http://www.scala-js.org/doc/tutorial.html}
 
-\begin{lstlisting}[style=snippet]
-enablePlugins(ScalaJSPlugin)
+\MyMiniSec{Projekt}
+
+Die Ordnerstruktur für ein einfaches Scala.js-Projekt ist in Listing \ref{code:sjs-project-struct} dargestellt. Diese Ordnerstruktur muss per Hand angelegt werden. IntelliJ-Benutzer können sich auch ein sbt-Projekt generieren lassen, und dieses entsprechend anpassen. Alternativ bietet es sich an, eines der Skeletons zu verwenden, die auf der Scala.js-Website verlinkt sind. Eine andere Möglichkeit wäre es, sich ein kleines Skript zur Projekt-Generierung zu schreiben\footnote{Beispiele: siehe beigelegter Datenträger.}.
+
+\begin{lstlisting}[caption={Struktur eines einfachen Scala.js Projekts.}, label={code:sjs-project-struct}]
+myproject
+ +- project
+ |   +-- build.properties
+ |   +-- plugins.sbt
+ |- src
+ |   +-- main
+ |   |    +-- resources
+ |   |    +-- scala
+ |   +-- test
+ |        +-- scala
+ +- build.sbt
 \end{lstlisting}
 
-Abhängigkeiten von Librarys werden hier ebenfalls hinzugefügt, entweder so:
+Das Scala.js-sbt-Plugin muss durch Eintrag \code{plugins.sbt} hinzufügt werden (Listing \ref{code:sjs-sbt-plugins}).
+
+\lstinputlisting[language=Scala, caption={Eine minimale \code{plugins.sbt}.}, label={code:sjs-sbt-plugins}]{listings/setup/minimal_plugins.sbt}
+
+Um das Scala.js-Plugin zu aktivieren, muss in der \code{build.sbt} eine entsprechende Zeile hinzugefügt werden. Außerdem darf die angebene Scala-Versionsnummer nicht kleiner als 2.10.2. Außerdem sollten Name und Versionsnummer für das Projekt festgelegt werden (Listing \ref{code:sjs-sbt-build}).
+
+\lstinputlisting[language=Scala, caption={Eine minimale \code{build.sbt}.}, label={code:sjs-sbt-build}]{listings/setup/minimal_build.sbt}
+
+Durch die letzte Zeile in der \code{build.sbt} wird für den \code{FastOptJS}-Modus Node.js als JavaScript-Laufzeit aktiviert. Hiermit laufen Aufrufe von der Kommandozeile sowie Tests schneller als mit dem langsameren Rhino. Allerdings muss dazu auch Node.js installiert sein.
+
+\lstinputlisting[language=Scala, caption={Eine minimale \code{build.properties}.}, label={code:sjs-sbt-build-properties}]{listings/setup/minimal_build.properties}
+
+In der \code{build.properties}-Datei muss die sbt-Version festlegen auf mindestens 0.13.7 eingestellt werden (Listing\ref{code:sjs-sbt-build-properties}).
+
+
+\MyMiniSec{Dependencys}
+
+Abhängigkeiten von Librarys werden in der \code{build.sbr} hinzugefügt, und zwar entweder so:
 
 \begin{lstlisting}[style=snippet]
 libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.8.0"
@@ -943,7 +975,7 @@ libraryDependencies ++= Seq(
 )
 \end{lstlisting}
 
-Für cross-publizierte Librarys muss hier der Operator \code{\%\%\%} (statt \code{\%\%}) verwendet werden. Für Librarys lässt sich auch ein Scope festlegen. Zum Beispiel wird durch nachgestelltes \code{\% "test"} für die betreffende Library Test-Scope definiert, das heißt die Library ist nur in diesem Modus verfügbar.
+Für cross-publizierte Librarys muss der Operator \code{\%\%\%} (statt \code{\%\%}) verwendet werden. Für Librarys lässt sich auch ein Scope festlegen. Zum Beispiel wird durch nachgestelltes \code{\% "test"} für die betreffende Library Test-Scope definiert, das heißt die Library ist nur in diesem Modus verfügbar.
 
 Wenn eine Scala.js-Fassade für eine JavaScript-Bibliothek als Dependency definiert ist, so wird die entsprechende JavaScript-Bibliothek automatisch geholt.
 
@@ -961,204 +993,42 @@ Auch beliebige JavaScript-Bibliotheken können mittels WebJars\footnote{\url{htt
 jsDependencies += "org.webjars" % "jquery" % "2.1.4" / "jquery.js" minified "jquery.min.js"
 \end{lstlisting}
 
-Eine Scala.js-Fassaden (wie \code{scalajs-jquery}), kann nun im \code{FullOptJS}-Modus auf die minifizierte Version von jQuery zurückgreifen. Diese wird passend in die Ausgabedatei \code{-jsdeps.min.js} integriert. Ohnde diese explizite Angabe wird immer die nicht-minifizierte Version verwendet.
+Eine Scala.js-Fassaden (wie \code{scalajs-jquery}), kann nun im \code{FullOptJS}-Modus auf die minifizierte Version von jQuery zurückgreifen. Diese wird passend in die Ausgabedatei \mbox{\code{-jsdeps.min.js}} integriert. Ohne diese explizite Angabe wird immer die nicht-minifizierte Version verwendet.
 
 
+\MyMiniSec{sbt-Kommandos}
 
+Mit sbt können folgende Kommandos aufgerufen werden:
 
+\begin{itemize}
+\item \code{run} kompiliert Scala.js-Anwendung und führt sie aus in einer JavaScript-Laufzeit aus. Dazu wird eine \code{main}-Methode benötigt.
+\item \code{fastOptJS} wird zur Entwicklung benutzt. Für die erzeugten JavaScript-Dateien wird nur die erste Optimierungsstufe verwendet.
+\item \code{fullOptJS} ist für die Produktion. Die erzeugten JavaScript-Dateien werden maximal auf kleine Dateigrößen hin optimiert.
+\item \code{test} kompiliert den Code für Scala.js-Tests und führt sie aus. Außerdem werden im Verzeichnis \code{target/test-reports/} Test-Reports im \ac{XML}-Format erzeugt.
+\item \code{compile} kompiliert zu Scala.js-Bytecode.
+\item \code{package} packt Scala.js-Anwendung als .jar-Datei
+\end{itemize}
 
+Die JavaScript-Laufzeit ist, je nach Einstellung: Rhino, Node.js oder PhantomJS.
 
+Durch eine vorangestellte \code{\~} ist das Arbeiten im kontinuierlichen Modus möglich
+Jede gespeicherte Code-Änderung löst automatisch einen Neuaufruf des gewählten Tasks aus. Zum Beispiel wird mit \code{\~fastOptJS} automatisch im Produktionsmodus neu übersetzt. \cite[\#TheCommandLine]{haoyi.HOS} ist hier wieder eine wertvolle und (als Mitarbeiter des Projekts) auch autorisierte Quelle -> es gibt weiter unten ein Kapitel "`The Command Line"' zum Thema.
 
+Die zur Auslieferung benötigten JavaScript-Dateien werden im Verzeichnis \code{target/scala-2.11/} erzeugt; \ac{HTML}- und \ac{CSS}-Dateien befinden sich eine Ebene tiefer in \code{target/scala-2.11/classes/}.
 
-\TODO{KURZ!  --> }
 
--- sbt-Kommandos --
 
-Infos hier geben tieferen Einblick scheinen aber nicht auf dem aktuellsten Stand zu sein.
-\url{http://www.scala-js.org/doc/internals/compile-opt-pipeline.html}
 
-\cite[\#TheCommandLine]{haoyi.HOS} ist hier wieder eine wertvolle und (als Mitarbeiter des Projekts) auch autorisierte Quelle -> es gibt weiter unten ein Kapitel "`The Command Line"' zum Thema.
-
-\code{set scalaJSStage in Global := FastOptStage}
-
-\code{set scalaJSStage in Global := FullOptStage}
-
-
-\code{fastOptJS} zur Entwicklung
-
-\code{fullOptJS} zur Auslieferung
-
-kontinuierlicher Modus mit vorangestellter  \code{\~}, z.B. \code{\~fastOptJS}
-
-
-
-\code{run} kompilierte Scala.js-Anwendung in einer JavaScript Laufzeit/VM (Rhino, Node.js oder PhantomJS) ausführen (main-Methode wird benötigt wie in -> Hallo-Welt)
-	- läuft per default in der \emph{PreLinkStage}, verwendet Rhino
-		- für \ac{DOM}-\ac{API}: mit \code{jsDependencies += RuntimeDOM} in der \code{build.sbt} wird die DOM-\ac{API} in Rhino emuliert
-	- schnellere Laufzeit (Node.js oder PhantomJS) durch \code{scalaJSStage in Global := FastOptStage} in der Build-Definition oder \code{set scalaJSStage in Global := FastOptStage} in der sbt-\ac{REPL} (oder FullOptStage) aktiviert, standardmäßig Node.js
-		- für \ac{DOM}-\ac{API}: \code{jsDependencies += RuntimeDOM} aktiviert PhantomJS (langsamer als Node.js)
-
-\code{test} kompilierte Scala.js-Tests im \code{tests/}-Verzeichnis auf Rhino, Node.js oder PhantomJS ausführen
-	- erzeugt im Verzeichnis \code{target/test-reports/} Test-Reports in \ac{XML}-Form
-
-\code{compile} kompiliert zu Scala.js Bytecode
-
-\code{package} Scala.js-Anwendung als .jar-Datei packen (z.B. \code{hello-scalajs\_sjs0.6\_2.11-1.0.jar} mit Suffix: Scala.js-Version, Scala-Version, Projekt-Version)
-
-
-
-
-
-
-Das Kommando \code{sbt fastOptJS} (bzw. \code{sbt fullOptJS}) erzeugt Dateien im Ordner
-%target/scala-2.11/classes/  -- .class und .sjsir >> nicht benötigt (Output des Scala.js-Compilers: Scala/JVM-Bytecode und Scala.js-Bytecode/Zwischencode)
-%target/scala-2.11/classes/  --  html << benötigt
-%target/scala-2.11/  --  js << benötigt
-
-
-
-
-
-
-
-
-
-
-
-% % % % % % % % % % % % % % % % % % % % % %
-% % % % % % % % % % % % % % % % % % % % % %
-% % % % % % % % % % % % % % % % % % % % % %
-
-
-
-
-
->>Projekt anlegen
-
-%-->  \url{http://www.scala-js.org/doc/tutorial.html}
-
-Ordnerstruktur anlegen wie folgt
-
-TODO: Ordner-Struktur
-
-> leider nicht automatisch, es gibt (angeblich?) Plugins (???), eigenes Skript schreiben (-> Datenträger)
-	- ein Weg mit IntelliJ (zu spät entdeckt): sbt-Projekt erzeugen, generiert Standard-Ordnerstruktur (inkl. leerer Java Verzeichnisse), erzeugt build.sbt, plugins.sbt und build.properties, die angepasst werden können
-
-
-Scala.js-sbt-Plugin hinzufügen
-
-Im Ordner \code{project} eine Datei \code{plugins.sbt} erzeugen:
-\lstinputlisting[language=Scala, caption={Eine minimale plugins.sbt.}]{listings/setup/minimal_plugins.sbt}
-
-Im Basisordner des Projekts eine Datei \code{build.sbt} zur Build-Definition erzeugen:
-\lstinputlisting[language=Scala, caption={Eine minimale build.sbt.}]{listings/setup/minimal_build.sbt}
-
-Hier wird das Plugin aktiviert
-Name und Versionsnummer für das Projekt festgelegt
-Scala-Version festlegen, muss mindestens 2.10.2 sein
-
-mit scalaJSStage in Global := FastOptStage wird Node.js als JavaScript Runtime / Interpreter (für JS von der Kommandozeile run und test) aktiviert (statt dem langsameren Default: Rhino); Node.js muss installiert sein;
-
-\lstinputlisting[language=Scala, caption={Eine minimale build.properties.}]{listings/setup/minimal_build.properties}
-sbt-Version festlegen, muss mindestens 0.13.7 sein
-
-
-strengere Compilerprüfungen durch: ...
-
-
--- build.sbt - Dependencys --
-
-für JS-Librarys:
-SalaJSKeys.jsDependencies += "org.webjars" % "jquery" % "2.1.4" / "jquery.js"
-
-wenn es ein getyptes Interface gibt (wie für jQuery der Fall), dann genügt (webjars werden transitiv referenziert):
-libraryDependencies += "be.doeraene" %%% "scalajs-jquery" % "0.8.0"
-
-Einbindung in \ac{HTML} mit einem script-Tag möglich durch:
-skip in packageJSDependencies := false
-FRAGE: ist das noch nötig, oder geschieht das schon automatisch?
-
-dann in der \ac{HTML}:
-<script src="projectname-jsdeps.js"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-% % % % % % % % % % % % % % % % % % % % % %
-% % % % % % % % % % % % % % % % % % % % % %
-% % % % % % % % % % % % % % % % % % % % % %
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
->> was ist neu
-  -->  http://www.scala-js.org/news/2015/08/31/announcing-scalajs-0.6.5/
-  -->  http://www.scala-js.org/doc/sjs-defined-js-classes.html
-
-\TODO{<--  KURZ!}
-
-
-
-
-
-
-
-\subsection{IDE-Support}
+\subsection{IDE-Support}\label{subsec:sjs-ide}
 (http://www.scala-lang.org/news/2015/02/05/scala-js-no-longer-experimental.html)
 
-\TODO{KURZ!}
+Scala.js kann gut durch \ac{IDE}s unterstützt werden. Hierdurch ist ein komfortableres Editieren durch Syntax-Hervorhebungen, intelligente automatische Code-Vervollständigungen, das Springen zur Definition, die Einblendung von Quellcode-Dokumentation und eine Unterstützung beim Refactoring möglich. \cite{doeraene2015.SNL} Infrage kommen folgende \ac{IDE}s:
 
-\ac{IDE}-Supports
-  "With Scala.js tooling, you get syntax highlighting, code completion (even for JavaScript libraries and the \ac{DOM}!), jump-to-definition, and most other features you come to expect in a Scala tooling environment" (http://www.scala-lang.org/news/2015/02/05/scala-js-no-longer-experimental.html)
-
-  - IntelliJ IDEA  -->  https://www.jetbrains.com/idea/help/getting-started-with-scala-js.html
-
-    Zum komfortablen Editieren und von Scala.js-Projekten
-    - Code-Inspection: schlägt automatisch Scala-Code-Verbesserungen
-    - Typ-Inferenz: Alt + Enter - für automatische Typ-Annotation einer Variablendefinition (Bsp. \scala{val xs = List("a", "b")} wird zu \scala{val xs: List[String] = List("a", "b"))}
-
-    auch für JavaScript, \ac{HTML}, \ac{CSS} (in der Ultimate Edition, free für edu und open source)
-      - Syntax-Highlighting
-      - Code-Completion und Source-Docs zu vielen Schlüsselworten, zu JS-Standard-\ac{API}s wie \ac{DOM}-\ac{API}
-      - jump to definition
-      - intelligentes Namens-Refactoring (zumindest innerhalb einer Datei)
-
-
+\begin{description}
+	\item[IntelliJ IDEA] liefert am meisten Komfort, unterstützt sbt schon am besten und ist deshalb klar die erste Wahl. Scala wird bei der aktuellen Version von Hause aus unterstützt, ältere Versionen lassen sich mit einem Plugin nachrüsten. sbt-Dateien werden erkannt und auch hier wird automatische Code-Vervollständigung unterstützt. Änderungen an sbt-Konfigurationsdateien werden von IntelliJ erkannt; das Programm schlägt dann einen "`Refresh"' vor. Zusätzlich kann direkt aus IntelliJ heraus mit dem Terminal gearbeitet werden\footnote{\url{https://www.jetbrains.com/idea/help/working-with-embedded-local-terminal.html}}. Die Ultimate Edition unterstützt außerdem auch JavaScript, \ac{HTML}, \ac{CSS}
+	\item[Scala IDE / Eclipse] funktioniert recht gut. Allerdings fehlt sbt-Unterstützung.
+	\item[Netbeans] kommt ebenfalls in Betracht, wurde allerdings nicht erprobt. Hierfür existiert ein Scala-Plugin.
+\end{description}
 
 
 
@@ -1256,7 +1126,7 @@ Die folgende Software wird benötigt:
 	\item PhantomJS  --  \url{http://phantomjs.org/}
 \end{itemize}
 
-Alle benötigten Programme sind auf dem beigefügten Datenträger enthalten, lassen sich alternativ auch unter der angegebenen Adresse beim Hersteller herunterladen. Dort finden sich auch Installationsanleitungen. Für Windows existieren ausführbare Installationsprogramme, die selbsterklärend sind. PhantomJS muss nicht installiert werden; hier genügt es, den Inhalt der .zip-Datei in das gewünschte Programmverzeichnis zu entpacken.
+Alle benötigten Programme sind auf dem beigefügten Datenträger enthalten. Sie lassen sich alternativ auch unter der angegebenen Adresse beim Hersteller herunterladen. Dort finden sich auch Installationsanleitungen. Für Windows existieren ausführbare Installationsprogramme, die selbsterklärend sind. PhantomJS muss nicht installiert werden; hier genügt es, den Inhalt der .zip-Datei in das gewünschte Programmverzeichnis zu entpacken.
 
 Unter Windows ist es für alle Programme \TODOi{mit Ausnahme von git} nötig, dem System durch das Setzen einer Umgebungsvariablen den Installationspfad bekannt zu machen.
 
@@ -1271,84 +1141,51 @@ Unter Windows ist es für alle Programme \TODOi{mit Ausnahme von git} nötig, de
 
 Scala.js muss nicht installiert werden sondern wird per Build-Definition als sbt-Plugin gestartet.
 
-Für die bequemere Navigation im Projekt bietet sich der Einsatz einer \ac{IDE} an. Infrage kommen:
-
-\begin{description}
-	\item[IntelliJ IDEA] liefert am meisten Komfort, unterstützt sbt schon am besten und ist deshalb klar die erste Wahl. Scala wird bei der aktuellen Version von Hause aus unterstützt, ältere Versionen lassen sich mit einem Plugin nachrüsten. Zusätzlich kann direkt aus IntelliJ heraus mit dem Terminal gearbeitet werden\footnote{\url{https://www.jetbrains.com/idea/help/working-with-embedded-local-terminal.html}}.
-	\item[Scala IDE / Eclipse] funktioniert recht gut. Allerdings fehlt sbt-Unterstützung.
-	\item[Netbeans] kommt ebenfalls in Betracht, wurde allerdings nicht erprobt. Hierfür existiert ein Scala-Plugin.
-\end{description}
-
 
 \section{IDE-Integration}
 
-\TODO{KURZ!}
-
-== in IntelliJ importieren ==
-
-momentan komfortabler, sowohl Import als auch \ac{IDE}-Support
-	- bessere Integration mit sbt
-
-- 1. IntelliJ > File > New > Project from Existing Sources...
-- 2. Ordner auswählen
-- 3. OK
-- 4. Import project from external model > SBT
-- 5. Next
-- 6. check: Download sources and docs - wenn versucht werden soll, die Quellen der Library-Dependencys herunterzuladen
-- 7. Finish
-
-File > New > Project from Existing Sources...
-alternativ: Welcome > Import Project
-Select File or Directory to Import -- Projektordner (der build.sbt enthält) auswählen -- Ok
-Import Project -- "Import project from external model" auswählen -- SBT auswählen -- Next
-Import Project -- "Download sources and docs" auswählen -- Finish
-
-Es ist auch möglich, mit sbt ein eine 
+Für die bequemere Navigation im Projekt bietet sich der Einsatz einer \ac{IDE} an (siehe Abschnitt: \ref{subsec:sjs-ide}).
 
 
-\begin{figure}[!h]
-    \centering
-    \includegraphics[width=0.25\linewidth]{tux}
-    \caption{Eine Beispielabbildung. \cite{aab.FBB}}
-    \label{fig:a_picture_of_tux}
-\end{figure}
+\MyMiniSec{In IntelliJ importieren\footnote{Siehe auch: \url{https://www.jetbrains.com/idea/help/getting-started-with-scala-js.html}}}
 
-Änderungen an sbt-Konfigurationsdateien werden von IntelliJ erkannt; das Programm schlägt einen "Refresh" vor, der ausgeführt werden sollte
-erkennt sbt-Dateien und unterstützt automatische Vervollständigung
+\begin{enumerate}
+\item File  >  New  >  "`Project from Existing Sources..."'
+\item "`Select File ... to Import"'  >  Projektordner (mit \code{build.sbt}) auswählen  >  Ok
+\item "`Import project from external model"' auswählen und auswählen  >  Next
+\item "`Download sources and docs"' auswählen  >  Finish
+\end{enumerate}
+
+Nach Änderungen an sbt-Konfigurationsdateien ist ein "`Refresh"' in IntelliJ nötig.
 
 
-== in Scala IDE importieren ==
 
-Plugin: sbteclipse\footnote{\url{https://github.com/typesafehub/sbteclipse}}
+\MyMiniSec{In Scala IDE importieren}
 
-dieses erzeugt ein Eclipse-Projekt
+Für die Eclipse-basierte Scala IDE muss zuerst ein Eclipse-Projekt erzeugt werden. Hierzu ist das sbt-Plugin sbteclipse\footnote{\url{https://github.com/typesafehub/sbteclipse}} nötig. Dazu in \code{project/plugins.sbt} hinzufügen:
 
-in project/plugins.sbt hinzufügen:
 \begin{lstlisting}[language=Scala, style=snippet]
 addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "4.0.0")
 \end{lstlisting}
 
-wenn sbteclipse versuchen soll, die Quellen der Library-Dependencys herunterzuladen - in build.sbt hinzufügen:
+Wenn sbteclipse versuchen soll, die Quellen der Library-Dependencys herunterzuladen, muss noch ein Eintrag in der \code{build.sbt} gemacht werden:
 
 \begin{lstlisting}[language=Scala, style=snippet]
 EclipseKeys.withSource := true
 \end{lstlisting}
 
+Im Anschluss diese Schritte ausführen:
 
+\begin{enumerate}
+\item \code{sbt eclipse} im Terminal ausführen. Dadurch werden
+\code{.project} und \code{.classpath} erzeugt.
+\item In der Scala IDE > File > Import > "`Existing Projects into Workspace"'
+\item Projektordner auswählen > Finish
+\end{enumerate}
 
-- 1. run:
-  sbt eclipse  --  .project und .classpath erzeugt, kann nun importiert werden
-- 2. Scala IDE > File > Import > Existing Projects into Workspace
-- 3. Ordner auswählen
-- 4. Finish
+Eclipse erzeugt standardmäßig ein Verzeichnis \code{bin/} im Projektwurzelverzeichnis, als Zielordner des Compilers.
 
-
-Eclipse erzeugt standardmäßig einen Verzeichnis bin im Projektwurzelverzeichnis, als Zielordner des Compilers ...
-
-nach Änderungen an sbt-Konfigurationsdateien ist es nötig, erneut \code{sbt eclipse} auszuführen und das Projekt in Eclipse im Package Explorer zu aktualisieren.
-
-
-
+Nach Änderungen an sbt-Konfigurationsdateien muss erneut \code{sbt eclipse} ausgeführt und das Projekt in Eclipse im Package Explorer aktualisiert werden.
 
 
 
@@ -2144,7 +1981,7 @@ Es eine einfache GUI mit \ac{HTML}, \ac{CSS} und nativem JavaScript implementier
 
 Das cross-kompilierende Projekt hat eine Struktur wie in Listing \ref{code:cross-project-struct} dargestellt. Die Struktur orientiert sich an den Hinweisen der Scala.js-Dokumenation \cite{scalajs.CBP}, wo auch die nötige Konfiguration der \code{build.sbt} beschrieben ist.
 
-\begin{lstlisting}[language=scala, caption={Grobstruktur der cross-kompilierenden Scala.js-Library}, label={code:cross-project-struct}]
+\begin{lstlisting}[language=scala, caption={Struktur der cross-kompilierenden Scala.js-Library}, label={code:cross-project-struct}]
 library
  +- js
  |   +-src
@@ -2523,7 +2360,7 @@ Die Bereitschaft von Frontend-Entwicklern, welche mehrheitlich nicht mit Scala v
 
 
 % TODO: nocite entfernen, damit nur zitierte Literatur ins Verzeichnis kommt
-\nocite{*}
+%\nocite{*}
 
 
 % Bibliographie mit bibtex
