@@ -461,7 +461,7 @@ Daneben existieren zwei spezielle Werte: \js{undefined}, für Variablen ohne zug
 Alle anderen Typen sind \emph{mutable}. \js{Object}, der Datentyp für alle Referenztypen, \js{Array}, der Typ für geordnete Collections und \js{Function} für Funktionen. Daneben existieren nur noch die Typen \js{Date}, \js{Error}, \js{Math} und \js{Regexp}. \cite[S. 29 ff.]{flanagan2011.JDG}
 
 
-\subsection{Besonderheiten und Probleme}
+\subsection{Besonderheiten und Probleme}\ref{subsec:js-problems}
 
 JavaScript hat einige Besonderheiten, die besonders für Programmierer, die von einer syntaktisch verwandten Sprache wie Java kommen, überraschend sind. So können zum Beispiel keine konstanten Werte festgelegt werden. Da diese Besonderheiten häufig Probleme bereiten, sollen hier einige der wichtigeren erläutert werden.
 
@@ -1051,10 +1051,10 @@ Hier sollen nur die Librarys kurz angesprochen werden, die im Rahmen dieser Arbe
 	\item[uTest]\footnote{\url{https://github.com/lihaoyi/utest}} (\emph{micro-test}) ist eine minimale cross-kompilierende Test-Library.
 	
 	\item[Scala-Async]\footnote{\url{https://github.com/scala/async}} ist eine Scala-Library zur einfacheren Handhabung von Asynchronität mit Futures. Sie funktioniert auch problemlos mit Scala.js.
-	
-	\item[Autowire]\footnote{\url{https://github.com/lihaoyi/autowire}} ist eine cross-kompilierende Library für statisch typisierte Netzwerkaufrufe. Hierfür muss zusätzlich eine Serialisierungs-Library festgelegt werden. Diese ist ebenso frei wählbar wie 
-	
-	\item[uPickle (?)]\footnote{\url{http://lihaoyi.github.io/upickle-pprint/upickle/}} ist eine cross-kompilierende Serialisierung-Library.
+%	
+%	\item[Autowire]\footnote{\url{https://github.com/lihaoyi/autowire}} ist eine cross-kompilierende Library für statisch typisierte Netzwerkaufrufe. Hierfür muss zusätzlich eine Serialisierungs-Library festgelegt werden. Diese ist ebenso frei wählbar wie 
+%	
+%	\item[uPickle (?)]\footnote{\url{http://lihaoyi.github.io/upickle-pprint/upickle/}} ist eine cross-kompilierende Serialisierung-Library.
 \end{description}
 
 
@@ -2076,7 +2076,7 @@ Durch den Einsatz von Scala.js gewinnt man hingegen eine plattformübergreifende
 	\caption{Benchmark der Statistik-Bibliothek.}
 \end{figure}
 
-An dieser Stelle sei abschließend noch auf die Benchmark-Ergebnisse verwiesen, die Doeraene auf den Scala Days im Juni 2015 präsentierte (Abbildung \ref{fig:doeraene-benchmarks}). Bei drei von vier der dort gezeigten Benchmarks ist optimiertes Scala.js, ob mit Google Closure Compiler (schwarzer Balken) oder ohne (grüner Balken), der Leistungsfähigkeit von nativem JavaScript schon vielversprechend nahe. Beim DeltaBlue-Test werden laut Doeraene besonders viele Scala-Collections verwendet \cite[Folie 52, Min. 40]{doeraene2015.SSP}, weshalb dieser auffällig langsamer ist. Der vierte von Doeraene präsentierte Test zeigt eine optimierte Version von DeltaBlue, für welche \code{js.Array} verwendet wurde. Das lässt den Schluss zu, dass momentan für hohe Performance auf Scala-Collections zugunsten von \code{js.Array} ausgewichen werden sollte, wenn eine sehr hohe Leistungsfähigkeit entscheidend ist.
+An dieser Stelle sei abschließend noch auf die Benchmark-Ergebnisse verwiesen, die Doeraene auf den Scala Days im Juni 2015 präsentierte (Abbildung \ref{fig:doeraene-benchmarks}). Bei drei von vier der dort gezeigten Benchmarks ist optimiertes Scala.js, ob mit Google Closure Compiler (schwarzer Balken) oder ohne (grüner Balken), der Leistungsfähigkeit von nativem \mbox{JavaScript} schon vielversprechend nahe. Beim DeltaBlue-Test werden laut Doeraene besonders viele Scala-Collections verwendet \cite[Folie 52, Min. 40]{doeraene2015.SSP}, weshalb dieser auffällig langsamer ist. Der vierte von Doeraene präsentierte Test zeigt eine optimierte Version von DeltaBlue, für welche \code{js.Array} verwendet wurde. Das lässt den Schluss zu, dass momentan für hohe Performance auf Scala-Collections zugunsten von \code{js.Array} ausgewichen werden sollte, wenn eine sehr hohe Leistungsfähigkeit entscheidend ist.
 
 \begin{figure}[!h]
     \centering
@@ -2094,206 +2094,21 @@ An dieser Stelle sei abschließend noch auf die Benchmark-Ergebnisse verwiesen, 
 
 \section{Zusammenfassung der Ergebnisse}
 
-In der vorliegenden Arbeit wurde ein Überblick über 
+In der vorliegenden Arbeit wurde ein Überblick über die Konzepte von Scala.js gegeben und der Nutzen für die Entwicklung von interaktiven Weboberflächen untersucht. Dabei wurden in der praktischen Erprobung durch die Implementierung kleiner Anwendungen wichtige Erkenntnisse über die Funktionsweise dieses Projekts gewonnen. Dabei wurde klar, dass sich dieses Werkzeug mit großem Nutzen und vertretbarem Einarbeitungsaufwand praktisch einsetzen lässt. Es wurde geklärt, dass die Erstellung von einfachen Projekten ebenso möglich ist, wie das Schreiben cross-kompilierender Librarys. Scala.js-Librarys wie Scala-js-dom und ScalaTags erlauben es, direkt mit der \ac{DOM}-API zu arbeiten, wodurch es sehr komfortabel möglich ist, die mächtigen Sprachmittel von Scala auch für die clientseitige Web-Entwicklung anzuwenden. So können sehr präzise, wiederverwendbare \ac{HTML}-Templates mit wenig Redundanz und prägnante, gut lesbare Ajax-Aufrufe geschrieben werden und es gelingt leichter, strukturierten Code mit besseren Abstraktionen zu schaffen.
 
-Was war wirklich wichtig bei der Arbeit?
-- Überblick gewinnen
-- Nützlichkeit und Einsetzbarkeit praktisch erproben
-	- Projekt, auch cross-
-	- libs wie dom, scalatags
-	- arbeiten mit dom api
-	- templating
-	- kombi von scala mit web-frontend-entwicklung
-		- lesbares ajax
-		- bessere abstraktionen
-Wie sieht das Ergebnis aus?
-- kleine aber voll funktionsfähige beispiele geschafft
-- sehr nützliches werkzeug
-- doku...
-- scala und js gleichzeitig zu lernen
-- siehe alles hier drunter ...
-Wie schätzen Sie das Ergebnis ein?
-pro: stabiles starkes werkzeug
-	- durch typsicherheit für js-librarys - weniger fehler und editierungs-komfort
-	- und scala-abstraktionen -> qualitativ besserer code
-	- sourcemaps und workbench -> auch debugging im browser
-	- cross-code -> geteilter code
-	- scala-programmierer haben eine gui, die portabel ist
-	- tooling mit dependency-management komfortabel und gliedert sich in von scala gew. arbeiten mit sbt ein
-	- ausf-leistung schon ziemlich gut
--> zielstellung
-contra:
-	- libs noch experimentell
-	- doku-lücken und im wandel
-	- dateigrößen
-	- tests noch langsam, builds kontinuierlich ok
-	- solange nicht in ein volles client-server-projekt integriert: auslieferung etwas mühsam -> dateien per hand (oder eigenem skript) aus den target verzeichnissen holen (und man muss refs. in index.html entsprechend ändern ...), aber viell. wird irgendwann ein plugin angeboten
-Gab es Randbedingungen, Ereignisse, die die Arbeit wesentlich beeinflußt haben?
-- Scala lernen, speziell abgefahrenes wie implicits
-- gleichzeitig DOM-API
-- Unerfahrenheit
-- junges Projekt
-	- noch keine gedruckten Quellen
-	- Entwicklung im Wandel
-Gibt es noch offene Probleme?
-- benchmark von sjs läuft nicht mit aktueller version
-- siehe unten ...
-Wie könnten diese vermutlich gelöst werden?
-- siehe unten ...
+Im Umfeld des Schwerpunkts dieser Arbeit auf interaktiven Weboberflächen wäre die weitere Betrachtung der reaktiven Librarys für Scala.js, Scala.Rx und Monifu, oder auch die Anbindungen von UI-Frameworks wie AngularJS oder React interessant.
 
+Ist das Arbeiten mit Scala.js einerseits angenehm und führt zu guten Ergebnissen, so ist andererseits der Lernaufwand, den es bedeutet, sich in Scala und JavaScript gleichzeitig tiefer einzuarbeiten doch recht hoch. Der durch die Typisierung gewonnene Editierungskomfort in der \ac{IDE} ist andererseits gerade beim Lernen von JavaScript-\ac{API}s äußerst hilfreich. Ein anderer durch die Typsicherheit für JavaScript-Librarys gewonnener Vorteil besteht in der spürbaren Reduzierung von Laufzeitfehlern -- eine Tatsache, die im Vergleich zur Arbeit mit nativem JavaScript sofort angenehm auffällt. Außerdem genießt man durch Scala.js den Vorteil, JavaScript-Funktionalität und -\ac{API}s benutzen zu können, ohne mit den spezifischen Problemen von JavaScript, die eingangs und in Abschnitt \ref{subsec:js-problems} skizziert wurden, direkt konfrontiert zu sein.
 
+Durch Werkzeuge wie Source Maps zur Fehlersuche im Browser, das Workbench-Plugin für das Build-getriggerte Neuladen des Browsers sowie das mögliche Arbeiten im kontinuierlichen Modus mit inkrementellen Builds lässt sich ein guter Workflow erreichen. Mit dem Dependency-Management von sbt wird dem Entwickler zusätzlich viel Arbeit abgenommen. Für aufwendigere Konfigurationen ist hier zwar etwas mehr Aufwand nötig. Andererseits ist sbt gut dokumentiert und erfahrene Scala-Programmierer, die sbt schon länger nutzen, können hier ihr Wissen anwenden, ohne viel umlernen zu müssen. Die Auslieferung des Produktionscodes für einfache Projekte ohne Server ist momentan noch etwas mühsam, weil hier die benötigten Dateien per Hand aus dem \code{target/}-Unterverzeichnissen extrahiert werden müssen. Hierfür wäre ein Plugin wünschenswert.
 
+Bedauerlich ist, dass keine der etablierten Test-Libraries aus der Scala/Java-Welt und auch Jasmine nicht zum Testen von Scala.js geeignet sind. Andererseits lassen sich mit uTest übliche Unit-Tests schreiben. Außerdem bietet uTest etwa ein interessantes Test-Makro, das bestimmte Muster erwartet. Außerdem gibt es noch einige andere Test-Librarys zur Auswahl. Allerdings sind die Testläufe, zumindest mit uTest, nicht besonders schnell.
 
+Die von Scala.js erzeugten Dateien sind noch relativ groß, vergleicht man sie mit nativem JavaScript. Andererseits haben die Entwickler bisher in relativ kurzer Zeit schon beachtliche Fortschritte erzielt, so dass man weitere Verbesserungen erwarten darf. Die Leistungfähigkeit von Scala.js-Programmen ist der von nativem JavaScript schon recht nahe.
 
-\TODO{- Scala.js bringt Scala (bisher auf Basis der jvm -> %\ac{JVM}
-) auf die Client-Seite:}
+Ein sehr großer Gewinn von Scala.js besteht darin, dass es hiermit möglich ist über die Client-Server-Grenze hinweg echte gemeinsame Schnittstellen zu definieren sowie Library-Code in einer Sprache für zwei Plattformen schreiben zu können. Auch ist es erfreulich, dass mit Scala.js Scala-Programmierer für den Browser programmieren können, und ihnen hiermit eine ungemein portable Oberfläche zur Verfügung steht.
 
-
-Dependencys bequem gemanagt mit sbt, wenig muss in die html eingetragen werden, das meißte zentral in der build.sbt
-
-
-   Korrektheit \\
-	-> doeraene TDI S.7, links \\
-   Performance \\
-	--> doeraene TDI S. 7, oben rechts \\
-	(-> eigenes Micro-Benchmark -> Bsp.) \\
->> Nützlichkeit \\
-	- getypter \ac{DOM} \\
-	- getypte Fassaden für jQuery und Libs \\
-	- bei Bedarf: js.Dynamic \\
-
-Die vorliegende Arbeit ... \\
-- Überblick über Entwicklung von Weboberflächen mit Scala.js \\
-- Eignung aus Anwendersicht ... \\
-- Eignung aus Entwicklersicht ... \\
-- Vorteile ... \\
-	- vollständiger Scala-Support \\
-	- umfassende JS-Interop \\
-	- sbt-Integration \\
-	- Typsicherheit \\
-		- weniger Fehler \\
-		- \ac{IDE}-Support! \\
-	- Source Maps zum besseren Debugging \\
-- Nachteile ... \\
-	- noch etwas große Kompilate \\
-	- Doku momentan noch etwas (!) unübersichtlich und im Wandel, nicht ganz vollständig \\
-		- ein Beispiel hier: \url{http://www.scala-js.org/doc/cookbook/} \\
-		Dokumentation: \\
-		- offizielle Referenzseite \\
-		- \ac{API}-Doku - vollständig (?) aber knapp \\
-		- Tutorial \\
-		- Hands-on Scala \\
-		- Scala-Js-Fiddle  -->  \url{http://www.scala-js-fiddle.com/} \\
-		
-		API nur sporadisch ausführlicher beschrieben
-
-Pro Scala.js: \\
-    - direkt mit dem \ac{DOM} arbeiten, aber getypt \\
-    - zwischen Client/Server geteilt: Konstanten, Algorithmen, Datenstrukturen, Librarys \\
-    - Typsicherheit \\
-    - Interface zwischen Client/Server \\
-    - Scala-Programmierer können ohne die Sprache zu wechseln fürs Web programmieren \\
-    - inkrementelle Kompilation, DCE (Dead code elemination) \\
-Contra Scala.js: \\
-    - small Community \\
-    - kleines Entwicklerteam, keine Unterstützung durch ein größere Firma \\
-    - langsamer Scala-Compiler \\
-    - große Bibliothek --> relativ große Kompilate \\
-
-
-
-
-
->> was spricht für Scala.js? \\
-    nach nicht-repräsentativer Umfrage ( \\
-      vgl.  -->  \url{http://www.scala-lang.org/news/2015/02/05/scala-js-no-longer-experimental.html} \\
-      Diskussion hier  -->  \url{https://groups.google.com/forum/#!topic/scala-js/_1Sfb5Nj08w} \\
-    ): \\
-    - geteilter Code zwischen Client und Server, eine Sprache für die gesamte Anwendung, z.B. für Validierungs-Logik, aber auch \\ Wiederverwendbarkeit von Code (wenn keine Plattformspezifika direkt verwendet werden) \\
-    \cite{doeraene2013.CSJ} \\
-    - starke Typisierung, auch für JavaScript-Librarys \\
-    - Tooling: \ac{IDE}-Support, sbt-Integration, Dependency-Management, Unit-Tests, Stacktraces und Source Maps, kross-compilierende Projekte \\
-    - Portababilität: Scala auf JavaScript-basierten Plattformen \\
-
-  kompletter Scala-Support \\
-  
-  schnelle Ints: \\
-  - Int-Operationen werden durch bitweise Veroderung umgesetzt (z.B. Scala.js: a + b -> JS: (a + b) | 0) \\
-  - JS VMs verwenden intern int32 als Optimierung für bitweise Operationen \\
-  -> schneller\cite{doeraene2015.SSP} \\
-
-
-  schneller Dev-cycle, optim. Prod.code \\
-  
-  Scala im Browser!!! \\
-  
-  
-was fehlt? \\
-  (- checked Exceptions???) \\
-  (- Regex???) \\
-  - Unterstützung von Laufzeit-Reflection \\
-
-Schwächen \\
-  - relativ große Dateien \\
-  (- Debugging schwieriger???) \\
-  - Support für einige Librarys \\
-  - Performance \\
-  
-Unbequemlichkeiten \\
-  - Auslieferung von Produktionscode noch etwas mühsam: kompiliert nach \\
-\begin{lstlisting}
-target/
-  +- scala-2.11/
-  +- [...]-opt.js
-  +- [...]-jsdeps.min.js
-  +- classes/
-      +- index.html
-      +- [...].css
-\end{lstlisting}
-  - muss per Hand extrahiert werden
-  - wenn andere Ordnerstruktur gewünscht ist, z.B.:
-\begin{lstlisting}
-webapp/
- +- js/
- |   +- [...]-opt.js
- |   +- [...]-jsdeps.min.js
- +- css/
- |   +- [...].css
- +- index.html
-\end{lstlisting}
-  ... dann müssen die Pfade in der index.html entsprechend geändert werden \\
-  -> Lösung wären hier entsprechende Export-Skripte; bzw. denkbar, dass in Zukunft ein entsprechendes Tool oder sbt-Plugin (?) angeboten wird \\
-
-
-
-großes Potential \\
-	besonders weil: eine Sprache für Client und Server \\
-		Wiederverwendbarkeit von Code \\
-		nur in einer Sprache denken, nicht eine weitere lernen \\
-	typbedingte Laufzeitfehler auch für Client-Seite (JavaScript) ausgeschlossen sind \\
-	mit Templating-Library auch \ac{HTML}-Tags typsicher macht \\
-	
-Doku noch im Wandel, stellenweise ("`tiefer drin"') noch etwas sparsam erklärt, zeitweise und sporadisch nicht mit den neuesten Änderungen synchron (/nicht auf dem aktuellsten Stand), aber im Großen und Ganzen ziemlich gut, erlaubt recht tiefen Einblick \\
-
-vor allem für Entwickler und Projekte die schon mit Scala arbeiten sehr interessant \\
-
-Erfolg hängt sicher auch am Erfolg der Sprache Scala \\
-dafür, dass noch sehr jung, schon sehr gut entwickelt und anscheinend stabil \\
-
-
-
-
-Hürden \\
-
-- speziellere Konfiguration, besonders \\
-  - für Cross-Projekte \\
-  - vermutlich, wenn Vorgaben für die zu verwendenden Techniken bestehen \\
-
-Chancen \\
-
-- eine eindeutige, typsichere Schnittstelle zur Client-Server-Kommunikation \\
-
-
+Bei der Anfertigung der Arbeit stellte der Reichtum an Möglichkeiten, die sowohl die Sprache Scala, als auch die durch Scala.js verfügbaren JavaScript-\ac{API}s bieten, durchaus eine Herausforderung dar. Auch war es bei der Erkundung von Scala.js eine Schwierigkeit, dass bisher außer der Dokumentation auf der Website des Projekts nur ein E-Book zu Scala.js existiert. Hinzukommt, dass sich das Projekt noch stabilisiert, und Informationen der Dokumentation oder in etwas älteren Diskussionsbeiträgen in Fachforen teilweise nicht mehr in jedem Fall auf den aktuellen Stand anwendbar sind. Auch etwas ältere Scala.js-Beispielprojekte sind oft schon veraltet oder verwaist und lassen sich nicht mit der aktuellen Scala.js-Version kompilieren. Diese Erfahrung wurde beispielsweise mit den, auf der Projekt-Website verlinkten Scala.js-Benchmarks gemacht. Es darf aber erwartet werden, dass sich dies mit der Rückwartskompatibilität seit Version 0.6.0, künftig bessern wird.
 
 
 
