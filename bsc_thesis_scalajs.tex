@@ -284,8 +284,6 @@
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 \chapter{Einleitung}
 
-%TODO Zitate checken, ggf. ergänzen um "`vgl."'
-
 Von modernen Weboberflächen wird Interaktivität in einem Maße erwartet, wie es noch vor wenigen Jahren ausgewachsenen Desktopanwendungen vorbehalten war. Klassische Webseiten sind echten Web-Anwendungen (\emph{Rich Internet Applications}) gewichen und die Zahl an Anwendungen, die als Online-Dienst in der "`Cloud"' angeboten werden (\emph{Software as a Service}), steigt. Und die Tatsache, dass ein einfacher Aufruf im Browser an die Stelle einer oft als mühsam empfundenen Installation auf dem Desktop tritt, macht Web-Anwendungen aus Nutzersicht äußerst attraktiv.
 
 %steigen auch die Erwartungen der Web-Anwender Interaktion selbstverständlich
@@ -392,7 +390,7 @@ Scala unterstützt zwar die nebenwirkungsfreie funktionale Programmierung mit un
 
 Scala verfügt über ein ausdrucksstarkes einheitlich Typsystem mit einer gemeinsamen Superklasse \scala{Any} von der jede Klasse erbt. \scala{Any} hat exakt zwei direkte Subklassen: \scala{AnyVal} und \scala{AnyRef}. 
 
-Von \scala{AnyVal} erben die neun Scala-eigene Werteklassen: \scala{Byte}, \scala{Short}, \scala{Char}, \scala{Int}, \scala{Long}, \scala{Float}, \scala{Double} und \scala{Boolean}, die den primitiven Typen in Java entsprechen\footnote{sie werden sogar zur Laufzeit durch primitive Java-Typen ersetzt} und \scala{Unit}, das etwa \scala{void} in Java entspricht. \scala{AnyRef}, die andere Subklasse von \scala{Any}, ist die Basisklasse für alle Referenzklassen. Auf der Java-Plattform ist \scala{AnyRef} nur ein Alias für die Klasse \mbox{\scala{java.lang.Object}}.
+Von \scala{AnyVal} erben die neun Scala-eigene Werteklassen: \scala{Byte}, \scala{Short}, \scala{Char}, \scala{Int}, \scala{Long}, \mbox{sss\scala{Float},} \scala{Double} und \scala{Boolean}, die den primitiven Typen in Java entsprechen\footnote{sie werden sogar zur Laufzeit durch primitive Java-Typen ersetzt} und \scala{Unit}, das etwa \scala{void} in Java entspricht. \scala{AnyRef}, die andere Subklasse von \scala{Any}, ist die Basisklasse für alle Referenzklassen. Auf der Java-Plattform ist \scala{AnyRef} nur ein Alias für die Klasse \mbox{\scala{java.lang.Object}}.
 
 Außerdem existieren noch zwei spezielle Klassen: \scala{Null} und \scala{Nothing}. \scala{Nothing} ist eine gemeinsame Subklasse jeder anderen Klasse. Dieser Typ kann keine Werte enthalten, wird aber benötigt um zum Beispiel den Typ der leeren Liste zu definieren: \mbox{\scala{List[Nothing]}}. Die Klasse \scala{Null} enthält \scala{null} als einzigen Wert und ist der Subtyp aller Referenzklassen, also all der Klassen, die von \scala{AnyRef} erben.
 
@@ -920,8 +918,6 @@ Obwohl das Projekt Scala.js noch ziemlich jung ist, existiert schon eine beachtl
 Mit dem Scala.js-sbt-Plugin\footnote{\url{http://www.scala-js.org/doc/sbt-plugin.html}} ist es möglich, Scala.js-Anwendungen zu kompilieren, zu testen und auszuführen.
 Prinzipiell kann auch auf sbt verzichtet und direkt mit einem Command Line Interface\footnote{\url{http://www.scala-js.org/downloads.html}} gearbeitet werden. Es wird jedoch empfohlen, sbt zu benutzen.
 
-\TODOi{VGL: ...}
-%-->  \url{http://www.scala-js.org/doc/tutorial.html}
 
 \MyMiniSec{Projekt}
 
@@ -1003,16 +999,15 @@ Mit sbt können folgende Kommandos aufgerufen werden:
 \begin{itemize}
 \item \code{run} kompiliert Scala.js-Anwendung und führt sie aus in einer JavaScript-Laufzeit aus. Dazu wird eine \code{main}-Methode benötigt.
 \item \code{fastOptJS} wird zur Entwicklung benutzt. Für die erzeugten JavaScript-Dateien wird nur die erste Optimierungsstufe verwendet.
-\item \code{fullOptJS} ist für die Produktion. Die erzeugten JavaScript-Dateien werden maximal auf kleine Dateigrößen hin optimiert.
+\item \code{fullOptJS} ist für die Produktion gedacht. Die erzeugten JavaScript-Dateien werden maximal auf kleine Dateigrößen hin optimiert.
 \item \code{test} kompiliert den Code für Scala.js-Tests und führt sie aus. Außerdem werden im Verzeichnis \code{target/test-reports/} Test-Reports im \ac{XML}-Format erzeugt.
 \item \code{compile} kompiliert zu Scala.js-Bytecode.
-\item \code{package} packt Scala.js-Anwendung als .jar-Datei
+\item \code{package} packt Scala.js-Anwendung als .jar-Datei.
 \end{itemize}
 
 Die JavaScript-Laufzeit ist, je nach Einstellung: Rhino, Node.js oder PhantomJS.
 
-Durch eine vorangestellte \code{\~} ist das Arbeiten im kontinuierlichen Modus möglich
-Jede gespeicherte Code-Änderung löst automatisch einen Neuaufruf des gewählten Tasks aus. Zum Beispiel wird mit \code{\~fastOptJS} automatisch im Produktionsmodus neu übersetzt. \cite[\#TheCommandLine]{haoyi.HOS} ist hier wieder eine wertvolle und (als Mitarbeiter des Projekts) auch autorisierte Quelle -> es gibt weiter unten ein Kapitel "`The Command Line"' zum Thema.
+Durch eine vorangestellte \code{\~} ist das Arbeiten im kontinuierlichen Modus möglich. Jede gespeicherte Code-Änderung löst automatisch einen Neuaufruf des gewählten Tasks aus. Zum Beispiel wird mit \code{\~fastOptJS} automatisch im Produktionsmodus neu übersetzt. \cite[\#TheCommandLine]{haoyi.HOS}
 
 Die zur Auslieferung benötigten JavaScript-Dateien werden im Verzeichnis 
 \linebreak\mbox{\code{target/scala-2.11/}} erzeugt. \ac{HTML}- und \ac{CSS}-Dateien befinden sich eine Ebene tiefer in \linebreak\mbox{\code{target/scala-2.11/classes/}}.
@@ -1020,9 +1015,8 @@ Die zur Auslieferung benötigten JavaScript-Dateien werden im Verzeichnis
 
 
 \subsection{IDE-Support}\label{subsec:sjs-ide}
-(http://www.scala-lang.org/news/2015/02/05/scala-js-no-longer-experimental.html)
 
-Scala.js kann gut durch \ac{IDE}s unterstützt werden. Hierdurch ist ein komfortableres Editieren durch Syntax-Hervorhebungen, intelligente automatische Code-Vervollständigungen, das Springen zur Definition, die Einblendung von Quellcode-Dokumentation und eine Unterstützung beim Refactoring möglich. \cite{doeraene2015.SNL} Infrage kommen folgende \ac{IDE}s:
+Scala.js ermöglicht eine gute Unterstützung durch \ac{IDE}s. Hierdurch ist ein komfortableres Editieren durch Syntax-Hervorhebungen, intelligente automatische Code-Vervollständigungen, das Springen zur Definition, die Einblendung von Quellcode-Dokumentation und eine Unterstützung beim Refactoring möglich. \cite{doeraene2015.SNL} Infrage kommen folgende \ac{IDE}s:
 
 \begin{description}
 	\item[IntelliJ IDEA] liefert am meisten Komfort, unterstützt sbt schon am besten und ist deshalb klar die erste Wahl. Scala wird bei der aktuellen Version von Hause aus unterstützt, ältere Versionen lassen sich mit einem Plugin nachrüsten. sbt-Dateien werden erkannt und auch hier wird automatische Code-Vervollständigung unterstützt. Änderungen an sbt-Konfigurationsdateien werden von IntelliJ erkannt; das Programm schlägt dann einen "`Refresh"' vor. Zusätzlich kann direkt aus IntelliJ heraus mit dem Terminal gearbeitet werden\footnote{\url{https://www.jetbrains.com/idea/help/working-with-embedded-local-terminal.html}}. Die Ultimate Edition unterstützt außerdem auch JavaScript, \ac{HTML}, \ac{CSS}
@@ -1111,7 +1105,7 @@ Zur Messung der Ausführungsgeschwindigkeit von JavaScript-Programmen kam JSLitm
 
 Die nachfolgende Anleitung bezieht sich auf die Installation auf einem Windows-8.1-Rechner. Auf anderen Plattform können einzelne Schritte im Detail abweichen.
 
-Um die Installation erfolgreich durchführen zu können ist eine gute Internetverbindung erforderlich, da die einige Bibliotheken heruntergeladen müssen. Außerdem wird ein aktueller Browser benötigt. Für volle Source-Maps-Unterstützung in der Browser-Konsole empfiehlt sich hier Google Chrome\footnote{\url{https://www.google.de/chrome/browser/desktop/}}.
+Um die Installation erfolgreich durchführen zu können ist eine gute Internetverbindung erforderlich, da einige Bibliotheken heruntergeladen müssen. Außerdem wird ein aktueller Browser benötigt. Für volle Source-Maps-Unterstützung in der Browser-Konsole empfiehlt sich hier Google Chrome\footnote{\url{https://www.google.de/chrome/browser/desktop/}}.
 
 \section{Benötigte Software}
 
@@ -1121,7 +1115,7 @@ Die folgende Software wird benötigt:
 	\item Java Development Kit (JDK) 8\footnote{Gegebenenfalls genügt auch ein JRE.}  --  \url{www.oracle.com/technetwork/java/javase/}
 	\item Scala  --  \url{http://www.scala-lang.org/}
 	\item sbt  --  \url{http://www.scala-sbt.org/}
-%	\item git  --  \url{https://git-scm.com/} \TODOi{<<<<< benötigt??? <<<<<}
+%	\item git  --  \url{https://git-scm.com/}
 	\item Node.js  --  \url{https://nodejs.org/en/}
 	\item PhantomJS  --  \url{http://phantomjs.org/}
 \end{itemize}
@@ -1293,7 +1287,8 @@ jsDependencies in Test += RuntimeDOM
 \end{lstlisting}
 in der Build-Definition ergänzt werden.
 
-Um Source-Maps-Unterstützung im Browser zu bekommen, muss eine nicht allzu aufwendige Installation vorgenommen werden, wie in \TODOi{Abschnitt Source Maps ???} beschrieben. \TODOi{besser auslagern in eigenes Kapitel}
+Um Source-Maps-Unterstützung im Browser zu bekommen, muss eine nicht allzu aufwendige Installation vorgenommen werden.
+
 
 \MyMiniSec{Performance von Build und Tests}
 
@@ -1342,11 +1337,11 @@ Hier wurde die Geschwindigkeit der Build- und Test-Läufe sowie die Größe der 
 \label{table:compiler-performance-legend}
 \end{table}
 
-Es wird deutlich, dass sich der Compiler ab dem zweiten Lauf "`stabilisiert"' und selbst nach einem \textbf{clean} deutlich schneller fertig ist als beim ersten Lauf. Der für den Entwicklungsalltag häufiste Fall dürfte wohl ein Build nach Code-Änderungen ohne \textbf{clean} sein. Dafür sind 3 Sekunden eine vertretbare Zeit. Bei einem weniger trivialen Beispiel mit mehr Code wachsen diese Zeiten, bleiben aber den Erfahrungen im Laufe dieser Arbeit nach in der Regel unter \TODOi{10 Sekunden (CHECK --> clientserver oder stringanalyzer)} und damit in einem vertretbaren Rahmen.
+Es wird deutlich, dass sich der Compiler ab dem zweiten Lauf "`stabilisiert"' und selbst nach einem \textbf{clean} deutlich schneller fertig ist als beim ersten Lauf. Der für den Entwicklungsalltag häufiste Fall dürfte wohl ein Build nach Code-Änderungen ohne \textbf{clean} sein. Dafür sind 3 Sekunden eine vertretbare Zeit. Bei einem weniger trivialen Beispiel mit mehr Code wachsen diese Zeiten, bleiben aber den Erfahrungen im Laufe dieser Arbeit nach in der Regel in einem vertretbaren Rahmen.
 
 Es ist auch zu erkennen, dass Testläufe, selbst ohne Code-Änderungen nicht besonders schnell sind. In den insgesamt 7 Tests werden 25 Assertions verwendet.\footnote{Im Code stehen 13 Assertions, davon werden 3 jeweils in einer Schleife 5-mal aufgerufen.} Schnellere Testläufe wären hier in jedem Fall wünschenswert. Andererseits fallen etwas langsamere Tests nicht ganz so stark ins Gewicht, wenn man im kontinuierlichen Modus arbeitet (zu erreichen mit dem Kommando \code{\~test}).
 
-Die Größe der Kompilate für das Hallo-Welt-Programm übertrifft reines \ac{HTML}/JavaScript (187 Bytes) um einen Faktor von etwa 100. Dieses Ergebnis muss erklärt werden. Einen großen Teil der von Scala.js generierten JavaScript-Datei macht die Scala-Standardbibliothek aus. Der Optimierer reduziert die Code-Menge sehr stark (siehe Abschnitt \ref{sec:compiler}). Die Größe von optimiertem Scala.js-generierten JavaScript-Dateien wird deshalb mit wachsender Code-Basis des eigenen Software-Projekts nicht etwa proportional, sondern langsamer anwachsen. Haoyi verweist in diesem Zusammenhang auf ein eigenes Projekt mit einem Umfang von ca. 2000 Zeilen Code, welches voll optimiert noch 288 kB groß ist. \TODOi{-> vgl. eigenes client-server-Bsp.} Das Problem wird weiter relativiert durch die Tatsache, dass die meisten Server ihre Daten gzip-komprimiert übertragen, was laut Haoyi die Datenlast auf etwa ein Zehntel verkleinert. \cite[\#BlobSize]{haoyi.HOS}
+Die Größe der Kompilate für das Hallo-Welt-Programm übertrifft reines \ac{HTML}/JavaScript (187 Bytes) um einen Faktor von etwa 100. Dieses Ergebnis muss erklärt werden. Einen großen Teil der von Scala.js generierten JavaScript-Datei macht die Scala-Standardbibliothek aus. Der Optimierer reduziert die Code-Menge sehr stark (siehe Abschnitt \ref{sec:compiler}). Die Größe von optimiertem Scala.js-generierten JavaScript-Dateien wird deshalb mit wachsender Code-Basis des eigenen Software-Projekts nicht etwa proportional, sondern langsamer anwachsen. Haoyi verweist in diesem Zusammenhang auf ein eigenes Projekt mit einem Umfang von ca. 2000 Zeilen Code, welches voll optimiert noch 288 kB groß ist. Das Problem wird weiter relativiert durch die Tatsache, dass die meisten Server ihre Daten gzip-komprimiert übertragen, was laut Haoyi die Datenlast auf etwa ein Zehntel verkleinert. \cite[\#BlobSize]{haoyi.HOS}
 
 Seit Bestehen des Projekts wurden bei der Verringerung der erzeugten Dateigröße schon erhebliche Fortschritte erzielt. Generierte der Prototyp des Compilers für ein Hallo-Welt-Programm noch 16 MB, so reduzierte sich dies bald darauf mit der Einführung des Google Closure Compilers ins Projekt im August 2013 schon auf 900 kB \cite[Folie~5~f., Min.~6]{doeraene2014.WHB}. Der aktuelle Stand mit 20 kB (siehe Tabelle \ref{table:compiler-performance1}) ist somit relativ gut und lässt auf weitere Verbesserung in der Zukunft hoffen.
 
@@ -1519,7 +1514,7 @@ Gleichzeitig wurde die Scala.js Workbench im produktiven Einsatz ausprobiert und
 
 \MyMiniSec{Kurzbeschreibung des Canvas-Programms}
 
-Die Anwendung erzeugt automatisch einfache Bilder, indem sie zufällig Rechtecke oder Kreise zeichnet. Auch Position, Abmessungen, Farbe und Transparenz der Elemente sind zufallsgeneriert. Bei den Abmessungen der gezeichneten Formen sorgt ein \TODOi{Mechanismus} dafür, dass die Werte nicht zu abrupt variieren, damit sich ein etwas ruhigerer Eindruck ergibt. Dazu werden die Zufallswerte jeweils durch lineare Interpolation mit dem Vorgängerwert geglättet. Das Ergebnis ist beispielhaft in den Abbildungen \ref{fig:frenzy1} und \ref{fig:frenzy2} zu sehen.
+Die Anwendung erzeugt automatisch einfache Bilder, indem sie zufällig Rechtecke oder Kreise zeichnet. Auch Position, Abmessungen, Farbe und Transparenz der Elemente sind zufallsgeneriert. Bei den Abmessungen der gezeichneten Formen sorgt ein Mechanismus dafür, dass die Werte nicht zu abrupt variieren, damit sich ein etwas ruhigerer Eindruck ergibt. Dazu werden die Zufallswerte jeweils durch lineare Interpolation mit dem Vorgängerwert geglättet. Das Ergebnis ist beispielhaft in den Abbildungen \ref{fig:frenzy1} und \ref{fig:frenzy2} zu sehen.
 
 Außerdem kann mit der Maus bei gedrückt gehaltener linker Maustaste auf den Canvas-Bereich gezeichnet werden. Dabei wird ein zufälliger Farbverlauf erzeugt (siehe Abb. \ref{fig:frenzy3} und \ref{fig:frenzy4}).
 
@@ -1602,6 +1597,7 @@ ctx.fillRect(x, y, width, heigth)
 
 Die Typ-Casts mögen etwas unschön sein, aber die zwei beschriebenen Fälle sind auch die einzigen, die in der Beispielanwendung benötig werden. Sébastien Doeraene zufolge ist die erste Art Cast zur Spezialisierung des \ac{HTML}-Elements, unvermeidbar, andernfalls müsste der \ac{DOM} selbst Teil des Typsystems sein. Der zweite Cast zum konkreten Rendering-Kontext wird wohl in einer künftigen Version von Scala.js nicht mehr nötig sein. Doeraene weist auch darauf hin, dass in sechs Scala.js-Beispielanwendungen mit insgesamt 1000 Zeilen Code exakt diese beiden Casts, und nur diese, benötigt werden. \cite[S. 8]{doeraene2013.TDI}
 
+\pagebreak
 
 \MyMiniSec{Timer}
 
@@ -1640,6 +1636,8 @@ Hier wird der \scala{onkeyup}-Property zur Event-Behandlung eine anonyme Funktio
 \MyMiniSec{Abstraktionen}
 
 Um die Frequenz des automatischen Zeichnens per Keyboard-Interaktion steuerbar zu machen, muss der Timer angehalten und mit einem Intervall erneut gestartet werden können. Es erwies sich daher als sauberer und für den Handler-Code entlastend (und ganz im Sinne von DRY\footnote{\emph{Don't Repeat Yourself!}}), gewisse Implementierungsdetails in einer eigenen Timer-Abstraktion zu verbergen (Listing \ref{code:canvas-timer}).
+
+\pagebreak
 
 \begin{lstlisting}[language=Scala, caption={Die Timer-Klasse des Canvas-Beispiels.}, label={code:canvas-timer}]
 class Timer(var interval: Int, action: => Unit) {
@@ -1727,6 +1725,7 @@ Zur flüssigen Entwicklung ist es am komfortabelsten, im kontinuierlichen Modus 
 Das Workbench-Plugin funktioniert nicht immer ganz zuverlässig, und manchmal muss das Browserfenster per Hand neu geladen werden. Alles in allem ist es aber ein sehr hilfreiches Entwicklungswerkzeug für ein flüssigeres Arbeiten.
 
 
+\pagebreak
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 \section{Ajax}
@@ -1740,7 +1739,7 @@ Die Kommunikation mit Objekten außerhalb des Web-Clients, zum Beispiel mit Webs
 
 \MyMiniSec{Kurzbeschreibung des Währungsumrechners}
 
-Beispielhaft wurde ein Währungsumrechner umgesetzt, der dem Benutzer die Eingabe des Betrags und die Auswahl von Quell- und Zielwährung per Auswahlliste anbietet, und auf Knopfdruck oder Betätigung der Entertaste hin die Umrechnung auf der Basis tagesaktueller Kurse durchführt. Beträge werden bis auf vier Nachkommastellen hin genau dargestellt. Die Eingabe ist fehlertolerant gegenüber ungültigen Beträgen. Als kleiner Komfort kann der Betrag mit der Escape-Taste auf 1.0000 zurückgesetzt werden. \TODOi{>>> bessere Bildqualität... >>>}
+Beispielhaft wurde ein Währungsumrechner umgesetzt, der dem Benutzer die Eingabe des Betrags und die Auswahl von Quell- und Zielwährung per Auswahlliste anbietet, und auf Knopfdruck oder Betätigung der Entertaste hin die Umrechnung auf der Basis tagesaktueller Kurse durchführt. Beträge werden bis auf vier Nachkommastellen hin genau dargestellt. Die Eingabe ist fehlertolerant gegenüber ungültigen Beträgen. Als kleiner Komfort kann der Betrag mit der Escape-Taste auf 1.0000 zurückgesetzt werden.
 
 \begin{figure}[!h]
     \centering
@@ -1772,7 +1771,9 @@ def setupCurrencySelect(theId: String,
 
 Dieser Methode muss eine Funktion \scala{String => Unit} übergeben werden, die den Auswahlwert entgegennimmt, so dass der Umrechner passend aktualisiert werden kann. Die Liste der möglichen \html{<option>}s lässt sich prägnant mithilfe einer \scala{for}-Comprehension ausdrücken. Das Auswahllisten-Element, bei dem es sich um ein \scala{TypedTag[html.Select]} handelt, muss durch Aufruf der Methode \scala{render} in den Fassadentyp \scala{html.Select} der Scala-js-dom-Bibliothek umgewandelt werden. Dadurch ist voller, typsicherer Zugriff auf die Methoden und Attribute möglich, die in der \ac{DOM}-\ac{API} spezifiziert sind. Ein \scala{onchange}-Handler ließe sich eigentlich auch innerhalb des \scala{select()}-Tags schreiben, allerdings ließe sich so nicht auf das \scala{value}-Attribut zugreifen.
 
-Nach dieser Vorbereitung kann das Umrechnungsformular sehr übersichtlich und deklarativ geschrieben werden (Listing \ref{code:currency-converter-gui}).
+Nach dieser Vorbereitung kann das Umrechnungsformular sehr übersichtlich und deklarativ geschrieben werden (Listing \ref{code:currency-converter-gui}). Die Felder für Eingabe (\scala{inputAmount}) und Ergebnis (\scala{outputAmount}) wurden zuvor definiert und mit \scala{.render} umgewandelt, damit sie im Programm referenziert werden können. Das hat den Vorteil, dass es so nicht nötig ist, den Umweg über \scala{document.getElementById()} jQuery-Selektoren zu gehen.
+
+Eine Schwierigkeit im Umgang mit ScalaTags besteht darin, dass es manchmal schwierig ist, die richtigen Importe vorzunehmen. Häufig ist der Import von \scala{JsDom.all\_} ausreichend, allerdings werden hierdurch viele Namen in den Namensraum gebracht, was zu Konflikten führen kann, wenn man seltener benutzte Tags aus einem anderen Bundle verwenden möchte. Hier kann es auch helfen Aliase für schon importierte Namen einzuführen.
 
 \begin{lstlisting}[language=Scala, caption={Deklaration eines Formulars zur Währungsumrechnung mit ScalaTags.}, label={code:currency-converter-gui}]
 container.appendChild(
@@ -1794,20 +1795,10 @@ container.appendChild(
 )
 \end{lstlisting}
 
-Die Felder für Eingabe (\scala{inputAmount}) und Ergebnis (\scala{outputAmount}) wurden zuvor definiert und mit \scala{.render} umgewandelt, damit sie im Programm referenziert werden können. Das hat den Vorteil, dass es so nicht nötig ist, den Umweg über \scala{document.getElementById()} jQuery-Selektoren zu gehen.
-
-Eine Schwierigkeit im Umgang mit ScalaTags besteht allerdings darin, dass es manchmal schwierig ist, die richtigen Importe vorzunehmen. Häufig ist der Import von \scala{JsDom.all\_} ausreichend, allerdings werden hierdurch viele Namen in den Namensraum gebracht, was zu Konflikten führen kann, wenn man seltener benutzte Tags aus einem anderen Bundle verwenden möchte. Hier kann es auch helfen Aliase für schon importierte Namen einzuführen.
-
 
 \MyMiniSec{Ajax mit XMLHttpRequest}
 
-Für die Umrechnung wurde eine Klasse \scala{Converter} definiert. Als Quelle für die Umrechnungskurse sollte die Yahoo! Finance \ac{API}\footnote{\url{https://code.google.com/p/yahoo-finance-managed/wiki/YQLAPI}} genutzt werden, die auf \ac{HTTP}-Anfrage hin Ergebnisse im JSON-Format\footnote{\ac{JSON}, ein kompaktes Format zum Datenaustausch.} liefert. Anfragen werden in einer Query-Language formuliert. Die Anfrage:
-
-\begin{lstlisting}[aboveskip=0pt, style=snippet]
-http://query.yahooapis.com/v1/public/yql?q=select * from yahoo.finance.xchange where pair in ('EURUSD')&format=json&env=store://datatables.org/alltableswithkeys
-\end{lstlisting}
-
-liefert als Resultat das \ac{JSON}:
+Für die Umrechnung wurde eine Klasse \scala{Converter} definiert. Als Quelle für die Umrechnungskurse sollte die Yahoo! Finance \ac{API}\footnote{\url{https://code.google.com/p/yahoo-finance-managed/wiki/YQLAPI}} genutzt werden, die auf \ac{HTTP}-Anfrage hin Ergebnisse im JSON-Format\footnote{\ac{JSON}, ein kompaktes Format zum Datenaustausch.} liefert. Anfragen werden in einer Query-Language formuliert. Anfragen des Währungsumrechners (Listing \ref{code:converter}) bei der \ac{API} liefern als Resultat ein \ac{JSON} wie dieses:
 
 \begin{lstlisting}[language=JavaScript, style=snippet]
 {
@@ -1829,6 +1820,8 @@ liefert als Resultat das \ac{JSON}:
   }
 }
 \end{lstlisting}
+
+\pagebreak
 
 Um \ac{HTTP}-Requests mit Scala.js zu realisieren gibt es verschiedene Möglichkeiten \cite[\#UsingWebServices]{haoyi.HOS}. Dank Scala-js-dom kann das \code{XMLHttpRequest}-Objekt\footnote{Eine ursprünglich von Microsoft entwickelte \ac{API} zur Client-Server-Kommunikation, die von den großen Browserherstellern Mozilla, Apple, and Google unterstützt und gegenwärtig vom \ac{W3C} standardisiert wird. \cite{mdn.XHR}} ganz ähnlich wie mit reinem Java-Script verwendet werden (allerdings typsicher).
 
@@ -1863,7 +1856,9 @@ Ajax.get(url).onSuccess{ case xhr => handleXhrResponse(xhr) }
 
 Mit diesem Wissen wurde eine \scala{Converter}-Klasse definiert, die \emph{immutable} ist. Für jedes Währungspaar soll ein neue Instanz erzeugt werden.
 
-\begin{lstlisting}[language=Scala, caption={Der Währungsumrechner.}]
+\pagebreak
+
+\begin{lstlisting}[language=Scala, caption={Der Währungsumrechner.}, label={code:converter}]
 case class Converter(
   srcCurr: String = "EUR",
   dstCurr: String = "EUR"
@@ -1975,6 +1970,8 @@ library
 Die Funktionalität wurde im \code{shared}-Projekt implementiert. In \code{js/} und \code{jvm/} existieren jeweils plattformspezifische Fassaden, die Methodenaufrufe an die geteilte Implementierung delegieren.
 
 
+\pagebreak
+
 \MyMiniSec{JavaScript-Interoperabilität}
 
 Die kompilierten JavaScript-Artefakte des Cross-Projekts finden sich im Verzeichnis \linebreak\mbox{\code{library/js/target/}}.
@@ -2021,7 +2018,7 @@ Die Funktionen lassen sich mit Scala sehr knapp formulieren. Im Vergleich fiel b
 
 \MyMiniSec{Vergleichender Benchmark}
 
-In einem Benchmark-Test wurde die Ausführungsgeschwindigkeit der beiden Implementierungen der Statistik-Funktionen verglichen. Das Scala.js-Programm wurde dazu im \code{FullOptJS}-Modus kompiliert. Abbildung \TODOi{6.9(??) und Tabelle 6.4 (??))} zeigen die Ergebnisse. Dabei sind die verschiedenen Funktionen an ihrem Suffix zu unterscheiden: \code{js} für JavaScript und \code{sjs} für Scala.js. Die Maßeinheit ist Operationen pro Sekunde.
+In einem Benchmark-Test wurde die Ausführungsgeschwindigkeit der beiden Implementierungen der Statistik-Funktionen verglichen. Das Scala.js-Programm wurde dazu im \code{FullOptJS}-Modus kompiliert. Abbildung 6.9 und Tabelle 6.4 zeigen die Ergebnisse. Dabei sind die verschiedenen Funktionen an ihrem Suffix zu unterscheiden: \code{js} für JavaScript und \code{sjs} für Scala.js. Die Maßeinheit ist Operationen pro Sekunde.
 
 Die Scala.js-Implementierungen sind etwa 9 \% langsamer als natives JavaScript (wenn in JavaScript auf Funktionen höherer Ordnung verzichtet wird). Damit sind beide Implementierungen doch recht nahe beieinander. Die etwas geringere Leistungsfähigkeit sollte nur bei äußerst leistungshungrigen Anwendungen ins Gewicht fallen.
 
@@ -2049,11 +2046,14 @@ Durch den Einsatz von Scala.js gewinnt man hingegen eine plattformübergreifende
 	\caption{Benchmark der Statistik-Bibliothek.}
 \end{figure}
 
+
+\MyMiniSec{Zur Einordnung: Benchmark der Scala.js-Entwickler}
+
 An dieser Stelle sei abschließend noch auf die Benchmark-Ergebnisse verwiesen, die Doeraene auf den Scala Days im Juni 2015 präsentierte (Abbildung \ref{fig:doeraene-benchmarks}). Bei drei von vier der dort gezeigten Benchmarks ist optimiertes Scala.js, ob mit Google Closure Compiler (schwarzer Balken) oder ohne (grüner Balken), der Leistungsfähigkeit von nativem \mbox{JavaScript} schon vielversprechend nahe. Beim DeltaBlue-Test werden laut Doeraene besonders viele Scala-Collections verwendet \cite[Folie 52, Min. 40]{doeraene2015.SSP}, weshalb dieser auffällig langsamer ist. Der vierte von Doeraene präsentierte Test zeigt eine optimierte Version von DeltaBlue, für welche \code{js.Array} verwendet wurde. Das lässt den Schluss zu, dass momentan für hohe Performance auf Scala-Collections zugunsten von \code{js.Array} ausgewichen werden sollte, wenn eine sehr hohe Leistungsfähigkeit entscheidend ist.
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[width=0.75\textwidth]{Doeraene2015-Scalajs-p52}
+    \includegraphics[width=1.0\linewidth]{Doeraene2015-Scalajs-p52}
     \caption[Bei den Scala Days 2015 präsentierte Benchmarks von Scala.js.]{Bei den Scala Days 2015 präsentierte Benchmarks von Scala.js. \cite[Folie 52]{doeraene2015.SSP}}
     \label{fig:doeraene-benchmarks}
 \end{figure}
