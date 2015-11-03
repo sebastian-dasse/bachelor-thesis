@@ -1018,7 +1018,6 @@ Die zur Auslieferung benötigten JavaScript-Dateien werden im Verzeichnis \code{
 
 
 
-
 \subsection{IDE-Support}\label{subsec:sjs-ide}
 (http://www.scala-lang.org/news/2015/02/05/scala-js-no-longer-experimental.html)
 
@@ -1953,10 +1952,7 @@ Die Dokumentation der verwendeten Librarys Scala-js-dom, ScalaTags, und Scala-As
 
 \TODO{Projekte: sjs-crosscompiling-statistics-lib, js-port-of-statistics-lib, benchmark-statistics-libs}
 
-Die Wiederverwendbarkeit von Code für Client \emph{und} Server ist ein wünschenswertes Ziel. Hier sollte anhand der Implementierung einer kleinen cross-kompilierenden Library erprobt werden, wie das mit Scala.js möglich ist. Außerdem sollte durch Tests die Korrektheit der Bibliothek sichergestellt werden. 
-Außerdem sollte die implementierten Scala.js-Library in natives HTML/JavaScript eingebunden werden, um auch die Interoperabilität zu erproben. Schließlich sollte eine Portierung nach JavaScript vorgenommen werden um einerseits einen Vergleich des Codes aber vor allem auch einen Leistungsvergleich zwischen Scala.js und nativem JavaScript vornehmen zu können.
-
-%BILD -> \cite[Folie 52, Min. ???]{doeraene2015.SSP} % -->  Doeraene2015-Scalajs-p52.jpg
+Die Wiederverwendbarkeit von Code für Client \emph{und} Server ist ein wünschenswertes Ziel. Hier sollte anhand der Implementierung einer kleinen cross-kompilierenden Library erprobt werden, wie das mit Scala.js möglich ist. Außerdem sollte durch Tests die Korrektheit der Bibliothek sichergestellt werden. Außerdem sollte die implementierten Scala.js-Library in natives HTML/JavaScript eingebunden werden, um auch die Interoperabilität zu erproben. Schließlich sollte eine Portierung nach JavaScript vorgenommen werden um einerseits einen Vergleich des Codes, aber auch einen Leistungsvergleich zwischen Scala.js und nativem JavaScript vornehmen zu können.
 
 
 \MyMiniSec{Kurzbeschreibung der Statistik-Library}
@@ -1966,8 +1962,7 @@ vier Funktionen: Mittelwert, Median, Varianz und Standardabweichung.
 
 \MyMiniSec{Kurzbeschreibung der Statistik-GUI}
 
-Es eine einfache GUI mit \ac{HTML}, \ac{CSS} und nativem JavaScript implementiert, welche die Statistik-Library verwendet
-(siehe Abb. \ref{fig:stat-lib-gui}). In ein Eingabefeld können Zahlen, getrennt durch Komma oder Whitespace eingetragen werden. Dabei ist die Eingabe fehlertolerant gegenüber von eingestreuten nicht-numerischen Zeichen. Über eine Auswahlliste kann die gewünschte Berechnung ausgewählt werden. Durch Betätigen der Entertaste im Eingabefeld wird die Zahlenfolge ausgewertet und das Ergebnis angezeigt.
+Es wurde eine einfache GUI mit \ac{HTML}, \ac{CSS} und nativem JavaScript implementiert, welche die Statistik-Library verwendet (siehe Abb. \ref{fig:stat-lib-gui}). In ein Eingabefeld können Zahlen, getrennt durch Komma oder Whitespace eingetragen werden. Dabei ist die Eingabe fehlertolerant gegenüber von eingestreuten nicht-numerischen Zeichen. Über eine Auswahlliste kann die gewünschte Berechnung ausgewählt werden. Durch Betätigen der Entertaste im Eingabefeld wird die Zahlenfolge ausgewertet und das Ergebnis angezeigt.
 
 \begin{figure}[!h]
     \centering
@@ -1979,32 +1974,39 @@ Es eine einfache GUI mit \ac{HTML}, \ac{CSS} und nativem JavaScript implementier
 
 \MyMiniSec{Cross-Projekt}
 
-Das cross-kompilierende Projekt hat eine Struktur wie in Listing \ref{code:cross-project-struct} dargestellt. Die Struktur orientiert sich an den Hinweisen der Scala.js-Dokumenation \cite{scalajs.CBP}, wo auch die nötige Konfiguration der \code{build.sbt} beschrieben ist.
+Die Struktur des cross-kompilierenden Projekts ist in Listing \ref{code:cross-project-struct} dargestellt. Sie orientiert sich an den Hinweisen der Scala.js-Dokumenation \cite{scalajs.CBP}, wo auch die für ein Cross-Projekt nötige Konfiguration der \code{build.sbt} beschrieben ist.
 
 \begin{lstlisting}[language=scala, caption={Struktur der cross-kompilierenden Scala.js-Library}, label={code:cross-project-struct}]
 library
  +- js
  |   +-src
  |      +- main
+ |      |   +- resources
+ |      |   +- scala
  |      +- test
+ |          +- scala
  +- jvm
  |   +-src
  |      +- main
+ |      |   +- scala
  |      +- test
+ |      |   +- scala
  +- shared
      +-src
         +- main
+        |   +- scala
         +- test
+            +- scala
 \end{lstlisting}
 
-Die Funktionalität wurde im \code{shared}-Projekt implementiert. In \code{js} und \code{jvm} existieren jeweils plattformspezifische Fassaden, die Methodenaufrufe an die geteilte Implementierung delegieren.
+Die Funktionalität wurde im \code{shared}-Projekt implementiert. In \code{js/} und \code{jvm/} existieren jeweils plattformspezifische Fassaden, die Methodenaufrufe an die geteilte Implementierung delegieren.
 
 
 \MyMiniSec{JavaScript-Interoperabilität}
 
-Die kompilierten JavaScript-Artefakte des Cross-Projekts finden sich im Verzeichnis \code{library/js/target/}.
+Die kompilierten JavaScript-Artefakte des Cross-Projekts finden sich im Verzeichnis \linebreak\mbox{\code{library/js/target/}}.
 
-Es gibt eine JavaScript-spezifische Fassade mit den zum Export nötigen Annotationen; auch wird hier der \js{js.Array}-Typ verwendet:
+Es gibt eine JavaScript-spezifische Fassade, welche zur Interoperabilität mit JavaScript-Arrays den \js{js.Array}-Typ verwendet und durch Annotationen die Statistik-Funktionen exportiert:
 
 \begin{lstlisting}[language=Scala, style=snippet]
 package platform
@@ -2041,22 +2043,16 @@ Tests für das JavaScript-Test-Werkzeug Jasmine erstellt.
 
 \MyMiniSec{Code-Qualität}
 
-Die Funktionen lassen sich mit Scala sehr knapp formulieren.
-
-Im Vergleich fiel bei der Portierung in natives JavaScript fiel sofort auf, dass mehr Hilfs-Methoden selbst geschrieben werden müssen. Um performante Funktionen zu erhalten, konnte in nativem JavaScript nicht auf die funktionalen Methoden \js{Array}-Methoden wie \js{map} zurückgegriffen werden, denn diese sind im Vergleich mit einer iterativen Implementierung etwa zehnmal langsamer, wie ein separater Benchmark-Test ergab.
+Die Funktionen lassen sich mit Scala sehr knapp formulieren. Im Vergleich fiel bei der Portierung in natives JavaScript sofort auf, dass mehr Hilfs-Methoden selbst geschrieben werden müssen. Auch lenken dort mehr Implementierungsdetails von der Intention des Codes ab. Um performante Funktionen zu erhalten, konnte in nativem JavaScript nicht auf die funktionalen Methoden \js{Array}-Methoden wie \js{map} zurückgegriffen werden, denn diese sind im Vergleich mit einer iterativen Implementierung etwa zehnmal langsamer, wie ein separater Benchmark-Test ergab.
 
 
 \MyMiniSec{Vergleichender Benchmark}
 
-Die Ergebnisse des vergleichenden Benchmarks der Statistik-Funktionen zeigen Abbildung \TODOi{6.9(??) und Tabelle 6.4 (??))}. Dabei sind die verschiedenen Funktionen an ihrem Suffix zu unterscheiden: \code{js} für JavaScript und \code{sjs} für Scala.js. Die Maßeinheit sind Operationen pro Sekunde.
+In einem Benchmark-Test wurde die Ausführungsgeschwindigkeit der beiden Implementierungen der Statistik-Funktionen verglichen. Das Scala.js-Programm wurde dazu im \code{FullOptJS}-Modus kompiliert. Abbildung \TODOi{6.9(??) und Tabelle 6.4 (??))} zeigen die Ergebnisse. Dabei sind die verschiedenen Funktionen an ihrem Suffix zu unterscheiden: \code{js} für JavaScript und \code{sjs} für Scala.js. Die Maßeinheit ist Operationen pro Sekunde.
 
-Demnach sind die Scala.js-Implementierungen ist etwa 9 \% \TODOi{ CHECK AGAIN } langsamer als natives JavaScript (wenn in JavaScript auf Funktionen höherer Ordnung verzichtet wird).
+Die Scala.js-Implementierungen sind etwa 9 \% langsamer als natives JavaScript (wenn in JavaScript auf Funktionen höherer Ordnung verzichtet wird). Damit sind beide Implementierungen doch recht nahe beieinander. Die etwas geringere Leistungsfähigkeit sollte nur bei äußerst leistungshungrigen Anwendungen ins Gewicht fallen.
 
-Damit sind beide Implementierungen doch recht nahe beieinander. Die etwas geringere Leistungsfähigkeit sollte nur bei äußerst leistungshungrigen Anwendungen ins Gewicht fallen.
-
-Durch den Einsatz von Scala.js gewinnt man hingegen eine plattformübergreifende Implementierung, die außerdem den Vorteil hat, dass funktional programmiert werden kann.
-
-Das führt deshalb nicht zu einem heftigen Leistungsabfall, weil der Optimierer die Funktionsaufrufe ...
+Durch den Einsatz von Scala.js gewinnt man hingegen eine plattformübergreifende Implementierung, die außerdem den Vorteil hat, dass funktional programmiert werden kann. Das führt deshalb nicht zu einem heftigen Leistungsabfall, weil der Optimierer die Funktionsaufrufe von Funktionen höherer Ordnung \emph{inlined} (siehe Abschnitt \ref{sec:compiler}).
 
 \begin{figure}[!h]
 	\centering
@@ -2080,7 +2076,14 @@ Das führt deshalb nicht zu einem heftigen Leistungsabfall, weil der Optimierer 
 	\caption{Benchmark der Statistik-Bibliothek.}
 \end{figure}
 
+An dieser Stelle sei abschließend noch auf die Benchmark-Ergebnisse verwiesen, die Doeraene auf den Scala Days im Juni 2015 präsentierte (Abbildung \ref{fig:doeraene-benchmarks}). Bei drei von vier der dort gezeigten Benchmarks ist optimiertes Scala.js, ob mit Google Closure Compiler (schwarzer Balken) oder ohne (grüner Balken), der Leistungsfähigkeit von nativem JavaScript schon vielversprechend nahe. Beim DeltaBlue-Test werden laut Doeraene besonders viele Scala-Collections verwendet \cite[Folie 52, Min. 40]{doeraene2015.SSP}, weshalb dieser auffällig langsamer ist. Der vierte von Doeraene präsentierte Test zeigt eine optimierte Version von DeltaBlue, für welche \code{js.Array} verwendet wurde. Das lässt den Schluss zu, dass momentan für hohe Performance auf Scala-Collections zugunsten von \code{js.Array} ausgewichen werden sollte, wenn eine sehr hohe Leistungsfähigkeit entscheidend ist.
 
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Doeraene2015-Scalajs-p52}
+    \caption[Bei den Scala Days 2015 präsentierte Benchmarks von Scala.js.]{Bei den Scala Days 2015 präsentierte Benchmarks von Scala.js. \cite[Folie 52]{doeraene2015.SSP}}
+    \label{fig:doeraene-benchmarks}
+\end{figure}
 
 
 
@@ -2089,15 +2092,42 @@ Das führt deshalb nicht zu einem heftigen Leistungsabfall, weil der Optimierer 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 \chapter{Fazit}\label{chap:conclusion}
 
- \section{Zusammenfassung der Ergebnisse}
+\section{Zusammenfassung der Ergebnisse}
+
+In der vorliegenden Arbeit wurde ein Überblick über 
 
 Was war wirklich wichtig bei der Arbeit?
 - Überblick gewinnen
 - Nützlichkeit und Einsetzbarkeit praktisch erproben
+	- Projekt, auch cross-
+	- libs wie dom, scalatags
+	- arbeiten mit dom api
+	- templating
+	- kombi von scala mit web-frontend-entwicklung
+		- lesbares ajax
+		- bessere abstraktionen
 Wie sieht das Ergebnis aus?
+- kleine aber voll funktionsfähige beispiele geschafft
+- sehr nützliches werkzeug
+- doku...
+- scala und js gleichzeitig zu lernen
 - siehe alles hier drunter ...
 Wie schätzen Sie das Ergebnis ein?
-- 
+pro: stabiles starkes werkzeug
+	- durch typsicherheit für js-librarys - weniger fehler und editierungs-komfort
+	- und scala-abstraktionen -> qualitativ besserer code
+	- sourcemaps und workbench -> auch debugging im browser
+	- cross-code -> geteilter code
+	- scala-programmierer haben eine gui, die portabel ist
+	- tooling mit dependency-management komfortabel und gliedert sich in von scala gew. arbeiten mit sbt ein
+	- ausf-leistung schon ziemlich gut
+-> zielstellung
+contra:
+	- libs noch experimentell
+	- doku-lücken und im wandel
+	- dateigrößen
+	- tests noch langsam, builds kontinuierlich ok
+	- solange nicht in ein volles client-server-projekt integriert: auslieferung etwas mühsam -> dateien per hand (oder eigenem skript) aus den target verzeichnissen holen (und man muss refs. in index.html entsprechend ändern ...), aber viell. wird irgendwann ein plugin angeboten
 Gab es Randbedingungen, Ereignisse, die die Arbeit wesentlich beeinflußt haben?
 - Scala lernen, speziell abgefahrenes wie implicits
 - gleichzeitig DOM-API
